@@ -126,6 +126,7 @@ Hellofriend项目
 建立HelloFriend项目工程
 
 编写pom.xml文件
+```aidl
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
@@ -145,6 +146,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		</dependency>
 	</dependencies>
 </project>
+```
 
 执行mvn compile命令
 执行这个命令的时候会出错，因为HelloFriend项目是建立在Hello项目基础之上的，但是现在工程中没有引入Hello.java这个类。所以会出错。
@@ -195,9 +197,6 @@ set maven.home default ${user.home}/m2，其中该路径指明了仓库的存储
 其中settings.xml文件中
 
 这个说明了仓库中的位置。
-
-
-
 这里的插件就是执行maven的各种命令所需要的插件。
 maven坐标
 maven坐标的主要组成
@@ -211,7 +210,7 @@ packaging：定义当前项目的打包方式
 继承管理
 
 创建一个项目HelloParent
-
+```aidl
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
@@ -232,10 +231,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 		</dependency>
 	</dependencies>
 </project>
-
+```
 Hellofriend、Hello项目继承HelloParent
-
-
 仓库管理
 可以根据maven坐标定义每一个jar包在仓库中的存储位置。
 大致为：groupId/artifactId/version/artifactId-version.packaging
@@ -249,70 +246,39 @@ http://repo1.maven.org/maven2
 私服：是一种特殊的远程仓库，它是架设在局域网内的仓库
 镜像：用来替代中央仓库，速度一般比中央仓库快
 
-六、maven在eclipse中的应用
+## maven在eclipse中的应用
 环境配置
-
-
 如果所示，myeclipse自带maven，从上图看以看到Maven JDK是可以配置的，这里用了jdk1.6
-
-
 从上图可以看出，我们可以利用myeclipse自带的maven，也可以使用自己的maven。
 上图应用的就是自己的maven。
 
 从最下面可以看出，这是settings.xml文件的路径。
-
-
-
 这幅图说明了用户的settings.xml文件的位置和用户的仓库的位置。
-
 这是最基本的环境的配置。
 settings.xml文件
 仓库的路径
 
 通过配置localRepository的值可以改变仓库的路径。
 配置私服的路径
-
-
-
-
-
 直接连接互联网
 如果不想连接私服，可以直接连接互联网。只需要把连接私服的所有的路径去掉即可。
 创建maven工程
 创建java project
-
-
 选择Maven Project
-
-
-
 选择快速创建maven-archetype-quickstart
-
-
-
 填写group ID，Artiface Id，Version，Package属性
 然后点击finish就可以了。
 
 创建web project
-
-
 新创建一个web project
-
-
-
-
-
 添加maven support即可。
-七、使用Maven建立（聚合）多模块功能
-
-
+## 使用Maven建立（聚合）多模块功能
 目录结构
 ----- itmayiedu-parent-----父工程
 ----- itmayiedu-service-----业务逻辑层
 ----- itmayiedu-web-----web层
-
-
 构建itmayiedu-parent
+```aidl
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 <modelVersion>4.0.0</modelVersion>
@@ -347,8 +313,9 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 <artifactId>itmayiedu-service</artifactId>
 <version>0.0.1-SNAPSHOT</version>
 </project>
-
+```
 构建itmayiedu-web
+```aidl
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 <modelVersion>4.0.0</modelVersion>
@@ -378,23 +345,23 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 	</dependencies>
 
 </project>
-
+```
 启动方式
 添加tomat启动即可。
-八、Maven打包原理
+## Maven打包原理
 
-一、Maven中央存储库
+### Maven中央存储库
 当你建立一个 Maven 的项目，Maven 会检查你的 pom.xml 文件，以确定哪些依赖下载。首先，Maven 将从本地资源库获得 Maven 的本地资源库依赖资源，如果没有找到，然后把它会从默认的 Maven 中央存储库  http://search.maven.org/  查找下载。
 在Maven中，当你声明的库不存在于本地存储库中，也没有不存在于Maven中心储存库，该过程将停止并将错误消息输出到 Maven 控制台。
 
-二、添加远程仓库
+### 添加远程仓库
 默认情况下，Maven从Maven中央仓库下载所有依赖关系。但是，有些库丢失在中央存储库，只有在Java.net或JBoss的储存库远程仓库中能找到。
 现在，Maven的依赖库查询顺序更改为：
 在 Maven 本地资源库中搜索，如果没有找到，进入下一步，否则退出。
 在 Maven 中央存储库搜索，如果没有找到，进入下一步，否则退出。
 在Maven的远程存储库搜索，如果没有找到，提示错误信息，否则退出。
 讲师画图
-九、常用错误
+## 常用错误
 错误原因①:
 pom.xml报错：web.xml is missing and <failOnMissingWebXml> is set to true
 解决办法:
