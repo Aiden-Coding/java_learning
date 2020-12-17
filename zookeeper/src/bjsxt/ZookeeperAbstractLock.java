@@ -1,14 +1,7 @@
 
 package bjsxt;
 
-import java.util.concurrent.CountDownLatch;
-
 import org.I0Itec.zkclient.ZkClient;
-import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.WatchedEvent;
-import org.apache.zookeeper.Watcher;
-import org.apache.zookeeper.ZooKeeper;
-import org.apache.zookeeper.ZooDefs.Ids;
 
 public abstract class ZookeeperAbstractLock implements Lock {
 	protected static final String CONNECT_ADDRES = "192.168.110.159:2181,192.168.110.160:2181,192.168.110.162:2181";

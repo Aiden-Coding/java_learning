@@ -1,10 +1,5 @@
 package bjsxt.zookeeper.auth;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
@@ -14,6 +9,11 @@ import org.apache.zookeeper.ZooDefs.Ids;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.ACL;
 import org.apache.zookeeper.data.Stat;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Zookeeper 节点授权
  * @author（alienware）
@@ -32,15 +32,15 @@ public class ZookeeperAuth implements Watcher {
 	final static String correctAuthentication = "123456";
 	/** 认证错误方法 */
 	final static String badAuthentication = "654321";
-	
+
 	static ZooKeeper zk = null;
 	/** 计时器 */
 	AtomicInteger seq = new AtomicInteger();
 	/** 标识 */
 	private static final String LOG_PREFIX_OF_MAIN = "【Main】";
-	
+
 	private CountDownLatch connectedSemaphore = new CountDownLatch(1);
-	
+
 	@Override
 	public void process(WatchedEvent event) {
 		try {
@@ -57,7 +57,7 @@ public class ZookeeperAuth implements Watcher {
 		EventType eventType = event.getType();
 		// 受影响的path
 		String path = event.getPath();
-		
+
 		String logPrefix = "【Watcher-" + this.seq.incrementAndGet() + "】";
 
 		System.out.println(logPrefix + "收到Watcher通知");
@@ -68,7 +68,7 @@ public class ZookeeperAuth implements Watcher {
 			if (EventType.None == eventType) {
 				System.out.println(logPrefix + "成功连接上ZK服务器");
 				connectedSemaphore.countDown();
-			} 
+			}
 		} else if (KeeperState.Disconnected == keeperState) {
 			System.out.println(logPrefix + "与ZK服务器断开连接");
 		} else if (KeeperState.AuthFailed == keeperState) {
@@ -80,7 +80,7 @@ public class ZookeeperAuth implements Watcher {
 	}
 	/**
 	 * 创建ZK连接
-	 * 
+	 *
 	 * @param connectString
 	 *            ZK服务器地址列表
 	 * @param sessionTimeout
@@ -99,7 +99,7 @@ public class ZookeeperAuth implements Watcher {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 关闭ZK连接
 	 */
@@ -111,16 +111,16 @@ public class ZookeeperAuth implements Watcher {
 			}
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * <B>方法名称：</B>测试函数<BR>
 	 * <B>概要说明：</B>测试认证<BR>
 	 * @param args
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		
+
 		ZookeeperAuth testAuth = new ZookeeperAuth();
 		testAuth.createConnection(CONNECT_ADDR,2000);
 		List<ACL> acls = new ArrayList<ACL>(1);
@@ -157,7 +157,7 @@ public class ZookeeperAuth implements Watcher {
 		deleteNodeByCorrectAuthentication();
 		//
 		Thread.sleep(1000);
-		
+
 		deleteParent();
 		//释放连接
 		testAuth.releaseConnection();
@@ -195,7 +195,7 @@ public class ZookeeperAuth implements Watcher {
 		String prefix = "[使用正确的授权信息]";
 		try {
 			System.out.println(prefix + "获取数据：" + PATH);
-			
+
 			System.out.println(prefix + "成功获取数据：" + zk.getData(PATH, false, null));
 		} catch (Exception e) {
 			System.out.println(prefix + "获取数据失败，原因：" + e.getMessage());

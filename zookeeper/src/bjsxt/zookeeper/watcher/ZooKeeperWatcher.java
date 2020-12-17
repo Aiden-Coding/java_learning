@@ -1,9 +1,5 @@
 package bjsxt.zookeeper.watcher;
 
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
@@ -13,9 +9,13 @@ import org.apache.zookeeper.ZooDefs.Ids;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.Stat;
 
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * Zookeeper Wathcher 本类就是一个Watcher类（实现了org.apache.zookeeper.Watcher类）
- * 
+ *
  * @author（alienware） @since 2015-6-14
  */
 public class ZooKeeperWatcher implements Watcher {
@@ -39,7 +39,7 @@ public class ZooKeeperWatcher implements Watcher {
 
 	/**
 	 * 创建ZK连接
-	 * 
+	 *
 	 * @param connectAddr
 	 *            ZK服务器地址列表
 	 * @param sessionTimeout
@@ -71,7 +71,7 @@ public class ZooKeeperWatcher implements Watcher {
 
 	/**
 	 * 创建节点
-	 * 
+	 *
 	 * @param path
 	 *            节点路径
 	 * @param data
@@ -101,7 +101,7 @@ public class ZooKeeperWatcher implements Watcher {
 
 	/**
 	 * 读取指定节点数据内容
-	 * 
+	 *
 	 * @param path
 	 *            节点路径
 	 * @return
@@ -117,7 +117,7 @@ public class ZooKeeperWatcher implements Watcher {
 
 	/**
 	 * 更新指定节点数据内容
-	 * 
+	 *
 	 * @param path
 	 *            节点路径
 	 * @param data
@@ -136,7 +136,7 @@ public class ZooKeeperWatcher implements Watcher {
 
 	/**
 	 * 删除指定节点
-	 * 
+	 *
 	 * @param path
 	 *            节点path
 	 */
@@ -151,7 +151,7 @@ public class ZooKeeperWatcher implements Watcher {
 
 	/**
 	 * 判断指定节点是否存在
-	 * 
+	 *
 	 * @param path
 	 *            节点路径
 	 */
@@ -166,7 +166,7 @@ public class ZooKeeperWatcher implements Watcher {
 
 	/**
 	 * 获取子节点
-	 * 
+	 *
 	 * @param path
 	 *            节点路径
 	 */
@@ -280,7 +280,7 @@ public class ZooKeeperWatcher implements Watcher {
 	/**
 	 * <B>方法名称：</B>测试zookeeper监控<BR>
 	 * <B>概要说明：</B>主要测试watch功能<BR>
-	 * 
+	 *
 	 * @param args
 	 * @throws Exception
 	 */
