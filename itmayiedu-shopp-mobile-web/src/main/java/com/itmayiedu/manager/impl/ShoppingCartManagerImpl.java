@@ -1,16 +1,15 @@
 package com.itmayiedu.manager.impl;
 
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.alibaba.fastjson.JSONObject;
 import com.itmayiedu.common.api.BaseApiService;
 import com.itmayiedu.common.redis.BaseRedisService;
 import com.itmayiedu.constants.Constants;
 import com.itmayiedu.manager.ShoppingCartManager;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public class ShoppingCartManagerImpl extends BaseApiService implements ShoppingCartManager {

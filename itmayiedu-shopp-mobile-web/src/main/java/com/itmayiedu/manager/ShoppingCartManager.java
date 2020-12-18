@@ -1,8 +1,8 @@
 package com.itmayiedu.manager;
 
-import java.util.Map;
-
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @Service
 public interface ShoppingCartManager {
