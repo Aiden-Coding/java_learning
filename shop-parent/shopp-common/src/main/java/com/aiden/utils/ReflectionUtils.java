@@ -1,7 +1,6 @@
 
 package com.aiden.utils;
 
-import com.aiden.common.entity.TestEntity;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
@@ -10,6 +9,8 @@ import java.sql.Timestamp;
 /**
  *
  * @classDesc: 功能描述:(反射工具类F)
+
+
 
  * @createTime: 2017年10月24日 下午9:45:46
  * @version: v1.0
@@ -100,19 +101,19 @@ public class ReflectionUtils {
 		return sf.toString();
 	}
 
-	public static void main(String[] args) {
-		TestEntity testEntity = new TestEntity();
-		testEntity.setUserName("张三");
-		testEntity.setPhone("15921009245");
-		testEntity.setEmail("644064779@qq.com");
-		testEntity.setPassword("123456");
-		testEntity.setCreated(DateUtils.getTimestamp());
-		testEntity.setUpdated(DateUtils.getTimestamp());
-		String filed = fatherAndSonField(testEntity);
-		String value = fatherAndSonFieldValue(testEntity);
-		// 封装sql
-
-
-	}
+//	public static void main(String[] args) {
+//		TestEntity testEntity = new TestEntity();
+//		testEntity.setUserName("张三");
+//		testEntity.setPhone("15921009245");
+//		testEntity.setEmail("644064779@qq.com");
+//		testEntity.setPassword("123456");
+//		testEntity.setCreated(DateUtils.getTimestamp());
+//		testEntity.setUpdated(DateUtils.getTimestamp());
+//		String filed = fatherAndSonField(testEntity);
+//		String value = fatherAndSonFieldValue(testEntity);
+//		// 封装sql
+//
+//
+//	}
 
 }

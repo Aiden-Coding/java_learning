@@ -1,11 +1,11 @@
 
 package com.aiden.common.redis;
 
-import java.util.concurrent.TimeUnit;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class BaseRedisService {
@@ -49,6 +49,10 @@ public class BaseRedisService {
 	 *             key
 	 */
 	public String get(String key) {
+		return stringRedisTemplate.opsForValue().get(key);
+	}
+
+	public String getString(String key) {
 		return stringRedisTemplate.opsForValue().get(key);
 	}
 

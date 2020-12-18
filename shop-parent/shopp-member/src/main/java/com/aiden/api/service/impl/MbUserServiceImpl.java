@@ -1,18 +1,6 @@
 
 package com.aiden.api.service.impl;
 
-import java.util.Map;
-
-import javax.jms.Destination;
-
-import org.apache.activemq.command.ActiveMQQueue;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.alibaba.fastjson.JSONObject;
 import com.aiden.api.service.MbUserService;
 import com.aiden.common.base.api.BaseApiService;
 import com.aiden.common.date.DateUtils;
@@ -20,8 +8,18 @@ import com.aiden.common.md5.MD5Util;
 import com.aiden.constants.ConstantsTables;
 import com.aiden.dao.MemberDao;
 import com.aiden.entity.MbUser;
-
+import com.aiden.mq.roducer.RegisterMailboxProducer;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.activemq.command.ActiveMQQueue;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.jms.Destination;
+import java.util.Map;
 
 
 @Slf4j

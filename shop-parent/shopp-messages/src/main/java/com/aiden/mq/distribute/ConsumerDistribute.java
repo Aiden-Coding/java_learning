@@ -1,23 +1,25 @@
 
 package com.aiden.mq.distribute;
 
+import com.aiden.adapter.MessageAdapter;
+import com.aiden.constants.MQInterfaceType;
+import com.aiden.service.SMSMailboxService;
+import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.fastjson.JSONObject;
-import com.aiden.adapter.MessageAdapter;
-import com.aiden.constants.MQInterfaceType;
-import com.aiden.service.SMSMailboxService;
-
-import lombok.extern.slf4j.Slf4j;
-
 /**
  *
  * @classDesc: 功能描述:(消费消息 mq 从队列获取最新消息)
+
+
+
  * @createTime: 2017年10月25日 上午12:09:45
  * @version: v1.0
+
  */
 @Slf4j
 @Component
@@ -40,7 +42,6 @@ public class ConsumerDistribute {
 		case MQInterfaceType.SMS_MAIL:
 			messageAdapter=smsMailboxService;
 			break;
-
 		default:
 			break;
 		}

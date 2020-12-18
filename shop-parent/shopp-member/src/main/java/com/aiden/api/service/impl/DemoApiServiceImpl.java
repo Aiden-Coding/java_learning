@@ -1,16 +1,14 @@
 
 package com.aiden.api.service.impl;
 
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.aiden.api.service.DemoApiService;
 import com.aiden.common.api.BaseApiService;
 import com.aiden.common.redis.BaseRedisService;
-
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @Slf4j
 @RestController

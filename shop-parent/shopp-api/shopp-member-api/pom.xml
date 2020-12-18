@@ -9,4 +9,11 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>shopp-member-api</artifactId>
+  <dependencies>
+    <dependency>
+      <groupId>com.aiden</groupId>
+      <artifactId>shopp-common</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
 </project>

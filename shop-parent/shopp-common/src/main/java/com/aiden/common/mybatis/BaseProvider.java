@@ -1,11 +1,11 @@
 
 package com.aiden.common.mybatis;
 
-import java.util.Map;
-
+import com.aiden.utils.ReflectionUtils;
 import org.apache.ibatis.jdbc.SQL;
 
-import com.aiden.utils.ReflectionUtils;
+import java.util.Map;
+
 
 public class BaseProvider {
 

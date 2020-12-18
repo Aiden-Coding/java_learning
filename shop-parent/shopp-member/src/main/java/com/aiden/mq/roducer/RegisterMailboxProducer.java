@@ -11,6 +11,8 @@ import javax.jms.Destination;
  *
  * @classDesc: 功能描述:(往消息服务 推送 邮件信息)
 
+
+
  * @createTime: 2017年10月24日 下午11:40:45
  * @version: v1.0
 
@@ -21,6 +23,10 @@ public class RegisterMailboxProducer {
     private JmsMessagingTemplate jmsMessagingTemplate ;
 
 	public void send(Destination destination,String json){
+		jmsMessagingTemplate.convertAndSend(destination, json);
+	}
+
+	public void sendMess(Destination destination,String json){
 		jmsMessagingTemplate.convertAndSend(destination, json);
 	}
 }

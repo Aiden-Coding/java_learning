@@ -1,8 +1,10 @@
 
 package com.aiden.manage;
 
-
 import com.aiden.entity.UserEntity;
+
+import java.util.Map;
+
 
 public interface UserServiceManage {
 	/**
@@ -13,6 +15,9 @@ public interface UserServiceManage {
 	 */
 	public void regist(UserEntity userEntity);
 
-	public String md5PassSalt(String phone,String password);
+	public String md5PassSalt(String phone, String password);
 
+	public Map<String, Object> login(UserEntity userEntity);
+
+	public Map<String,Object> getUser(String token);
 }

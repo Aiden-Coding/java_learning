@@ -12,4 +12,3 @@ spring:
     templateLoaderPath: classpath:/templates/
    application:
     name: mobile
-   
