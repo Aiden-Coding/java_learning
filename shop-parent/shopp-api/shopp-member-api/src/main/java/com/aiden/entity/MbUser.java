@@ -1,7 +1,6 @@
 package com.aiden.entity;
 
 import com.aiden.common.base.entity.BaseEntity;
-
 import lombok.Getter;
 import lombok.Setter;
 
