@@ -161,5 +161,6 @@
     <module>shopp-common</module>
     <module>shopp-mobile-web</module>
     <module>shopp-nessage</module>
+    <module>shopp-messages</module>
   </modules>
 </project>

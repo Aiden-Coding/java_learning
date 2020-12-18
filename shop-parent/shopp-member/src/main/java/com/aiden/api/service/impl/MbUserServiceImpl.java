@@ -20,7 +20,6 @@ import com.aiden.common.md5.MD5Util;
 import com.aiden.constants.ConstantsTables;
 import com.aiden.dao.MemberDao;
 import com.aiden.entity.MbUser;
-import com.aiden.mq.RegisterMailboxProducer;
 
 import lombok.extern.slf4j.Slf4j;
 

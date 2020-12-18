@@ -1,5 +1,5 @@
 
-package com.aiden.service.mq;
+package com.aiden.mq.distribute;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,19 +7,17 @@ import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
-import com.aiden.constants.Constants;
-import com.aiden.service.MessageAdapter;
+import com.aiden.adapter.MessageAdapter;
+import com.aiden.constants.MQInterfaceType;
 import com.aiden.service.SMSMailboxService;
 
 import lombok.extern.slf4j.Slf4j;
 
 /**
  *
- * @classDesc: 功能描述:(mq分发)
-
- * @createTime: 2017年10月22日 下午9:00:45
+ * @classDesc: 功能描述:(消费消息 mq 从队列获取最新消息)
+ * @createTime: 2017年10月25日 上午12:09:45
  * @version: v1.0
-
  */
 @Slf4j
 @Component
@@ -27,38 +25,28 @@ public class ConsumerDistribute {
 	@Autowired
 	private SMSMailboxService smsMailboxService;
 
-	/**
-	 *
-	 *
-	 * @methodDesc: 功能描述:(接受生产者消息)
-	 * @param: 报文json
-	 */
-	@SuppressWarnings("static-access")
-	@JmsListener(destination = "messages_queue")
+	@JmsListener(destination = "mail_queue")
 	public void distribute(String json) {
+		log.info("###消息服务###收到消息,消息内容 json:{}", json);
 		if (StringUtils.isEmpty(json)) {
 			return;
 		}
-		log.info("###接受到消息内容json:{}", json);
-		JSONObject root = new JSONObject().parseObject(json);
-		JSONObject header = root.getJSONObject("header");
+		JSONObject jsonObject = new JSONObject().parseObject(json);
+		JSONObject header = jsonObject.getJSONObject("header");
 		String interfaceType = header.getString("interfaceType");
-		if (StringUtils.isEmpty(interfaceType)) {
-			return;
-		}
 		MessageAdapter messageAdapter = null;
 		switch (interfaceType) {
-		// 发送邮箱
-		case Constants.SMS_MAIL:
-			messageAdapter = smsMailboxService;
+		// 发送邮件
+		case MQInterfaceType.SMS_MAIL:
+			messageAdapter=smsMailboxService;
 			break;
+
 		default:
 			break;
 		}
-		// 执行消息服务
-		JSONObject content = root.getJSONObject("content");
-
+		JSONObject content=jsonObject.getJSONObject("content");
 		messageAdapter.distribute(content);
+
 	}
 
 }

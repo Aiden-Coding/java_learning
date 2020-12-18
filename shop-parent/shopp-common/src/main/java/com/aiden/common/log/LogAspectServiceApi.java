@@ -1,5 +1,4 @@
-
-package com.aiden.common.base.log;
+package com.aiden.common.log;
 
 import java.util.Arrays;
 
@@ -18,15 +17,6 @@ import com.alibaba.fastjson.JSONObject;
 
 import lombok.extern.slf4j.Slf4j;
 
-/**
- *
- * @classDesc: 功能描述:(使用aop打印请求日志)
-
- * @createTime: 2017年10月21日 下午4:58:30
- * @version: v1.0
-
- */
-// 申明是个切面
 @Aspect
 // 申明是个spring管理的bean
 @Component
@@ -35,7 +25,7 @@ public class LogAspectServiceApi {
 	private JSONObject jsonObject = new JSONObject();
 
 	// 申明一个切点 里面是 execution表达式
-	@Pointcut("execution(public * com.aiden.api.service.*.*(..))")
+	@Pointcut("execution(public * com.itmayiedu.api.service.*.*(..))")
 	private void controllerAspect() {
 	}
 
