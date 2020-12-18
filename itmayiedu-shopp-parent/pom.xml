@@ -156,5 +156,8 @@
 		<module>itmayiedu-shopp-common</module>
 		<module>itmayiedu-shopp-messages</module>
 		<module>itmayiedu-shopp-mobile-web</module>
+		<module>itmayiedu-shopp-commodity</module>
+		<module>imayiedu-shopp-pay</module>
+		<module>imayiedu-shopp-pay-web</module>
 	</modules>
 </project>

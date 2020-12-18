@@ -10,6 +10,8 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>imayiedu-shopp-member-api</module>
+		<module>itmayiedu-shopp-commodity-api</module>
+		<module>imayiedu-shopp-pay-api</module>
 	</modules>
 	<dependencies>
 		<dependency>

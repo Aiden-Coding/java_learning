@@ -39,7 +39,7 @@ public class ReflectionUtils {
 		String s1 = getField(sonFields);
 		Field[] panretFields = classInfo.getSuperclass().getDeclaredFields();
 		String s2 = getField(panretFields);
-		return s1 + s2;
+		return s1 + "," + s2;
 	}
 
 	/**
@@ -59,18 +59,19 @@ public class ReflectionUtils {
 		Field[] sonFields = classInfo.getDeclaredFields();
 		String s1 = getFieldValue(oj, sonFields);
 		Field[] panretFields = classInfo.getSuperclass().getDeclaredFields();
+
 		String s2 = getFieldValue(oj, panretFields);
 		return s1 + "," + s2;
 	}
 
 	/**
 	 * 
-	 * @methodDesc: 功能描述:(UPDATE获取到属性值)
+	 * @methodDesc: 功能描述:(获取到属性值)
 	 * @param: @param
 	 *             oj
 	 * @param: @return
 	 */
-	public static String updateFatherAndSonFieldValue(Object oj) {
+	public static String setfatherAndSonFieldValue(Object oj) {
 		if (oj == null) {
 			return null;
 		}
@@ -78,24 +79,26 @@ public class ReflectionUtils {
 		Class classInfo = oj.getClass();
 		// 获取当前类属性sql
 		Field[] sonFields = classInfo.getDeclaredFields();
-		String s1 = getUpdateField(sonFields, oj);
+		String s1 = setField(sonFields, oj);
 		Field[] panretFields = classInfo.getSuperclass().getDeclaredFields();
-		String s2 = getUpdateField(panretFields, oj);
-		return s1 + ","+s2;
+		String s2 = setField(panretFields, oj);
+		return s1 + "," + s2;
 	}
 
-	public static String getUpdateField(Field[] declaredFields, Object oj) {
+	public static String setField(Field[] declaredFields, Object oj) {
 		StringBuffer sf = new StringBuffer();
 		try {
+			int count = 0;
 			for (int i = 0; i < declaredFields.length; i++) {
 				Field field = declaredFields[i];
 				field.setAccessible(true);
-				Object value = (Object) field.get(oj);
-				if (value == null) {
+				Object object = field.get(oj);
+				if (object == null) {
 					continue;
 				}
-				sf.append(field.getName() + "='" + value + "'");
-				if (i < declaredFields.length - 1) {
+				count++;
+				sf.append(field.getName() + "='" + object + "'");
+				if (count > 1 && i < declaredFields.length - 1) {
 					sf.append(",");
 				}
 			}
@@ -103,14 +106,6 @@ public class ReflectionUtils {
 			// TODO: handle exception
 		}
 		return sf.toString();
-	}
-
-	public static void main(String[] args) {
-		TestEntity testEntity = new TestEntity();
-		testEntity.setUpdated(DateUtils.getTimestamp());
-		testEntity.setPhone("15921009245");
-		String sql = updateFatherAndSonFieldValue(testEntity);
-		System.out.println(sql);
 	}
 
 	public static String getField(Field[] declaredFields) {
@@ -155,18 +150,18 @@ public class ReflectionUtils {
 		return sf.toString();
 	}
 
-	// public static void main(String[] args) {
-	// TestEntity testEntity = new TestEntity();
-	// testEntity.setUserName("张三");
-	// testEntity.setPhone("15921009245");
-	// testEntity.setEmail("644064779@qq.com");
-	// testEntity.setPassword("123456");
-	// testEntity.setCreated(DateUtils.getTimestamp());
-	// testEntity.setUpdated(DateUtils.getTimestamp());
-	// String filed = fatherAndSonField(testEntity);
-	// String value = fatherAndSonFieldValue(testEntity);
-	// // 封装sql
-	//
-	// }
+	public static void main(String[] args) {
+		TestEntity testEntity = new TestEntity();
+		testEntity.setUserName("张三");
+		testEntity.setPhone("15921009245");
+		testEntity.setEmail("644064779@qq.com");
+		testEntity.setPassword("123456");
+		testEntity.setCreated(DateUtils.getTimestamp());
+		testEntity.setUpdated(DateUtils.getTimestamp());
+		String filed = fatherAndSonField(testEntity);
+		String value = fatherAndSonFieldValue(testEntity);
+		// 封装sql
+
+	}
 
 }

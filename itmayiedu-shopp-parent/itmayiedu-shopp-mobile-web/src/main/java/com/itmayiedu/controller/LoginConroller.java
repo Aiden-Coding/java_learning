@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
-import org.aspectj.apache.bcel.generic.RET;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.itmayiedu.base.controller.BaseController;
@@ -28,21 +28,21 @@ import com.qq.connect.oauth.Oauth;
 public class LoginConroller extends BaseController {
 	private static final String LGOIN = "login";
 	private static final String INDEX = "index";
-	private static final String ERROR = "error";
 	private static final String ASSOCIATEDACCOUNT = "associatedAccount";
 	@Autowired
 	private UserFeign userFeign;
 
 	@RequestMapping("/locaLogin")
-	public String locaLogin(String source,HttpServletRequest request) {
+	public String locaLogin(HttpServletRequest request, String source) {
 		request.setAttribute("source", source);
 		return LGOIN;
 	}
 
 	@RequestMapping("/login")
-	public String login(UserEntity userEntity,String source, HttpServletRequest request,HttpSession httpSession, HttpServletResponse response) {
-		if(!StringUtils.isEmpty(source)&&source.equals(Constants.USER_SOURCE_QQ)){
-			String openid=(String) httpSession.getAttribute(Constants.USER_SESSION_OPENID);
+	public String login(@ModelAttribute("user") UserEntity userEntity, @ModelAttribute("source") String source,
+			HttpServletRequest request, HttpSession httpSession, HttpServletResponse response) {
+		if (!StringUtils.isEmpty(source)) {
+			String openid = (String) httpSession.getAttribute("openid");
 			userEntity.setOpenId(openid);
 		}
 		Map<String, Object> login = userFeign.login(userEntity);
@@ -55,49 +55,60 @@ public class LoginConroller extends BaseController {
 		String token = (String) login.get("data");
 		CookieUtil.addCookie(response, Constants.USER_TOKEN, token, Constants.WEBUSER_COOKIE_TOKEN_TERMVALIDITY);
 		return INDEX;
+
 	}
 
 	/**
+	 * 跳转到QQ授权地址
 	 * 
-	 * @methodDesc: 功能描述:(生成qq授权)
-	 * @param: @param
-	 *             request
-	 * @param: @return
-	 * @param: @throws
-	 *             QQConnectException
+	 * @param request
+	 * @return
+	 * @throws QQConnectException
 	 */
-	@RequestMapping("/authorizeUrl")
-	public String authorizeUrl(HttpServletRequest request, HttpServletResponse response,HttpSession  httpSession) throws QQConnectException {
-		String authorizeUrl = new Oauth().getAuthorizeURL(request);
-		return "redirect:" + authorizeUrl;
+	@RequestMapping("/locaQQLogin")
+	public String locaQQLogin(HttpServletRequest request) throws QQConnectException {
+		String authorizeURL = new Oauth().getAuthorizeURL(request);
+		return "redirect:" + authorizeURL;
 	}
 
+	/**
+	 * QQ回调地址
+	 * 
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/qqLoginCallback")
-	public String qqLoginCallback(HttpServletRequest request, HttpServletResponse response,HttpSession  httpSession) throws QQConnectException {
-		// String code = request.getParameter("code");
-		// 第一步获取授权码
-		// 第二步获取accesstoken
-		AccessToken accessTokenObj = new Oauth().getAccessTokenByRequest(request);
-		String accessToken = accessTokenObj.getAccessToken();
-		if (StringUtils.isEmpty(accessToken)) {
-			return setError(request, "QQ授权失败!", ERROR);
+	public String qqLoginCallback(HttpServletRequest request, HttpSession httpSession, HttpServletResponse response) {
+		try {
+			// 先获取accessToken
+			AccessToken accessTokenObj = new Oauth().getAccessTokenByRequest(request);
+			if (accessTokenObj == null) {
+				return setError(request, "qq授权失败!", ERROR);
+			}
+			String accessToken = accessTokenObj.getAccessToken();
+			if (StringUtils.isEmpty(accessToken)) {
+				return setError(request, "qq授权失败!", ERROR);
+			}
+			// 获取openid
+			OpenID openIdObj = new OpenID(accessToken);
+			String userOpenID = openIdObj.getUserOpenID();
+			// 使用openid查找用户信息是否绑定
+			Map<String, Object> openIdMap = userFeign.findLogin(userOpenID);
+			Integer code = (Integer) openIdMap.get(BaseApiConstants.HTTP_CODE_NAME);
+			// 判断是否绑定会员
+			if (code.equals(BaseApiConstants.HTTP_200_CODE)) {
+				// 已经授权过,自动登录
+				String token = (String) openIdMap.get("data");
+				CookieUtil.addCookie(response, Constants.USER_TOKEN, token,
+						Constants.WEBUSER_COOKIE_TOKEN_TERMVALIDITY);
+				return INDEX;
+			}
+			// 没有绑定openid
+			httpSession.setAttribute("openid", userOpenID);
+		} catch (Exception e) {
 		}
-
-		OpenID openidObj = new OpenID(accessToken);
-		// 数据查找openid是否关联,如果没有关联先跳转到关联账号页面,如果直接登录.
-		String userOpenId = openidObj.getUserOpenID();
-		Map<String, Object> userLoginOpenId = userFeign.userLoginOpenId(userOpenId);
-		Integer code = (Integer) userLoginOpenId.get(BaseApiConstants.HTTP_CODE_NAME);
-		if (code.equals(BaseApiConstants.HTTP_200_CODE)) {
-			String token = (String) userLoginOpenId.get("data");
-			CookieUtil.addCookie(response, Constants.USER_TOKEN, token, Constants.WEBUSER_COOKIE_TOKEN_TERMVALIDITY);
-			return "redirect:/" + INDEX;
-		}
-		
-		// 没有关联QQ账号
-		httpSession.setAttribute(Constants.USER_SESSION_OPENID,userOpenId);
+		// 跳转到关联页面
 		return ASSOCIATEDACCOUNT;
-
 	}
 
 }

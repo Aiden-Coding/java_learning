@@ -1,10 +1,14 @@
 
 package com.itmayiedu.common.mybatis;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.ibatis.jdbc.SQL;
 
+import com.itmayiedu.common.entity.BaseEntity;
+import com.itmayiedu.common.entity.TestEntity;
+import com.itmayiedu.utils.DateUtils;
 import com.itmayiedu.utils.ReflectionUtils;
 
 public class BaseProvider {
@@ -38,24 +42,43 @@ public class BaseProvider {
 
 	}
 
-	public String update(Map<String, Object> map) {
+	/**
+	 * 
+	 * @methodDesc: 功能描述:(自定义封装sql语句)
+	 * @param: @return
+	 */
+	static public String update(Map<String, Object> map) {
 		// 实体类
 		Object oj = map.get("oj");
 		// 表名称
 		String table = (String) map.get("table");
+		// id
 		Long id = (Long) map.get("id");
-		// update mb_user set openid= ,updated= where id=
+		// 生成添加的sql语句。 使用反射机制
+		// 步驟：使用反射机制加载这个类所有属性
+		// update mb_user set openid ='12323' where id='1'
 		SQL sql = new SQL() {
 			{
 
 				UPDATE(table);
-				SET(ReflectionUtils.updateFatherAndSonFieldValue(oj));
-				WHERE(" id=" + id);
+				SET(ReflectionUtils.setfatherAndSonFieldValue(oj));
+				WHERE(" id= " + id);
 
 			}
 		};
-
 		return sql.toString();
+	}
+
+	public static void main(String[] args) {
+		Map<String, Object> map = new HashMap<>();
+		TestEntity baseEntity = new TestEntity();
+		baseEntity.setOpenId("12525");
+		baseEntity.setUpdated(DateUtils.getTimestamp());
+		map.put("oj", baseEntity);
+		map.put("table", "mb_user");
+		map.put("id", "1");
+		String sql = update(map);
+		System.out.println(sql);
 	}
 
 }

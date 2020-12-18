@@ -26,7 +26,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.itmayiedu</groupId>
-			<artifactId>itmayiedu-shopp-common</artifactId>
+			<artifactId>itmayiedu-shopp-commodity-api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>

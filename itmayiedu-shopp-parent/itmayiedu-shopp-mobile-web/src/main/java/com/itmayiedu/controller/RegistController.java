@@ -5,9 +5,12 @@ import java.lang.annotation.Retention;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.itmayiedu.base.controller.BaseController;
@@ -28,8 +31,13 @@ public class RegistController extends BaseController {
 	}
 
 	@RequestMapping("/regist")
-	public String regist(UserEntity userEntity, HttpServletRequest request) {
+	public String regist(@ModelAttribute("user") UserEntity userEntity, HttpServletRequest request,
+			HttpSession httpSession) {
 		try {
+			String openid = (String) httpSession.getAttribute("openid");
+			if (!StringUtils.isEmpty(openid)) {
+				userEntity.setOpenId(openid);
+			}
 			Map<String, Object> registMap = userFeign.regist(userEntity);
 			Integer code = (Integer) registMap.get(BaseApiConstants.HTTP_CODE_NAME);
 			if (!code.equals(BaseApiConstants.HTTP_200_CODE)) {

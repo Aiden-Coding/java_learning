@@ -56,9 +56,8 @@ public class UserServiceImpl extends BaseApiService implements UserService {
 	}
 
 	@Override
-	public Map<String, Object> userLoginOpenId(@RequestParam("openid")String openid) {
-		return userServiceManage.userLoginOpenId(openid);  
-		    
+	public Map<String, Object> findLogin(String openid) {
+		return userServiceManage.findLogin(openid);
 	}
 
 }

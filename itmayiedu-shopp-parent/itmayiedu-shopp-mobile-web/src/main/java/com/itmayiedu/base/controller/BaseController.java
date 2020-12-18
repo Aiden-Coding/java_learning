@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.itmayiedu.common.api.BaseApiService;
 import com.itmayiedu.constants.BaseApiConstants;
 import com.itmayiedu.entity.UserEntity;
 import com.itmayiedu.feign.UserFeign;
@@ -25,7 +26,8 @@ import com.itmayiedu.feign.UserFeign;
  * @copyright:每特学院(蚂蚁课堂)上海每特教育科技有限公司
  */
 @Controller
-public class BaseController {
+public class BaseController  extends BaseApiService{
+	public static final String ERROR = "common/error";
 	@Autowired
 	private UserFeign userFeign;
 

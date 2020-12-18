@@ -51,15 +51,14 @@ public interface UserService {
 	@PostMapping("/getUser")
 	public Map<String, Object> getUser(@RequestParam("token") String token);
 	
-
+	
 	/**
 	 * 
-	 * @methodDesc: 功能描述:(使用openid关联用户信息)
+	 * @methodDesc: 功能描述:(使用openid查找用户信息)
 	 * @param: @param
 	 *             token
 	 * @param: @return
 	 */
-	@PostMapping("/userLoginOpenId")
-	public Map<String, Object> userLoginOpenId(@RequestParam("openid") String openid);
-	
+	@PostMapping("/findOpenId")
+	public Map<String, Object> findLogin(@RequestParam("openid") String openid);
 }

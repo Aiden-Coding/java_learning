@@ -76,7 +76,7 @@
 							</div>
 						</div>
 						<input class="button orange" type="submit"
-							id="message_LOGIN_IMMEDIATELY" value="关联新账户" onclick="javascript:location.href='locaRegister?source=qq'">
+							id="message_LOGIN_IMMEDIATELY" value="关联新账户" onclick="javascript:location.href='locaRegist'">
 
 					
 

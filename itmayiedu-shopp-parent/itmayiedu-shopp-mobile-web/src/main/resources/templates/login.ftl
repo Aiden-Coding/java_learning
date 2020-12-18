@@ -52,17 +52,19 @@
 				<div class="ng-form-area show-place" id="form-area">
 					<form method="post" action="login" id="miniLogin"
 						onsubmit="return MiniLogin.validateForm();">
-                         <input  type="hidden" name="source" 
-                          <#if source??>
-                          value="${source}"
-                          </#if>
-                         >
+						
+						  <input type="hidden"  <#if source??> value="${source}" </#if> name="source">
+						
+                         
 						<div class="shake-area" id="shake_area" style="z-index: 30;">
 							<div class="enter-area display-custom-hide" id="revalidate_user">
 								<p class="revalidate-user-name" id="revalidate_user_name"></p>
 							</div>
 							<div class="enter-area" id="enter_user">
-								<input type="text" name="phone"
+								<input 
+								
+				
+								type="text" name="phone"
 									class="enter-item first-enter-item"
 									data-rule="(^[\w.\-]+@(?:[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*\.)+[A-Za-z]{2,6}$)|(^1\d{10}$)|(^\d{3,}$)|(^\++\d{2,}$)"
 									id="miniLogin_username" autocomplete="off"
@@ -91,11 +93,7 @@
 								class="error-ico"></em><span class="error-msg"
 								id="code_error_tips"></span></span>
 						</div>
-						<#if error ??>
-						<div>
-							<span id="message_LOGIN_TOO_MUCH" style="color: red">${error}</span>
-						</div>
-						</#if>
+
 
 						<div class="miniLogin_forbidden" id="miniLogin_forbidden">
 							<div>
@@ -123,7 +121,7 @@
 
 							<div class="ng-link-area">
 								<span> <a
-									href="authorizeUrl"
+									href="locaQQLogin"
 									id="other_method_default">QQ联合登录</a><span> | </span>
 								</span> <span id="custom_display_16"> <a
 									href="javascript:void(0);" id="other_method">其他方式登录</a> <span>
@@ -137,8 +135,7 @@
 
 						</div>
 
-						<span id="custom_display_128"> <a
-							href="locaRegist"
+						<span id="custom_display_128"> <a href="locaRegist"
 							class="button" id="message_REGISTER">注册帐号</a>
 						</span> <span id="custom_display_8"> <a
 							href="https://account.xiaomi.com/pass/sns/login/auth?appid=222161937813280&callback=http%3A%2F%2Fm.mi.com%2Fmshopapi%2Fv1%2Fauthorize%2Fsso_callback%3Ffollowup%3Dhttp%253A%252F%252Fm.mi.com%252Findex.html%2523ac%253Daccount%2526op%253Dindex%26sign%3DYjJhY2VjZWEwZDYzOTNhNmZhOTRjYmRmMDVlN2ZlZTJhZDFhOTViOA%2C%2C&sid=mi_eshopm"
@@ -147,7 +144,11 @@
 						</a>
 						</span> <a style="display: none" id="redirectLink" href="" target="_top"></a>
 						<a style="display: none" id="redirectTwoPhraseLoginLink" href=""></a>
-
+						<#if error ??>
+						<div>
+							<span id="message_LOGIN_TOO_MUCH" style="color: red">${error}</span>
+						</div>
+						</#if>
 					</form>
 					<div class="qrlogin-trigger" id="qrlogin-trigger">二维码登录</div>
 				</div>
@@ -158,6 +159,31 @@
 			</div>
 		</div>
 
-		<#include "common/bottom.ftl">
+		<div class="nl-footer">
+			<div class="nl-f-nav" id="nl_f_nav">
+				<span id="custom_display_4"> <a href="javascript:void(0);"
+					onclick="change_lang(&#39;zh_CN&#39;); return false;" class="zh-cn">简体</a>|
+					<a href="javascript:void(0);"
+					onclick="change_lang(&#39;zh_TW&#39;); return false;" class="zh-tw">繁体</a>|
+					<a href="javascript:void(0);"
+					onclick="change_lang(&#39;en&#39;); return false;" class="zh-en">English</a>
+				</span> <span id="custom_display_32"> <span class="n_common_line">|</span>
+					<span id="message_FAQLIST"><a
+						href="http://static.account.xiaomi.com/html/faq/faqList.html"
+						target="_blank">常见问题</a></span>
+				</span>
+			</div>
+			<p class="nl-f-copyright" id="message_COPYRIGHT">酒查查公司版权所有-京ICP备10046444-京公网安备1101080212535-京ICP证110507号</p>
+		</div>
+		<div id="modal-mask" class="modal-mask display-custom-hide"></div>
+		<div class="modal-container display-custom-hide"
+			id="qrlogin-container">
+			<div id="qrlogin-close" class="modal-close">Close</div>
+			<iframe id="qrlogin-iframe" frameborder="0" border="0"
+				class="qrlogin-iframe"
+				style="width: 340px; height: 340px; margin-top: -170px; margin-left: -170px;"></iframe>
+		</div>
+	</div>
+	<a target="_blank"></a>
 </body>
 </html>

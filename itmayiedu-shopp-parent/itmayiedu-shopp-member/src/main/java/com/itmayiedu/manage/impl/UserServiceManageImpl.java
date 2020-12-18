@@ -91,18 +91,14 @@ public class UserServiceManageImpl extends BaseApiService implements UserService
 			return setResutError("账号或密码错误");
 		}
 		String openId = userEntity.getOpenId();
-		Long userId = userPhoneAndPwd.getId();
 		if (!StringUtils.isEmpty(openId)) {
-			// 修改到数据库
-			// userDao.updateUserOpenId(openId, DateUtils.getTimestamp(),
-			// userId);
-			UserEntity user = new UserEntity();
-			user.setOpenId(openId);
-			user.setUpdated(DateUtils.getTimestamp());
-			userDao.update(user, DBTableName.TABLE_MB_USER, userId);
+			// 关联到数据库中,update
+			UserEntity newUserEntity = new UserEntity();
+			newUserEntity.setOpenId(openId);
+			newUserEntity.setUpdated(DateUtils.getTimestamp());
+			userDao.update(newUserEntity, DBTableName.TABLE_MB_USER, userPhoneAndPwd.getId());
 		}
-		// 生成对应的token
-		String token = setUsertoken(userId);
+		String token = setLoginToken(userEntity.getId());
 		return setResutSuccessData(token);
 
 	}
@@ -121,21 +117,21 @@ public class UserServiceManageImpl extends BaseApiService implements UserService
 	}
 
 	@Override
-	public Map<String, Object> userLoginOpenId(String openid) {
-		UserEntity userEntity = userDao.findUserOpenId(openid);
+	public Map<String, Object> findLogin(String openid) {
+		UserEntity userEntity = userDao.findOpenId(openid);
 		if (userEntity == null) {
-			return setResutError("没有关联用户");
+			return setResutError("沒有关联到用户");
 		}
-		// 生成对应的token
-		String token = setUsertoken(userEntity.getId());
+		// 自动登录
+		String token = setLoginToken(userEntity.getId());
 		return setResutSuccessData(token);
-
 	}
 
-	private String setUsertoken(Long id) {
+	private String setLoginToken(Long userId) {
+		// 生成对应的token
 		String token = tokenUtils.getToken();
 		// key为自定义令牌,用户的userId作作为value 存放在redis中
-		baseRedisService.set(token, id + "", Constants.USER_TOKEN_TERMVALIDITY);
+		baseRedisService.set(token, userId + "", Constants.USER_TOKEN_TERMVALIDITY);
 		return token;
 	}
 
