@@ -1,0 +1,8 @@
+{
+ "header":{
+   "interfaceType":"接口类型"
+  }
+ "content":{
+     
+  }
+}
