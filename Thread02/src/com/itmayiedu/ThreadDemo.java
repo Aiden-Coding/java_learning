@@ -2,28 +2,28 @@
 package com.itmayiedu;
 
 class ThreadTrain1 implements Runnable {
-	// ×Ü¹²ÓĞÒ»°ÙÕÅ»ğ³µ
+	// æ€»å…±æœ‰ä¸€ç™¾å¼ ç«è½¦
 	private int train1Count = 100;
     private Object oj =new Object();
 	@Override
 	public void run() {
-		// ÎªÁËÄÜ¹»Ä£Äâ³ÌĞòÒ»Ö±ÔÚÇÀÆ±µÄ»°¡£ where
+		// ä¸ºäº†èƒ½å¤Ÿæ¨¡æ‹Ÿç¨‹åºä¸€ç›´åœ¨æŠ¢ç¥¨çš„è¯ã€‚ where
 		while (train1Count > 0) {
 			try {
 				Thread.sleep(50);
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
-			// ³öÊÛ»ğÜ‡Æ±
+			// å‡ºå”®ç«è»Šç¥¨
 			sale();
 		}
 	}
      
 	public void sale() {
-		//Í¬²½´úÂë¿é synchronized  °ü¹üĞèÒªÏß³Ì°²È«µÄÎÊÌâ¡£
+		//åŒæ­¥ä»£ç å— synchronized  åŒ…è£¹éœ€è¦çº¿ç¨‹å®‰å…¨çš„é—®é¢˜ã€‚
 		synchronized (oj) {
 			if(train1Count>0){
-				System.out.println(Thread.currentThread().getName()+ ",³öÊÛµÚ" + (100 - train1Count + 1) + "Æ±");
+				System.out.println(Thread.currentThread().getName()+ ",å‡ºå”®ç¬¬" + (100 - train1Count + 1) + "ç¥¨");
 				train1Count--;
 			}
 		}
@@ -36,8 +36,8 @@ public class ThreadDemo {
 
 	public static void main(String[] args) {
 		ThreadTrain1 threadTrain1 = new ThreadTrain1();
-		Thread t1 = new Thread(threadTrain1,"´°¿Ú¢Ù");
-		Thread t2 = new Thread(threadTrain1,"´°¿Ú¢Ú");
+		Thread t1 = new Thread(threadTrain1,"çª—å£â‘ ");
+		Thread t2 = new Thread(threadTrain1,"çª—å£â‘¡");
 		t1.start();
 		t2.start();
 	}
