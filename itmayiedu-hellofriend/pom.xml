@@ -1,0 +1,31 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+   http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<!-- 项目版本 -->
+	<modelVersion>4.0.0</modelVersion>
+	<!-- 分组（团队id） -->
+	<groupId>com.itmayiedu</groupId>
+	<!-- artifactId jar唯一id -->
+	<artifactId>itmayiedu-hellofriend</artifactId>
+	<version>1.0</version>
+	<packaging>jar</packaging>
+	<!--可以引入多个依赖 -->
+	<dependencies>
+		<dependency>
+			<!-- 分组（团队id） -->
+			<groupId>com.itmayiedu</groupId>
+			<!-- artifactId jar唯一id -->
+			<artifactId>itmayiedu-hello</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1-b09</version>
+			<scope>provided</scope>
+		</dependency>
+
+	</dependencies>
+</project>
