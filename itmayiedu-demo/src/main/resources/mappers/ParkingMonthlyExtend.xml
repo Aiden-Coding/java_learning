@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.service.parkinglot.dao.ParkingMonthlyExtendDao">
+    <select id="getParkIncomeDetail" parameterType="java.util.Map" resultType="java.util.Map">
+      SELECT
+        a.expdate_start AS expdatStart,
+        a.expdate_end AS expdateEnd,
+        a.payment_type AS paymentType,
+        a.amount_receivable AS amountReceivable,
+        a.payment_time AS paymenTime,
+        b.room_number AS roomNumber,
+        b.owner_name AS ownerName,
+        b.car_license AS carLicense
+    FROM
+        park_monthly_extend a,
+        park_monthly b
+    WHERE
+        a.parkinglot_id = b.parkinglot_id
+    AND a.parkinglot_id = #{parkinglotId}
+    AND extend_date BETWEEN #{startDate}
+    AND #{endDate}
+    AND
+        CONCAT(IFNULL(b.car_license, '')) LIKE '%${carLicense}%'
+        LIMIT #{startRow},#{pageSize};
+    </select>
+
+</mapper>

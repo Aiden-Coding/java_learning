@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.service.parkinglot.dao.ParkinglotDao">
+
+    <select id="getCountParkinglot" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT
+	      COUNT(parkinglot_id) AS totalRows
+        FROM
+	      park_parkinglot
+        WHERE
+        <if test='searchUnitType == -1 '>
+              1 = 1
+        </if>
+        <if test='searchUnitType == 0 '>
+              brand_id = #{brandId}
+        </if>
+        <if test='searchUnitType == 1 '>
+              agent_id = #{unitId}
+        </if>
+        <if test='searchUnitType == 2 '>
+              estate_id = #{unitId}
+        </if>
+        <if test='searchUnitType == 3 '>
+              unit_id = #{unitId}
+        </if>
+        <if test='null != parkinglotName and "" != parkinglotName '>
+            AND parkinglot_name LIKE '%${parkinglotName}%'
+        </if>
+        AND is_sub = 0
+        AND del_flag = 0;
+    </select>
+
+    <select id="listParkinglot" parameterType="java.util.Map" resultType="java.util.Map" >
+        SELECT
+          parkinglot_id AS parkinglotId ,
+          parkinglot_name AS parkinglotName
+        FROM
+        park_parkinglot
+        WHERE
+        <if test='searchUnitType == -1 '>
+              1 = 1
+        </if>
+        <if test='searchUnitType == 0 '>
+              brand_id = #{brandId}
+        </if>
+        <if test='searchUnitType == 1 '>
+              agent_id = #{unitId}
+        </if>
+        <if test='searchUnitType == 2 '>
+               estate_id = #{unitId}
+        </if>
+        <if test='searchUnitType == 3 '>
+              unit_id = #{unitId}
+        </if>
+        <if test='null != parkinglotName and "" != parkinglotName '>
+            AND parkinglot_name LIKE '%${parkinglotName}%'
+        </if>
+        AND is_sub = 0
+        AND del_flag = 0
+        ORDER BY parkinglot_name
+        LIMIT #{startRow},#{pageSize};
+    </select>
+
+    <select id="listNestParkinglotClasicInfo" parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT
+          parkinglot_id AS parkinglotId ,
+          parkinglot_name AS parkinglotName
+        FROM
+          park_parkinglot
+        WHERE
+             parkinglot_id = #{parkinglotId}
+          OR parent_parkinglot_id = #{parkinglotId}
+          AND del_flag = 0
+        ORDER BY parent_parkinglot_id ;
+    </select>
+
+    <select id="getParkinglot" resultType="java.util.Map" parameterType="java.lang.String">
+         SELECT parkinglot_id AS parkinglotId,
+           brand_id AS brandId,
+           estate_id AS estateId,
+           agent_id AS agentId,
+           parkinglot_code AS parkinglotCode,
+           parkinglot_name AS parkinglotName,
+           area_code AS areaCode,
+           parkinglot_type AS parkinglotType,
+           parent_parkinglot_id AS parentParkinglotId,
+           address,
+           lat,
+           lon,
+           photo,
+           total_places AS totalPlaces ,
+           empty_places AS emptyPlaces,
+           is_outdoor AS isOutdoor,
+           is_searchable AS isSearchable,
+           is_freeparking AS isFreeparking,
+           is_tempparking AS isTempparking,
+           is_zeroenter AS isZeroenter,
+           default_price AS defaultPrice,
+           paid_freetime AS paidFreetime,
+           is_exit_auto AS isExitAuto,
+           is_monthly_mobile AS isMonthlyMobile,
+           is_monthly_tip AS isMonthlyTip,
+           monthly_over AS monthlyOver,
+           del_flag
+         FROM park_parkinglot
+         WHERE parkinglot_id=#{parkinglotId};
+    </select>
+
+    <update id="updateParkinglotFlags" parameterType="java.util.Map">
+        UPDATE
+        park_parkinglot
+        SET
+        ${fileType}=#{fileValue},
+        update_by=#{uid},
+        update_date=sysdate()
+        WHERE
+        parkinglot_id=#{parkId};
+    </update>
+
+    <select id="getParkLotCount" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        COUNT(a.parkinglot_id) AS parkLot,
+        SUM(a.total_places) AS totalPlaces,
+        COUNT(b.driveway_type) AS driveaway
+        FROM
+        park_parkinglot a,
+        park_driverway b
+        WHERE
+        a.unit_id = #{unitId}
+        AND b.driveway_type = #{driveWaytype}
+        AND a.parkinglot_id = b.parkinglot_id
+    </select>
+    <select id="getMerchantsParking" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+        brand_id AS brandId,
+        estate_id AS estateId,
+        agent_id AS agentId
+        FROM park_parkinglot
+        WHERE parkinglot_id=#{parkinglotId};
+    </select>
+
+</mapper>
+
+

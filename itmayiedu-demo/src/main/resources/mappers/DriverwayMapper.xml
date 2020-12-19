@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.service.parkinglot.dao.DriverwayDao">
+
+    <select id="listDriverways" parameterType="java.util.Map" resultType="java.util.Map">
+       SELECT d.driveway_id AS drivewayId,
+               d.driveway_name AS drivewayName,
+               p.parkinglot_name AS parkinglotName,
+               d.driveway_type AS drivewayType,
+               d.driveway_status as status
+        FROM park_driverway d, park_parkinglot p
+        WHERE d.parkinglot_id = p.parkinglot_id
+              AND p.unit_id = #{unitId}
+              AND d.driveway_name LIKE '%${drivewayName}%'
+              AND d.del_flag = 0
+        ORDER BY d.driveway_name DESC;
+    </select>
+
+    <select id="listDriverwaysByType" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT d.driveway_id AS drivewayId,
+               d.driveway_name AS drivewayName,
+               p.parkinglot_name AS parkinglotName,
+               d.driveway_type AS drivewayType,
+               d.driveway_status as status
+        FROM park_driverway d, park_parkinglot p
+        WHERE d.parkinglot_id = p.parkinglot_id
+              AND p.unit_id = #{unitId}
+              AND d.driveway_type=#{drivewayType}
+              AND d.driveway_name LIKE '%${drivewayName}%'
+              AND d.del_flag = 0
+        ORDER BY d.driveway_name DESC;
+    </select>
+
+    <select id="listDriverwaysByStatus" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT d.driveway_id AS drivewayId,
+        d.driveway_name AS drivewayName,
+        p.parkinglot_name AS parkinglotName,
+        d.driveway_type AS drivewayType,
+        d.driveway_status as status
+        FROM park_driverway d, park_parkinglot p
+        WHERE d.parkinglot_id = p.parkinglot_id
+        AND p.unit_id = #{unitId}
+        AND d.driveway_status= #{drivewayStatus}
+        AND d.driveway_name LIKE '%${drivewayName}%'
+        AND d.del_flag = 0
+        ORDER BY d.driveway_name DESC;
+    </select>
+
+
+    <update id="updateDriverwayStatus" parameterType="java.util.Map">
+        UPDATE park_driverway
+            SET driveway_status = #{status},
+                update_by= #{uid},
+                update_date=SYSDATE()
+        WHERE
+            driveway_id = #{drivewayId};
+    </update>
+
+</mapper>

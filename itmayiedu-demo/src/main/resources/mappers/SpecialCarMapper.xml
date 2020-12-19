@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.service.parkinglot.dao.SpecialCarDao">
+
+    <select id="listSpecialCar" parameterType="java.util.Map" resultType="java.util.Map">
+       SELECT   specialcar_id AS specialCarId,
+				car_license AS  carLicense,
+				restrict_type AS restrictType,
+				start_date	AS startDate,
+				end_date AS endDate,
+				remarks
+      FROM park_specialcar
+      WHERE
+      special_type = #{specialType} AND del_flag = 0 AND status = #{status} AND parkinglot_id = #{parkingLotId}
+      AND CONCAT (IFNULL(car_license,''),IFNULL(remarks,'')) LIKE '%${carLicense}%'
+      LIMIT #{startRow},#{pageSize};
+    </select>
+
+
+    <select id="getCountSpecialCarLot" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT
+        COUNT(specialcar_id)
+        FROM
+        park_specialcar
+        WHERE
+        parkinglot_id = #{parkingLotId} AND special_type = #{specialType}AND del_flag = 0 AND status = #{status}
+        AND CONCAT (IFNULL(car_license,''),IFNULL(remarks,'')) LIKE '%${carLicense}%';
+    </select>
+
+    <update id="deleteSpecialCar" parameterType="java.util.Map">
+
+        UPDATE park_specialcar
+        SET del_flag =1,
+            update_by = #{uid},
+            update_date = sysdate()
+        WHERE specialcar_id = #{specialCarId};
+    </update>
+
+    <update id="updateSpecialCar" parameterType="java.util.Map">
+        UPDATE park_specialcar
+        SET 	car_license = #{carLicense},
+				restrict_type = #{restrictType},
+				start_date	= #{startDate},
+				end_date = #{endDate},
+				remarks = #{remarks},
+				update_by = #{uid},
+                update_date = sysdate()
+        WHERE specialcar_id = #{specialCarId};
+    </update>
+
+    <insert id="saveSpecialCar" parameterType="java.util.Map">
+        INSERT INTO park_specialcar(
+                    specialcar_id,
+                    brand_id,
+                    estate_id,
+                    agent_id,
+                    parkinglot_id,
+                    special_type,
+                    car_license,
+				    restrict_type,
+				    start_date,
+				    end_date,
+				    create_by,
+				    create_date,
+				    update_by,
+				    update_date,
+				    remarks,
+				    status,
+				    del_flag)
+		VALUES (
+		        #{specialCarId},
+		        #{brandId},
+		        #{estateId},
+		        #{agentId},
+		        #{parkinglotId},
+		        #{specialType},
+		        #{carLicense},
+		        #{restrictType},
+		        #{startDate},
+		        #{endDate},
+		        #{uid},
+		        sysdate(),
+		        #{uid},
+		        sysdate(),
+		        #{remarks},
+		        1,
+		        0
+		);
+    </insert>
+</mapper>
