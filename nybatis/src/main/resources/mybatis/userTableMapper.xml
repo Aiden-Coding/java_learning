@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itmayiedu.mapper.UserTableMapper">
+	<select id="login" parameterType="com.itmayiedu.entity.UserTable"
+		resultType="com.itmayiedu.entity.UserTable">
+		SELECT id ,username as userName FROM user_table WHERE
+		username=#{userName} AND password=#{passWord}
+	</select>
+
+</mapper>
