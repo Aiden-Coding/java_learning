@@ -2,3 +2,6 @@
 *.iml
 *.class
 target
+.classpath
+.project
+.settings
