@@ -1,0 +1,44 @@
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://localhost:8761/eureka/
+server:
+  port: 8765
+spring:
+    application:
+      name: ms-parkinglot
+    datasource:
+      type: com.alibaba.druid.pool.DruidDataSource
+      druid:
+        initial-size: 1
+        max-active: 50
+        #min-idle: 10
+        max-wait: 180000 #Default value is 30000 (30 seconds)60000->180000
+        time-between-eviction-runs-millis: 600000 #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒，default value is 5000 (5 seconds)->60000-600000
+        min-evictable-idle-time-millis: 3600000 #配置一个连接在池中最小生存的时间，单位是毫秒，default value is 60000 (60 seconds)->300000-3600000
+        pool-prepared-statements: false #是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
+        url: jdbc:mysql://192.168.1.201:3306/park?useUnicode=true&characterEncoding=utf-8
+        username: root
+        password: park@2018
+        driver-class-name: com.mysql.jdbc.Driver
+#    redis:
+#      database: 0
+#      host: 192.168.1.205
+#      port: 6379
+#      password: park@2018
+#    pool:
+#      max-active: 8
+#      max-wait: -1
+#      max-idle: 8
+#      min-idle: 0
+#      timeout: 0
+mybatis:
+  #需要配合自动扫描Mappers包
+  type-aliases-package: com.example.service.parkinglot.mapper
+  #mapper.xml所在位置
+  mapper-locations: classpath:mappers/*.xml
+  config-location: classpath:mybatis-config.xml
+feign:
+  hystrix:
+    enabled: true
+    

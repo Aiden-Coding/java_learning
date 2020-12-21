@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.service.parkinglot.dao.ChargeRulesDao">
+
+    <select id="listChargeRulesByParkinglotId" parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT rules_id AS rulesId,
+           parkinglot_id AS parkinglotId,
+           parking_type AS parkingType,
+           license_color AS licenseColor,
+           car_type AS carType,
+           valuation_type AS valuationType,
+           time_type AS timeType,
+           free_time AS freeTime,
+           first_price AS firstPrice,
+           first_time AS firstTime,
+           after_price AS afterPrice,
+           after_time AS afterTime,
+           day_start_time AS dayStartTime,
+           day_end_time AS dayEndTime,
+           day_first_price AS dayFirstPrice,
+           day_first_time AS dayFirstTime,
+           day_after_price AS dayAfterPrice,
+           day_after_time AS dayAfterTime,
+           night_start_time AS nightStartTime,
+           night_end_time AS nightEndTime ,
+           night_first_price AS nightFirstPrice,
+           night_first_time AS nightFirstTime,
+           night_after_price AS nightAfterPrice,
+           night_after_time AS nightAfterTime,
+           limit_hour AS limitHour ,
+           limit_price AS limitPrice,
+           remarks
+        FROM park_chargerules
+        WHERE parkinglot_id = #{parkinglotId} AND del_flag = 0
+        ORDER BY order_level;
+    </select>
+
+    <select id="getChargeRule" parameterType="java.lang.String" resultType="java.util.Map">
+
+        SELECT rules_id AS rulesId,
+           parkinglot_id AS parkinglotId,
+           parking_type AS parkingType,
+           license_color AS licenseColor,
+           car_type AS carType,
+           valuation_type AS valuationType,
+           time_type AS timeType,
+           free_time AS freeTime,
+           first_price AS firstPrice,
+           first_time AS firstTime,
+           after_price AS afterPrice,
+           after_time AS afterTime,
+           day_start_time AS dayStartTime,
+           day_end_time AS dayEndTime,
+           day_first_price AS dayFirstPrice,
+           day_first_time AS dayFirstTime,
+           day_after_price AS dayAfterPrice,
+           day_after_time AS dayAfterTime,
+           night_start_time AS nightStartTime,
+           night_end_time AS nightEndTime ,
+           night_first_price AS nightFirstPrice,
+           night_first_time AS nightFirstTime,
+           night_after_price AS nightAfterPrice,
+           night_after_time AS nightAfterTime,
+           limit_hour AS limitHour ,
+           limit_price AS limitPrice,
+           order_level AS orderLevel,
+           remarks
+
+        FROM park_chargerules
+        WHERE rules_id = #{rulesId};
+    </select>
+    <insert id="saveChargeRule" parameterType="java.util.Map">
+        INSERT INTO park_chargerules(  rules_id,
+                                       parkinglot_id,
+                                       parking_type,
+                                       license_color,
+                                       car_type,
+                                       valuation_type,
+                                       time_type, ,
+                                       free_time,
+                                       first_price,
+                                       first_time,
+                                       after_price,
+                                       after_time,
+                                       day_start_time,
+                                       day_end_time,
+                                       day_first_price,
+                                       day_first_time,
+                                       day_after_price,
+                                       day_after_time,
+                                       night_start_time,
+                                       night_end_time,
+                                       night_first_price,
+                                       night_first_time,
+                                       night_after_price,
+                                       night_after_time,
+                                       limit_hour,
+                                       limit_price,
+                                       create_by,
+                                       order_level,
+                                       create_date)
+        VALUES (#{rulesId},
+                #{parkinglotId},
+                #{parkinglotType},
+                #{licenseColor},
+                #{carType},
+                #{valuationType},
+                #{timeType},
+                #{freeTime},
+                #{firstPrice},
+                #{firstTime},
+                #{afterPrice},
+                #{afterTime},
+                #{dayStartTime},
+                #{dayEndTime},
+                #{dayFirstPrice},
+                #{dayFirstTime},
+                #{dayAfterPrice},
+                #{dayAfterTime},
+                #{nightStartTime},
+                #{nightEndTime},
+                #{nightFirstPrice},
+                #{nightFirstTime},
+                #{nightAfterPrice},
+                #{nightAfterTime},
+                #{limitHour},
+                #{limitPrice},
+                #{uid},
+                #{orderLevel},
+                sysdate()
+                  );
+    </insert>
+
+    <update id="updateChargeRule" parameterType="java.util.Map">
+    UPDATE park_chargerules
+    SET
+        parking_type = #{parkinglotType},
+        license_color = #{licenseColor},
+        car_type = #{carType},
+        valuation_type = #{valuationType},
+        time_type = #{timeType},
+        free_time = #{freeTime},
+        first_price = #{firstPrice},
+        first_time = #{firstTime},
+        after_price = #{afterPrice},
+        after_time = #{afterTime},
+        day_start_time = #{dayStartTime},
+        day_end_time = #{dayEndTime},
+        day_first_price = #{dayFirstPrice},
+        day_first_time = #{dayFirstTime},
+        day_after_price = #{dayAfterPrice},
+        day_after_time = #{dayAfterTime},
+        night_start_time = #{nightStartTime},
+        night_end_time = #{nightEndTime},
+        night_first_price = #{nightFirstPrice},
+        night_first_time = #{nightFirstTime},
+        night_after_price = #{nightAfterPrice},
+        night_after_time = #{nightAfterTime},
+        limit_hour = #{limitHour},
+        limit_price = #{limitPrice},
+        update_by = #{uid},
+        update_date = sysdate()
+    WHERE  rules_id = #{rulesId};
+    </update>
+
+    <update id="deleteChargeRule" parameterType="java.util.Map">
+      UPDATE park_chargerules
+            SET del_flag = 1,
+            update_by=#{uid}
+        WHERE rules_id = #{rulesId};
+    </update>
+
+
+    <select id="getNextOrderLevel" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT
+	        IFNULL(MAX(order_level), 0) + 1
+        FROM
+            park_chargerules
+        WHERE
+
+            parkinglot_id = #{parkinglotId};
+    </select>
+
+
+    <select id="getGreaterOrderLevel" parameterType="java.util.Map" resultType="java.util.Map">
+       SELECT b.rules_id AS rulesId, b.order_level AS orderLevel
+            FROM park_chargerules b
+            WHERE b.parkinglot_id = #{parkinglotId}
+            <![CDATA[ AND b.order_level > (SELECT a.order_level FROM park_chargerules a WHERE a.rules_id = #{rulesId}) ]]>
+            AND b.del_flag = 0
+            ORDER BY b.order_level LIMIT 1;
+    </select>
+
+    <select id="getLessOrderLevel" parameterType="java.util.Map" resultType="java.util.Map">
+      SELECT b.rules_id AS rulesId, b.order_level AS orderLevel
+            FROM park_chargerules b
+            WHERE b.parkinglot_id = #{parkinglotId}
+            <![CDATA[   AND b.order_level < (SELECT a.order_level FROM park_chargerules a WHERE a.rules_id = #{rulesId}) ]]>
+            AND b.del_flag = 0
+            ORDER BY b.order_level DESC LIMIT 1;
+    </select>
+
+    <update id="updateOrderLevel" parameterType="java.util.Map">
+    UPDATE park_chargerules
+      SET order_level = #{orderLevel},
+          update_date = sysdate()
+      WHERE
+          rules_id = #{rulesId};
+    </update>
+</mapper>
+
+

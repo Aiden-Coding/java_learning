@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.service.parkinglot.dao.ParkMonthlyCarDao">
+
+    <select id="getCountParkMonthlyCar" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT
+        COUNT(monthly_car_id) AS num
+        FROM
+        park_monthly_car AS a JOIN park_monthly AS b
+        ON(a.monthly_id=b.monthly_id)
+        WHERE b.monthly_id= #{monthlyId}
+        AND
+        a.del_flag=0
+        AND
+        a.car_license LIKE "%${keyword}%";
+    </select>
+
+    <select id="listParkMonthlyCar" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        c.monthly_car_id AS monthlyCarId,
+        c.carLicense AS carLicense,
+        date_format(c.startDate,'%Y-%m-%d') AS startDate,
+        date_format(c.endDate,'%Y-%m-%d') AS endDate
+        FROM
+        (
+        SELECT
+        a.car_license AS carLicense,
+        a.start_date AS startDate,
+        a.end_date AS endDate,
+        b.monthly_id AS monthly_id,
+        a.monthly_car_id
+        FROM
+        park_monthly_car AS a
+        JOIN park_monthly AS b ON (a.monthly_id = b.monthly_id)
+        WHERE
+        b.monthly_id = #{monthlyId}
+        AND
+        a.del_flag = 0
+        AND
+        a.car_license LIKE "%${keyword}%"
+        LIMIT #{startRow},#{pageSize}) AS c
+        WHERE
+        c.monthly_id = #{monthlyId}
+    </select>
+
+    <select id="listParkMonthlyCarInfo" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            a.parkinglot_id AS parkinglotId,
+            a.parkinglot_name AS parkinglotName,
+            b.occupy_id AS occupyId,
+            IFNULL(b.occupy_type,"") AS occupyType,
+            IFNULL(b.occupy_num,"0") AS occupyNum
+        FROM
+            (
+                SELECT
+                    parkinglot_id,
+                    parkinglot_name
+                FROM
+                    park_parkinglot
+                WHERE
+                    parkinglot_id= #{parkinglotId}
+                OR parent_parkinglot_id = #{parkinglotId}
+            )AS a LEFT JOIN park_monthly_occupy b
+        ON (a.parkinglot_id=b.parkinglot_id)
+        AND b.monthly_id= #{monthlyId}
+
+    </select>
+
+    <insert id="saveParkMonthlyCar" parameterType="java.util.Map">
+        INSERT INTO park_monthly_car (      monthly_car_id,
+                                            monthly_id,
+                                            parkinglot_id,
+                                            car_license,
+                                            start_date,
+                                            end_date,
+                                            create_by,
+                                            create_date
+        )VALUES(
+            #{monthlyCarId},
+            #{monthlyId},
+            #{parkinglotId},
+            #{carLicense},
+            #{startDate},
+            #{endDate},
+            #{uid},
+            SYSDATE()
+        );
+
+    </insert>
+
+    <insert id="saveParkMonthlyOccupy" parameterType="java.util.Map">
+        INSERT INTO park_monthly_occupy (   occupy_id,
+                                            monthly_id,
+                                            parkinglot_id,
+                                            occupy_type,
+                                            occupy_num
+        ) VALUES(
+            #{occupyId},
+            #{monthlyId},
+            #{parkinglotId},
+            #{occupyType},
+            #{occupyNum}
+        )
+    </insert>
+
+    <select id="getParkMonthlyCarInfo" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        car_license,
+        date_format(start_date,'%Y-%m-%d') AS startDate,
+        date_format(end_date,'%Y-%m-%d') AS endDate
+        FROM
+        park_monthly_car
+        WHERE
+        monthly_car_id= #{monthlyCarId};
+    </select>
+
+    <update id="updateParkMonthlyCarInfo" parameterType="java.util.Map">
+        UPDATE park_monthly_car
+        SET
+        car_license= #{carLicense},
+        start_date= #{startDate},
+        end_date= #{endDate},
+        update_by= #{uid},
+        update_date=SYSDATE()
+        WHERE
+        monthly_car_id= #{monthlyCarId};
+    </update>
+
+    <update id="deleteParkMonthlyCar" parameterType="java.util.Map">
+        UPDATE park_monthly_car
+        SET
+        del_flag=1,
+        update_by= #{uid},
+        update_date=SYSDATE()
+        WHERE
+        monthly_car_id= #{monthlyCarId}
+    </update>
+
+</mapper>

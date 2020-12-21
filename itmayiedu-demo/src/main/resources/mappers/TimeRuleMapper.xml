@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.service.parkinglot.dao.TimeRuleDao">
+
+    <select id="listTimeRule" parameterType="java.util.Map" resultType="java.util.Map">
+      SELECT
+        timerule_id AS timeRuleId,
+        parkinglot_id AS parkinglotId,
+        timerule_name AS timeRuleName,
+        timerule_option AS timeRuleOption,
+        monday,
+        tuesday,
+        wednesday,
+        thursday,
+        friday,
+        saturday,
+        sunday,
+        time_start AS timeStart1,
+        time_end AS timeEnd1,
+        price
+      FROM park_monthly_timerule
+      WHERE IFNULL(parkinglot_id,'') LIKE "%${parkingLotId}%" AND del_flag = 0;
+    </select>
+    <select id="listTimeRuleName" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            timerule_id AS timeruleId,
+            timerule_name AS timeruleName,
+            price
+        FROM park_monthly_timerule
+        WHERE parkinglot_id=#{parkinglotId} AND del_flag = 0 ORDER BY create_date DESC;
+    </select>
+
+    <select id="getTimeRule" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            monday,
+            tuesday,
+            wednesday,
+            thursday,
+            friday,
+            saturday,
+            sunday,
+            timerule_name AS timeruleName,
+            time_start AS timeStart1,
+            time_end AS timeEnd1,
+            time_start2 AS timeStart2,
+            time_end2 AS timeEnd2,
+            time_start3 AS timeStart3,
+            time_end3 AS timeEnd3,
+            time_start4 AS timeStart4,
+            time_end4 AS timeEnd4,
+            time_start5 AS timeStart5,
+            time_end5 AS timeEnd5,
+            time_start6 AS timeStart6,
+            time_end6 AS timeEnd6,
+            time_start7 AS timeStart7,
+            time_end7 AS timeEnd7
+        FROM
+            park_monthly_timerule
+        WHERE
+            timerule_id = #{timeRuleId};
+    </select>
+
+    <update id="deleteTimeRule" parameterType="java.util.Map">
+
+        UPDATE park_monthly_timerule
+        SET del_flag =1,
+            update_by = #{uid},
+            update_date = sysdate()
+        WHERE timerule_id = #{timeRuleId};
+    </update>
+    <update id="updateTimeRule" parameterType="java.util.Map">
+
+        UPDATE park_monthly_timerule
+        SET
+                timerule_id = #{timeRuleId},
+                parkinglot_id = #{parkingLotId},
+                timerule_name = #{timeRuleName},
+                timerule_option = #{timeRuleOption},
+                monday = #{monday},
+                tuesday = #{tuesday},
+                wednesday = #{wednesday},
+                thursday = #{thursday},
+                friday = #{friday},
+                saturday = #{saturday},
+                sunday = #{sunday},
+                time_start = #{timeStart1},
+                time_end = #{timeEnd1},
+                time_start2 = #{timeStart2},
+                time_end2 = #{timeEnd2},
+                time_start3 = #{timeStart3},
+                time_end3 = #{timeEnd3},
+                time_start4 = #{timeStart4},
+                time_end4 = #{timeEnd4},
+                time_start5 = #{timeStart5},
+                time_end5 = #{timeEnd5},
+                time_start6 = #{timeStart6},
+                time_end6 = #{timeEnd6},
+                time_start7 = #{timeStart7},
+                time_end7 = #{timeEnd7},
+                price = #{price},
+                online_support = #{onlineSupport},
+                online_limit = #{omlineLimit},
+                update_by = #{uid},
+                update_date = sysdate(),
+                remarks = #{remarks}
+        WHERE timerule_id = #{timeRuleId};
+    </update>
+    <insert id="saveTimeRule" parameterType="java.util.Map">
+        INSERT INTO park_monthly_timerule(
+                timerule_id,
+                parkinglot_id,
+                timerule_name,
+                timerule_option,
+                monday,
+                tuesday,
+                wednesday,
+                thursday,
+                friday,
+                saturday,
+                sunday,
+                time_start,
+                time_end,
+                time_start2,
+                time_end2,
+                time_start3,
+                time_end3,
+                time_start4,
+                time_end4,
+                time_start5,
+                time_end5,
+                time_start6,
+                time_end6,
+                time_start7,
+                time_end7,
+                price,
+                online_support,
+                online_limit,
+                create_by,
+                create_date,
+                update_by,
+                update_date,
+                remarks,
+                del_flag)
+		VALUES (#{timeRuleId},
+		        #{parkingLotId },
+		        #{startDate},
+		        #{timeRuleOption},
+		        #{monday},
+		        #{tuesday},
+		        #{wednesday},
+		        #{thursday},
+		        #{friday},
+		        #{saturday},
+		        #{sunday},
+		        #{timeStart1},
+		        #{timeEnd1},
+		        #{timeStart2},
+		        #{timeEnd2},
+		        #{timeStart3},
+		        #{timeEnd3},
+		        #{timeStart4},
+		        #{timeEnd4},
+		        #{timeStart5},
+		        #{timeEnd5},
+		        #{timeStart6},
+		        #{timeEnd6},
+		        #{timeStart7},
+		        #{timeEnd7},
+		        #{price},
+		        #{onlineSupport},
+		        #{omlineLimit},
+		        #{uid},
+		        sysdate(),
+		        #{uid},
+		        sysdate(),
+		        #{remarks},
+		        0
+		);
+    </insert>
+
+</mapper>

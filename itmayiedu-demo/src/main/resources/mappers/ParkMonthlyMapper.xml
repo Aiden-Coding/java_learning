@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.service.parkinglot.dao.ParkMonthlyDao">
+
+    <select id="listParkMonthly" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT a.monthly_id AS monthlyId,
+        room_number AS roomNumber,
+        owner_name AS ownerName,
+        phone,
+        monthly_type AS monthlyType,
+        car_license AS carLicense,
+        occupy_num AS occupyNum,
+        monthly_amount AS amount,
+        IFNULL(DATE_FORMAT((SELECT MIN(end_date) FROM park_monthly_car WHERE monthly_id = a.monthly_id AND del_flag =
+        0),'%Y-%c-%d'),'-')
+        AS expDate
+        FROM
+        park_monthly AS a
+        INNER JOIN
+        (SELECT monthly_id
+        FROM
+        (SELECT monthly_id, room_number, owner_name
+        FROM park_monthly
+        WHERE parkinglot_id = #{parkinglotId}
+        <if test='searchType == -1'>
+        </if>
+        <if test='searchType == 0'>
+            AND monthly_type = 0
+        </if>
+        <if test='searchType == 1'>
+            AND monthly_type = 1
+        </if>
+        <if test='searchType == 2'>
+            AND EXISTS
+            (SELECT monthly_id
+            FROM park_monthly_car
+            WHERE parkinglot_id = #{parkinglotId}
+            AND park_monthly_car.monthly_id = park_monthly.monthly_id
+            AND end_date &gt; sysdate()
+            AND DATE_ADD(end_date, INTERVAL -7 DAY) &lt; sysdate()
+            AND del_flag = 0)
+        </if>
+        <if test='searchType == 3'>
+            AND EXISTS (
+            SELECT monthly_id
+            FROM park_monthly_car
+            WHERE parkinglot_id = #{parkinglotId}
+            AND park_monthly_car.monthly_id = park_monthly.monthly_id
+            AND end_date &lt; sysdate()
+            AND del_flag = 0)
+        </if>
+        AND del_flag = 0
+        ) predata
+        WHERE 1 = 1
+        <if test='keyword != null and keyword != ""'>
+            AND (EXISTS
+            (SELECT monthly_id
+            FROM park_monthly_car
+            WHERE parkinglot_id = #{parkinglotId}
+            AND park_monthly_car.monthly_id = predata.monthly_id
+            AND car_license LIKE '%${keyword}%'
+            AND del_flag = 0)
+            OR room_number LIKE '%${keyword}%'
+            OR owner_name LIKE '%${keyword}%')
+        </if>
+        LIMIT #{startRow},#{pageSize}) AS b
+        ON a.monthly_id = b.monthly_id
+        ORDER BY room_number, owner_name;
+    </select>
+
+    <select id="getCountParkMonthly" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(monthly_id) AS num
+        FROM
+        (SELECT monthly_id, room_number, owner_name
+        FROM park_monthly
+        WHERE parkinglot_id = #{parkinglotId}
+        <if test='searchType == -1'>
+        </if>
+        <if test='searchType == 0'>
+            AND monthly_type = 0
+        </if>
+        <if test='searchType == 1'>
+            AND monthly_type = 1
+        </if>
+        <if test='searchType == 2'>
+            AND EXISTS
+            (SELECT monthly_id
+            FROM park_monthly_car
+            WHERE parkinglot_id = #{parkinglotId}
+            AND park_monthly_car.monthly_id = park_monthly.monthly_id
+            AND end_date &gt; sysdate()
+            AND DATE_ADD(end_date, INTERVAL -7 DAY) &lt; sysdate()
+            AND del_flag = 0)
+        </if>
+        <if test='searchType == 3'>
+            AND EXISTS (
+            SELECT monthly_id
+            FROM park_monthly_car
+            WHERE parkinglot_id = #{parkinglotId}
+            AND park_monthly_car.monthly_id = park_monthly.monthly_id
+            AND end_date &lt; sysdate()
+            AND del_flag = 0)
+        </if>
+        AND del_flag = 0
+        ) predata
+        WHERE 1 = 1
+        <if test='keyword != null and keyword != ""'>
+            AND (EXISTS
+            (SELECT monthly_id
+            FROM park_monthly_car
+            WHERE parkinglot_id = #{parkinglotId}
+            AND park_monthly_car.monthly_id = predata.monthly_id
+            AND car_license LIKE '%${keyword}%'
+            AND del_flag = 0)
+            OR room_number LIKE '%${keyword}%'
+            OR owner_name LIKE '%${keyword}%')
+        </if>
+        ;
+    </select>
+
+    <select id="exportParkMonthly" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT room_number AS roomNumber,
+        owner_name AS ownerName,
+        phone,
+        CASE monthly_type WHEN 0 THEN '普通' WHEN 1 THEN '分时' ELSE '其它' END AS monthlyType,
+        (SELECT group_concat(car_license) FROM park_monthly_car WHERE monthly_id = a.monthly_id AND del_flag = 0 ORDER
+        BY create_date) AS carLicense,
+        occupy_num AS occupyNum,
+        monthly_amount AS amount,
+        IFNULL(DATE_FORMAT((SELECT MIN(end_date) FROM park_monthly_car WHERE monthly_id = a.monthly_id AND del_flag =
+        0),'%Y-%c-%d'),'-')
+        AS expDate,
+        remarks
+        FROM
+        park_monthly AS a
+        INNER JOIN
+        (SELECT monthly_id
+        FROM
+        (SELECT monthly_id, room_number, owner_name
+        FROM park_monthly
+        WHERE parkinglot_id = #{parkinglotId}
+        <if test='searchType == -1'>
+        </if>
+        <if test='searchType == 0'>
+            AND monthly_type = 0
+        </if>
+        <if test='searchType == 1'>
+            AND monthly_type = 1
+        </if>
+
+        <if test='searchType == 2'>
+            AND EXISTS
+            (SELECT monthly_id
+            FROM park_monthly_car
+            WHERE parkinglot_id = #{parkinglotId}
+            AND park_monthly_car.monthly_id = park_monthly.monthly_id
+            AND end_date &gt; sysdate()
+            AND DATE_ADD(end_date, INTERVAL -7 DAY) &lt; sysdate()
+            AND del_flag = 0)
+        </if>
+        <if test='searchType == 3'>
+            AND EXISTS (
+            SELECT monthly_id
+            FROM park_monthly_car
+            WHERE
+            parkinglot_id = #{parkinglotId}
+            AND park_monthly_car.monthly_id = park_monthly.monthly_id
+            AND end_date &lt; sysdate()
+            AND del_flag = 0)
+        </if>
+        AND del_flag = 0
+        ) predata
+        WHERE 1 = 1
+        <if test='keyword != null and keyword != ""'>
+            AND (EXISTS
+            (SELECT monthly_id
+            FROM park_monthly_car
+            WHERE parkinglot_id = #{parkinglotId}
+            AND park_monthly_car.monthly_id = predata.monthly_id
+            AND car_license LIKE '%${keyword}%'
+            AND del_flag = 0)
+            OR room_number LIKE '%${keyword}%'
+            OR owner_name LIKE '%${keyword}%')
+        </if>
+        ) AS b
+        ON a.monthly_id = b.monthly_id
+        ORDER BY room_number, owner_name;
+    </select>
+    <insert id="saveParkMonthly" parameterType="java.util.Map">
+        INSERT INTO park.park_monthly(monthly_id,
+                                      parkinglot_id,
+                                      room_number,
+                                      owner_name,
+                                      phone,
+                                      monthly_type,
+                                      car_license,
+                                      occupy_num,
+                                      monthly_amount,
+                                      timerule_id,
+                                      create_by,
+                                      create_date,
+                                      remarks,
+                                      del_flag)
+            VALUES (#{monthlyId},
+                    #{parkinglotId},
+                    #{roomNumber},
+                    #{ownerName},
+                    #{phone},
+                    #{monthlyType},
+                    '',
+                    0,
+                    #{amount},
+                    #{timeruleId},
+                    #{uid},
+                    sysdate(),
+                    #{remarks},
+                    0);
+    </insert>
+
+    <update id="updateParkMonthly" parameterType="java.util.Map">
+        UPDATE park_monthly
+            SET
+                timerule_id = #{timeruleId},
+                room_number = #{roomNumber},
+                owner_name = #{ownerName},
+                phone = #{phone},
+                monthly_type = #{monthlyType},
+                monthly_amount = #{amount},
+                update_by = #{uid},
+                update_date = sysdate(),
+                remarks = #{remarks}
+        WHERE   monthly_id = #{monthlyId};
+    </update>
+
+
+    <update id="deleteParkMonthly" parameterType="java.util.Map">
+        UPDATE park_monthly
+        SET
+            del_flag = 1,
+            update_by = #{uid},
+            update_date = sysdate()
+        WHERE   monthly_id = #{monthlyId};
+    </update>
+
+    <select id="getCountParkMonthlyCar" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT
+            COUNT(monthly_car_id) AS num
+        FROM
+            park_monthly_car AS a JOIN park_monthly AS b
+        ON(a.monthly_id=b.monthly_id)
+        WHERE b.monthly_id= #{monthlyId}
+        AND
+	        del_flag=0
+        AND
+            a.car_license LIKE "%${keyword}%";
+    </select>
+
+    <select id="listParkMonthlyCar" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            c.carLicense AS carLicense,
+            c.monthlyCarId AS monthlyCarId,
+            date_format(c.startDate,'%Y-%m-%d') AS startDate,
+            date_format(c.endDate,'%Y-%m-%d') AS endDate
+        FROM
+            (
+                SELECT
+                    a.car_license AS carLicense,
+                    a.start_date AS startDate,
+                    a.end_date AS endDate,
+                    b.monthly_id AS monthly_id
+                FROM
+                    park_monthly_car AS a
+                JOIN park_monthly AS b ON (a.monthly_id = b.monthly_id)
+                WHERE
+                    b.monthly_id = #{monthlyId}
+                AND
+	                a.del_flag=0
+                AND
+                    a.car_license LIKE "%${keyword}%"
+                LIMIT #{startRow},#{pageSize}) AS c
+        WHERE
+            c.monthly_id = #{monthlyId}
+        ORDER BY
+            c.carLicense;
+    </select>
+
+
+
+    <insert id="saveParkMonthlyCar" parameterType="java.util.Map">
+        INSERT INTO park_monthly_car (      monthly_car_id,
+                                            monthly_id,
+                                            parkinglot_id,
+                                            car_license,
+                                            start_date,
+                                            end_date,
+                                            create_by,
+                                            create_date
+        )VALUES(
+            #{monthlyCarId},
+            #{monthlyId},
+            #{parkinglotId},
+            #{carLicense},
+            #{startDate},
+            #{endDate},
+            #{uid},
+            SYSDATE()
+        );
+
+    </insert>
+
+    <update id="updateParkMonthlyCarInfo" parameterType="java.util.Map">
+        UPDATE park_monthly_car
+            SET
+                car_license= #{carLicense},
+                start_date= #{startDate},
+                end_date= #{endDate},
+                update_by= #{uid},
+                update_date=SYSDATE()
+            WHERE
+                monthly_car_id= #{monthlyCarId};
+    </update>
+
+    <update id="deleteParkMonthlyCar" parameterType="java.util.Map">
+        UPDATE park_monthly_car
+            SET
+                del_flag=1,
+                update_by= #{uid},
+                update_date=SYSDATE()
+            WHERE
+                monthly_car_id= #{monthlyCarId};
+    </update>
+
+    <insert id="saveParkMonthlyOccupy" parameterType="java.util.Map">
+        INSERT INTO park_monthly_occupy (
+                                            occupy_id,
+                                            monthly_id,
+                                            parkinglot_id,
+                                            occupy_type,
+                                            occupy_num
+        )VALUES(
+            #{occupyId},
+            #{monthlyId},
+            #{parkinglotId},
+            #{occupyType},
+            #{occupyNum}
+        );
+    </insert>
+
+    <update id="updateParkMonthlyOccupy" parameterType="java.util.Map">
+        UPDATE park_monthly_occupy
+        SET occupy_type = #{occupyType},
+            occupy_num =  #{occupyNum}
+        WHERE
+            occupy_id = #{occupyId};
+    </update>
+
+
+</mapper>
