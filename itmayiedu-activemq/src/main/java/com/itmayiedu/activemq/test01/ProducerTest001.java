@@ -24,16 +24,16 @@ public class ProducerTest001 {
 		// 启动连接
 		createConnection.start();
 		// 创建会话工厂
-		Session session = createConnection.createSession(Boolean.FALSE, Session.AUTO_ACKNOWLEDGE);
+		Session session = createConnection.createSession(Boolean.TRUE, Session.AUTO_ACKNOWLEDGE);
 		// 创建队列
 		Destination destination = session.createQueue("itmayiedu_queue");
 		MessageProducer producer = session.createProducer(destination);
-		// 不持久化
-		producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+		// 不持久化DeliveryMode.PERSISTENT=设置持久化
+		producer.setDeliveryMode(DeliveryMode.PERSISTENT);
 		for (int i = 1; i <= 5; i++) {
 			System.out.println("我是生产者: " + i);
 			sendMsg(session, producer, "我是生产者: " + i);
-
+			session.commit();
 		}
 		System.out.println("生产者 发送消息完毕!!!");
 	}
@@ -41,6 +41,7 @@ public class ProducerTest001 {
 	public static void sendMsg(Session session, MessageProducer producer, String i) throws JMSException {
 		TextMessage textMessage = session.createTextMessage("hello activemq " + i);
 		producer.send(textMessage);
+
 	}
 
 }
