@@ -4,6 +4,8 @@ eureka:
       defaultZone: http://localhost:8888/eureka/
 server:
   port: 8764
+  tomcat:
+    max-threads: 50
 spring:
   application:
     name: service-order
