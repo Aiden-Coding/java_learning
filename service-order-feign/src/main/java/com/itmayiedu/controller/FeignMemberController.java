@@ -17,4 +17,10 @@ public class FeignMemberController {
 	public List<String> getFeignOrderByUserList() {
 		return memberFeign.getOrderByUserList();
 	}
+
+	@RequestMapping("/getOrderFeign")
+	public String getOrderFeign() {
+		return "getOrderFeign";
+	}
+
 }

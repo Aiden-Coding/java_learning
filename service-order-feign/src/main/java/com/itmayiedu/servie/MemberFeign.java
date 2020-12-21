@@ -5,8 +5,11 @@ import java.util.List;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@FeignClient("service-member")
+import com.itmayiedu.error.MemberFeignService;
+
+//fallback = MemberFeignService.class
+@FeignClient(value = "service-member")
 public interface MemberFeign {
-	@RequestMapping("/getUserList")
+	@RequestMapping("/getMemberAll")
 	public List<String> getOrderByUserList();
 }
