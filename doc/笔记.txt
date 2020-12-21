@@ -1,0 +1,38 @@
+SpringBoot整合多数源 （分布式、微服务）
+在一个项目中，有多个jdbc连接。
+
+多数据源产生的问题：事物管理
+
+在实际项目中，怎么样搭建多数据源 区分数据源
+举个例子 2个数据源 test001 test002
+1.分包结构
+com.itmayiedu.test001--- 访问test001数据库
+        dao
+        service
+com.itmayiedu.test002--- 访问test002数据库
+        dao
+        service
+
+分布式事物解决方案 jta+automatic 传统项目
+   
+2.使用注解方式
+    com.itmayiedu
+       dao
+       service
+      class UserSercie{
+   
+ @datasouetest001(自定义注解)
+    public void test001(){
+   }
+ @datasouetest002(自定义注解)
+     public void test002(){
+   }
+
+}       
+
+
+
+
+
+
+
