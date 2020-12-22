@@ -6,10 +6,10 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @SpringBootApplication
 @EnableEurekaClient
-public class MessageServer {
+public class MemberServer {
 
-	 public static void main(String[] args) {
-		 SpringApplication.run(MessageServer.class, args);
+	public static void main(String[] args) {
+		SpringApplication.run(MemberServer.class, args);
 	}
-	
+
 }

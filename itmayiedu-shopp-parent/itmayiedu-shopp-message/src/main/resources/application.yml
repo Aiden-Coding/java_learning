@@ -1,6 +1,6 @@
 server:
   port: 8763
-  context-path: /nessage
+  context-path: /message
 eureka:
   client:
     serviceUrl:

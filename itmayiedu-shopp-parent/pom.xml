@@ -5,7 +5,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   
-  <parent>
+  	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.3.RELEASE</version>
@@ -147,13 +147,11 @@
 		</repository>
 	</repositories>
   
-  
 	<modules>
-		<module>itmayiedu-shopp-member-api</module>
-		<module>itmayiedu-shopp-api</module>
-		<module>itmayiedu-shopp-eurekaserver</module>
-		<module>itmayiedu-shopp-member</module>
 		<module>itmayiedu-shopp-common</module>
+		<module>itmayiedu-shopp-eurekaserver</module>
+		<module>itmayiedu-shopp-api</module>
+		<module>itmayiedu-shopp-member</module>
 		<module>itmayiedu-shopp-message</module>
 	</modules>
 </project>
