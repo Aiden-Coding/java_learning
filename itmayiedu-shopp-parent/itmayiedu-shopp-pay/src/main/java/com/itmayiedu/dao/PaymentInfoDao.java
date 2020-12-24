@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import com.itmnayiedu.entity.PaymentInfo;
+import com.itmayiedu.entity.PaymentInfo;
 
 @Mapper
 public interface PaymentInfoDao {
