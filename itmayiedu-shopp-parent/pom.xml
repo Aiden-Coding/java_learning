@@ -153,8 +153,6 @@
 		<module>itmayiedu-shopp-api</module>
 		<module>itmayiedu-shopp-member</module>
 		<module>itmayiedu-shopp-message</module>
-		<module>itmayiedu-shopp-H5-Web</module>
-		<module>itmayiedu-shopp-h5-web</module>
-		<module>itmayiedu-shopp-web</module>
+		<module>itmayiedu-shopp-pc-web</module>
 	</modules>
 </project>

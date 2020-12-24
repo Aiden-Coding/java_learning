@@ -1,6 +1,7 @@
 package com.itmayiedu.api.serivce.impl;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.commons.lang.StringUtils;
@@ -22,7 +23,6 @@ import com.itmayiedu.mq.RegisterMailboxProducer;
 import com.itmayiedu.utils.MD5Util;
 import com.itmayiedu.utils.TokenUtils;
 
-import feign.Param;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -98,24 +98,24 @@ public class MemberServiceImpl extends BaseApiService implements MemberService {
 		// 2.数据库查找账号密码是否正确
 		String newPassWrod = MD5Util.MD5(password);
 		UserEntity userEntity = memberDao.login(username, newPassWrod);
+		return setLogin(userEntity);
+
+	}
+
+	private ResponseBase setLogin(UserEntity userEntity) {
 		if (userEntity == null) {
 			return setResultError("账号或者密码不能正确");
 		}
-		Integer userId = userEntity.getId();
-		JSONObject jsonObject = setUserRedis(userId);
-		return setResultSuccess(jsonObject);
-	}
-
-	private JSONObject setUserRedis(Integer userId) {
 		// 3.如果账号密码正确，对应生成token
 		String memberToken = TokenUtils.getMemberToken();
 		// 4.存放在redis中，key为token value 为 userid
+		Integer userId = userEntity.getId();
 		log.info("####用户信息token存放在redis中... key为:{},value", memberToken, userId);
 		baseRedisService.setString(memberToken, userId + "", Constants.TOKEN_MEMBER_TIME);
 		// 5.直接返回token
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("memberToken", memberToken);
-		return jsonObject;
+		return setResultSuccess(jsonObject);
 	}
 
 	@Override
@@ -140,41 +140,47 @@ public class MemberServiceImpl extends BaseApiService implements MemberService {
 	}
 
 	@Override
-	public ResponseBase findByOpenIdUser(@RequestParam("openId") String openId) {
-		if (StringUtils.isEmpty(openId)) {
-			return setResultError("openId不能为空!");
+	public ResponseBase findByOpenIdUser(@RequestParam("openid") String openid) {
+		// 1.验证参数
+		if (StringUtils.isEmpty(openid)) {
+			return setResultError("openid不能为空1");
 		}
-		UserEntity userEntity = memberDao.findByOpenIdUser(openId);
+		// 2.使用openid 查询数据库 user表对应数据信息
+		UserEntity userEntity = memberDao.findByOpenIdUser(openid);
 		if (userEntity == null) {
-			return setResultErrorCode(Constants.HTTP_RES_CODE_201, "用户未授权QQ登录.");
+			return setResultError(Constants.HTTP_RES_CODE_201, "该openid没有关联");
 		}
-		Integer userId = userEntity.getId();
-		JSONObject jsonObject = setUserRedis(userId);
-		return setResultSuccess(jsonObject);
+		// 3.自动登录
+		return setLogin(userEntity);
 	}
 
 	@Override
-	public ResponseBase qqLoginOpenId(@RequestBody UserEntity user) {
+	public ResponseBase qqLogin(@RequestBody UserEntity user) {
 		// 1.验证参数
-		String username = user.getUsername();
-		if (StringUtils.isEmpty(username)) {
-			return setResultError("用戶名称不能为空!");
-		}
-		String password = user.getPassword();
-		if (StringUtils.isEmpty(password)) {
-			return setResultError("密码不能为空!");
-		}
-		// 2.数据库查找账号密码是否正确
-		String newPassWrod = MD5Util.MD5(password);
-		UserEntity userEntity = memberDao.login(username, newPassWrod);
-		if (userEntity == null) {
-			return setResultError("账号或者密码不能正确");
-		}
-		// 3. 关联userid
 		String openid = user.getOpenid();
+		if (StringUtils.isEmpty(openid)) {
+			return setResultError("openid不能为空!");
+		}
+		// 2.先进行账号登录
+		ResponseBase setLogin = login(user);
+		if (!setLogin.getRtnCode().equals(Constants.HTTP_RES_CODE_200)) {
+			return setLogin;
+		}
+		// 3.自动登录
+		JSONObject jsonObjcet = (JSONObject) setLogin.getData();
+		// 4. 获取token信息
+		String memberToken = jsonObjcet.getString("memberToken");
+		ResponseBase userToken = findByTokenUser(memberToken);
+		if (!userToken.getRtnCode().equals(Constants.HTTP_RES_CODE_200)) {
+			return userToken;
+		}
+		UserEntity userEntity = (com.itmayiedu.entity.UserEntity) userToken.getData();
+		// 5.修改用户openid
 		Integer userId = userEntity.getId();
-		memberDao.updateUser(openid, userId);
-		JSONObject jsonObject = setUserRedis(userId);
-		return setResultSuccess(jsonObject);
+		Integer updateByOpenIdUser = memberDao.updateByOpenIdUser(openid, userId);
+		if (updateByOpenIdUser <= 0) {
+			return setResultError("QQ账号管理失败!");
+		}
+		return setLogin;
 	}
 }

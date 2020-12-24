@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.itmayiedu.base.ResponseBase;
 import com.itmayiedu.entity.UserEntity;
 
-import feign.Param;
-
 @RequestMapping("/member")
 public interface MemberService {
 
@@ -22,13 +20,13 @@ public interface MemberService {
 	// 用户登录
 	@RequestMapping("/login")
 	ResponseBase login(@RequestBody UserEntity user);
-
-	// 使用token进行登录
+    // 使用token进行登录
 	@RequestMapping("/findByTokenUser")
 	ResponseBase findByTokenUser(@RequestParam("token") String token);
-	//使用openid 查找是否已经绑定
+    //使用openid查找用户信息
 	@RequestMapping("/findByOpenIdUser")
-	ResponseBase findByOpenIdUser(@RequestParam("openId") String openId);
-	@RequestMapping("/qqLoginOpenId")
-	ResponseBase  qqLoginOpenId(@RequestBody UserEntity user);
+	ResponseBase findByOpenIdUser(@RequestParam("openid") String openid);
+	// 用户登录
+	@RequestMapping("/qqLogin")
+	ResponseBase qqLogin(@RequestBody UserEntity user);
 }
