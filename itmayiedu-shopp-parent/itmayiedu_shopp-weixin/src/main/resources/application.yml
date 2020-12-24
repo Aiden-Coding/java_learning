@@ -8,6 +8,7 @@ eureka:
 spring:
   application:
     name: weixin
+    
 logging:
   level:
     org.springframework.web: DEBUG
@@ -18,4 +19,4 @@ wechat:
     appId: wx5c43fde3c9733d9e
     secret: b8b217126c33a5fb7074927d5e72a81a
     token:  itmayiedu
-    aesKey:
+    aesKey:    
