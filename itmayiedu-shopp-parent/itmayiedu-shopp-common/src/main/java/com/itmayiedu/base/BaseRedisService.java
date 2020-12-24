@@ -11,9 +11,7 @@ public class BaseRedisService {
 
 	@Autowired
 	private StringRedisTemplate stringRedisTemplate;
-	public void setString(String key, Object data){
-		 setString(key, data, null);
-	}
+
 	public void setString(String key, Object data, Long timeout) {
 		if (data instanceof String) {
 			String value = (String) data;
@@ -24,10 +22,9 @@ public class BaseRedisService {
 		}
 	}
 
-	public String getString(String key) {
+	public Object getString(String key) {
 		return stringRedisTemplate.opsForValue().get(key);
 	}
-	
 
 	public void delKey(String key) {
 		stringRedisTemplate.delete(key);

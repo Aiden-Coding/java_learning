@@ -12,9 +12,10 @@ public interface Constants {
 		
 		// 发送邮件
 		String MSG_EMAIL ="email";
-		
-		// 会员生成token
-		String MEMBER_TOKEN ="MEMBER_TOKEN";
-		// 会员超时时间
-		Long MEMBER_TOKEN_TIMEOUT =(long) (60*60*24*80);
+		// 会员token
+		String TOKEN_MEMBER ="TOKEN_MEMBER";
+		// 用户有效期 90天
+		Long TOKEN_MEMBER_TIME =(long) (60*60*24*90);
+			
+				
 }
