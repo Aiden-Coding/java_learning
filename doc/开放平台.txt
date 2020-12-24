@@ -1,0 +1,14 @@
+
+1.生成授权码连接
+https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101420900&redirect_uri=http://127.0.0.1/qqLoginCallback&state=123
+2.使用授权码获取accesToken  注意事项 授权码已经获取accesToken，不能重复获取
+https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&client_id=101420900&client_secret=bd56a336f6ac49a65005595c2a41201a
+&code=B75F3889C71D0E265F2112E7B6465CF0&redirect_uri=http://127.0.0.1/qqLoginCallback
+3. 使用accesToken获取openid
+https://graph.qq.com/oauth2.0/me?access_token=D08A024B0AAD7DD0F279BF8D0EDC8D1A
+4. 使用openid 获取用户相关信息
+5.
+https://graph.qq.com/user/get_user_info?access_token=D08A024B0AAD7DD0F279BF8D0EDC8D1A&oauth_consumer_key=101420900&openid=0C4D91D8B0F80BF0C3E9D295DCA362B7
+
+
+https://graph.qq.com/oauth2.0/show?which=Login&display=pc&client_id=101420900&redirect_uri=http://127.0.0.1/qqLoginCallback&response_type=code&state=7d0b4102a32942bf93202dbc63272c41&scope=get_user_info,add_topic,add_one_blog,add_album,upload_pic,list_album,add_share,check_page_fans,add_t,add_pic_t,del_t,get_repost_list,get_info,get_other_info,get_fanslist,get_idollist,add_idol,del_ido,get_tenpay_addr(%C7%EB%D0%DE%B8%C4%B4%CB%B4%A6)
