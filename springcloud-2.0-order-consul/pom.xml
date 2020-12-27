@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.itmayiedu</groupId>
-	<artifactId>springcloud-2.0-eureka-server</artifactId>
+	<artifactId>springcloud-2.0-order-consul</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<parent>
@@ -23,11 +23,17 @@
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
-		<!--SpringCloud eureka-server -->
+		<!-- SpringBoot整合Web组件 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!-- SpringBoot整合eureka客户端 -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
+
 	</dependencies>
 	<!-- 注意： 这里必须要添加， 否者各种依赖有问题 -->
 	<repositories>
