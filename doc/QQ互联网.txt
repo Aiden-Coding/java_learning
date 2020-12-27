@@ -1,0 +1,29 @@
+
+1.获取授权码
+https://graph.qq.com/oauth2.0/authorize?response_type=code&
+client_id=101462456&redirect_uri=http://mayikt.s1.natapp.cc/qqLoginBack&state=111
+
+2.通过Authorization Code获取Access Token
+
+https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&client_id=101462456&client_secret=4488033be77331e7cdcaed8ceadc10d5
+&code=AA97586206963149A5A4DB741D9EC917&redirect_uri=http://mayikt.s1.natapp.cc/qqLoginBack
+
+3.使用Access Token获取openId
+
+https://graph.qq.com/oauth2.0/me?access_token=44220F1667C13163B59538AB594F9BEC
+
+4.使用用户openId获取用户信息
+
+https://graph.qq.com/user/get_user_info?access_token=44220F1667C13163B59538AB594F9BEC&oauth_consumer_key=101462456&openid=D66EBEF85BE60540D817994BBF435264
+
+1、获取授权码
+
+http://localhost:8080/oauth/authorize?response_type=code&client_id=client_1&redirect_uri=http://www.mayikt.com 
+
+
+2、使用授权码获取Access Token
+
+http://localhost:8080/oauth/token?grant_type=authorization_code&code=fOdmx2&redirect_uri=http://www.mayikt.com&scope=all
+
+
+1.生成授权连接
