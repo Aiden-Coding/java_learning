@@ -39,6 +39,7 @@ public class TestSessionController {
 	// 创建session 会话
 	@RequestMapping("/createSession")
 	public String createSession(HttpServletRequest request, String nameValue) {
+		// 默认 创建一个session，
 		HttpSession session = request.getSession();
 		System.out.println(
 				"存入Session  sessionid:信息" + session.getId() + ",nameValue:" + nameValue + ",serverPort:" + serverPort);
@@ -49,9 +50,11 @@ public class TestSessionController {
 	// 获取session 会话
 	@RequestMapping("/getSession")
 	public Object getSession(HttpServletRequest request) {
+		// 设置为true 情况下的时候，客户端使用对应的sessionid 查询不到对应的sesison 会直接创建一个新的session
+		// 设置为false 情况下的时候，客户端使用对应的sessionid 查询不到对应的sesison 不 会直接创建一个新的session
 		HttpSession session = request.getSession(false);
 		if (session == null) {
-			return serverPort + "-" + "没有找到对应的session值";
+			return serverPort + "  该服务器上没有存放对应的session值";
 		}
 		System.out.println("获取Session sessionid:信息" + session.getId() + "serverPort:" + serverPort);
 		Object value = session.getAttribute("name");
