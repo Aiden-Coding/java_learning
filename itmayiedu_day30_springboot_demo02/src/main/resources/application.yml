@@ -1,0 +1,18 @@
+###通过下面的配置启用所有的监控端点，默认情况下，这些端点是禁用的；
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+        
+management:
+  security:
+    enabled: false
+
+
+info:
+  itmayiedu: yushengjun
+  addres: www.itmayiedu.com 
+
+
