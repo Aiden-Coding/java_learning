@@ -28,13 +28,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.itmayeidu.ext.ExtApiIdempotent;
 import com.itmayeidu.ext.ExtApiToken;
 import com.itmayeidu.utils.ConstantUtils;
-import com.itmayeidu.utils.RedisTokenUtils;
-import com.itmayeidu.utils.TokenUtils;
+import com.itmayeidu.utils.RedisToken;
 
 /**
  * 功能说明: <br>
  * 创建作者:每特教育-余胜军<br>
- * 创建时间:2018年7月16日 下午4:44:23<br>
+ * 创建时间:2018年7月16日 下午10:12:25<br>
  * 教育机构:每特教育|蚂蚁课堂<br>
  * 版权说明:上海每特教育科技有限公司版权所有<br>
  * 官方网站:www.itmayiedu.com|www.meitedu.com<br>
@@ -45,74 +44,60 @@ import com.itmayeidu.utils.TokenUtils;
 @Component
 public class ExtApiAopIdempotent {
 	@Autowired
-	private RedisTokenUtils redisTokenUtils;
+	private RedisToken redisToken;
 
+	// 1.使用AOP环绕通知拦截所有访问（controller）
 	@Pointcut("execution(public * com.itmayiedu.controller.*.*(..))")
 	public void rlAop() {
 	}
 
-	// 前置通知转发Token参数
+	// 前置通知
 	@Before("rlAop()")
 	public void before(JoinPoint point) {
 		MethodSignature signature = (MethodSignature) point.getSignature();
 		ExtApiToken extApiToken = signature.getMethod().getDeclaredAnnotation(ExtApiToken.class);
 		if (extApiToken != null) {
-			extApiToken();
+			// 可以放入到AOP代码 前置通知
+			getRequest().setAttribute("token", redisToken.getToken());
 		}
 	}
 
-	// 环绕通知验证参数
+	// 环绕通知
 	@Around("rlAop()")
-	public Object doAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-		MethodSignature signature = (MethodSignature) proceedingJoinPoint.getSignature();
-		ExtApiIdempotent extApiIdempotent = signature.getMethod().getDeclaredAnnotation(ExtApiIdempotent.class);
-		if (extApiIdempotent != null) {
-			return extApiIdempotent(proceedingJoinPoint, signature);
+	public Object doBefore(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+
+		// 2.判断方法上是否有加ExtApiIdempotent
+		MethodSignature methodSignature = (MethodSignature) proceedingJoinPoint.getSignature();
+		ExtApiIdempotent declaredAnnotation = methodSignature.getMethod().getDeclaredAnnotation(ExtApiIdempotent.class);
+		// 3.如何方法上有加上ExtApiIdempotent
+		if (declaredAnnotation != null) {
+			String type = declaredAnnotation.type();
+			// 如何使用Token 解决幂等性
+			// 步骤：
+			String token = null;
+			HttpServletRequest request = getRequest();
+			if (type.equals(ConstantUtils.EXTAPIHEAD)) {
+				token = request.getHeader("token");
+			} else {
+				token = request.getParameter("token");
+			}
+
+			if (StringUtils.isEmpty(token)) {
+				return "参数错误";
+			}
+			// 3.接口获取对应的令牌,如果能够获取该(从redis获取令牌)令牌(将当前令牌删除掉) 就直接执行该访问的业务逻辑
+			boolean isToken = redisToken.findToken(token);
+			// 4.接口获取对应的令牌,如果获取不到该令牌 直接返回请勿重复提交
+			if (!isToken) {
+				response("请勿重复提交!");
+				// 后面方法不在继续执行
+				return null;
+			}
+
 		}
 		// 放行
 		Object proceed = proceedingJoinPoint.proceed();
 		return proceed;
-	}
-
-	// 验证Token
-	public Object extApiIdempotent(ProceedingJoinPoint proceedingJoinPoint, MethodSignature signature)
-			throws Throwable {
-		ExtApiIdempotent extApiIdempotent = signature.getMethod().getDeclaredAnnotation(ExtApiIdempotent.class);
-		if (extApiIdempotent == null) {
-			// 直接执行程序
-			Object proceed = proceedingJoinPoint.proceed();
-			return proceed;
-		}
-		// 代码步骤：
-		// 1.获取令牌 存放在请求头中
-		HttpServletRequest request = getRequest();
-		String valueType = extApiIdempotent.value();
-		if (StringUtils.isEmpty(valueType)) {
-			response("参数错误!");
-			return null;
-		}
-		String token = null;
-		if (valueType.equals(ConstantUtils.EXTAPIHEAD)) {
-			token = request.getHeader("token");
-		} else {
-			token = request.getParameter("token");
-		}
-		if (StringUtils.isEmpty(token)) {
-			response("参数错误!");
-			return null;
-		}
-		if (!redisTokenUtils.findToken(token)) {
-			response("请勿重复提交!");
-			return null;
-		}
-		Object proceed = proceedingJoinPoint.proceed();
-		return proceed;
-	}
-
-	public void extApiToken() {
-		String token = redisTokenUtils.getToken();
-		getRequest().setAttribute("token", token);
-
 	}
 
 	public HttpServletRequest getRequest() {
