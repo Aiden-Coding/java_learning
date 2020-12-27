@@ -8,7 +8,6 @@ import com.mayikt.entity.Permission;
 
 public interface PermissionMapper {
 
-	// 查询苏所有权限
 	@Select(" select * from sys_permission ")
 	List<Permission> findAllPermission();
 

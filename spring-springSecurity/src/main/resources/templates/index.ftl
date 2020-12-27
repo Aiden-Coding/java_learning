@@ -7,5 +7,3 @@
 <a href="deleteOrder">删除订单</a>
 <br>
 <a href="updateOrder">修改订单</a>
-<br>
-<a href="findByOrder">根据订单号码查询订单</a>

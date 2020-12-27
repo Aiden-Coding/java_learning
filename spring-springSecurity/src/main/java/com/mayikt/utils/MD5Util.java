@@ -4,7 +4,6 @@ import java.security.MessageDigest;
 
 public class MD5Util {
 
-	// 加盐
 	private static final String SALT = "mayikt";
 
 	public static String encode(String password) {

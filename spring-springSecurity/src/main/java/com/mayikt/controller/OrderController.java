@@ -1,9 +1,13 @@
 package com.mayikt.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.mayikt.entity.User;
+import com.mayikt.mapper.UserMapper;
 
 @Controller
 public class OrderController {
@@ -43,11 +47,12 @@ public class OrderController {
 		return "login";
 	}
 
-	/// 实现 userAdd 角色能够查询到findByOrder
-	@RequestMapping("/findByOrder")
-	@ResponseBody
-	public String findByOrder() {
-		return "查询订单成功";
-	}
+	@Autowired
+	private UserMapper userMapper;
 
+	@RequestMapping("/findUser")
+	@ResponseBody
+	public User findUser(String userName) {
+		return userMapper.findByUsername(userName);
+	}
 }

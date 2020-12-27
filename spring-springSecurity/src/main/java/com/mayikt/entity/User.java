@@ -28,6 +28,7 @@ public class User implements UserDetails {
 	private List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
 	public Collection<? extends GrantedAuthority> getAuthorities() {
+
 		return authorities;
 	}
 
