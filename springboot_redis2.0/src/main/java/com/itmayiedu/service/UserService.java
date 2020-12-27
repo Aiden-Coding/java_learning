@@ -6,8 +6,6 @@
  */
 package com.itmayiedu.service;
 
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +17,7 @@ import com.itmayiedu.mapper.UserMapper;
 /**
  * 功能说明: <br>
  * 创建作者:每特教育-余胜军<br>
- * 创建时间:2018年8月4日 下午4:14:35<br>
+ * 创建时间:2018年8月4日 下午10:06:41<br>
  * 教育机构:每特教育|蚂蚁课堂<br>
  * 版权说明:上海每特教育科技有限公司版权所有<br>
  * 官方网站:www.itmayiedu.com|www.meitedu.com<br>
@@ -30,42 +28,45 @@ import com.itmayiedu.mapper.UserMapper;
 public class UserService {
 	@Autowired
 	private EhCacheUtils ehCacheUtils;
-	private static final String CACHENAME_USERCACHE = "userCache";
 	@Autowired
 	private RedisService redisService;
 	@Autowired
 	private UserMapper userMapper;
+	private String cacheName = "userCache";
 
 	public Users getUser(Long id) {
+		// 1.先查询一级缓存 key 以 当前的类名+方法名称+id +参数值FD
 		String key = this.getClass().getName() + "-" + Thread.currentThread().getStackTrace()[1].getMethodName()
 				+ "-id:" + id;
-		// 1.先查找一级缓存(本地缓存),如果本地缓存有数据直接返回
-		Users ehUser = (Users) ehCacheUtils.get(CACHENAME_USERCACHE, key);
-		if (ehUser != null) {
-			System.out.println("使用key:" + key + ",查询一级缓存 ehCache 获取到ehUser:" + JSONObject.toJSONString(ehUser));
-			return ehUser;
+		// 1.1 查询一级缓存数据有对应的值存在，如果存在直接返回
+		Users users = (Users) ehCacheUtils.get(cacheName, key);
+		if (users != null) {
+			System.out.println("key:" + key + ",从一级缓存获取数据:users:" + users.toString());
+			return users;
 		}
-		// 2. 如果本地缓存没有该数据，直接查询二级缓存(redis)
-		String redisUserJson = redisService.getString(key);
-		if (!StringUtils.isEmpty(redisUserJson)) {
-			// 将json 转换为对象(如果二级缓存redis中有数据直接返回二级缓存)
+		// 1.1 查询一级缓存数据没有对应的值存在，直接查询二级缓存redis redis 中如何存放对象呢？ json格式
+		// 2.查询二级缓存
+		String userJSON = redisService.getString(key);
+		// 如果redis缓存中有这个对应的 值，修改一级缓存
+		if (!StringUtils.isEmpty(userJSON)) {
 			JSONObject jsonObject = new JSONObject();
-			Users user = jsonObject.parseObject(redisUserJson, Users.class);
-			// 更新一级缓存
-			ehCacheUtils.put(CACHENAME_USERCACHE, key, user);
-			System.out.println("使用key:" + key + ",查询二级缓存 redis 获取到ehUser:" + JSONObject.toJSONString(user));
-			return user;
+			Users resultUser = jsonObject.parseObject(userJSON, Users.class);
+			// 存放在一级缓存
+			ehCacheUtils.put(cacheName, key, resultUser);
+			return resultUser;
 		}
-		// 3. 如果二级缓存redis中也没有数据,查询数据库
+		// 3.查询db 数据库
 		Users user = userMapper.getUser(id);
 		if (user == null) {
 			return null;
 		}
-		// 更新一级缓存和二级缓存
-		String userJson = JSONObject.toJSONString(user);
-		redisService.setString(key, userJson);
-		ehCacheUtils.put(CACHENAME_USERCACHE, key, user);
-		System.out.println("使用key:" + key + "，一级缓存和二级都没有数据,直接查询db" + userJson);
+		// 如何保证 两级缓存有效期相同 时差问题
+		// 存放二级缓存redis
+		redisService.setString(key, new JSONObject().toJSONString(user));
+		// 存放在一级缓存
+		ehCacheUtils.put(cacheName, key, user);
+		// 一级缓存的有效期时间减去二级缓存执行代码时间
+
 		return user;
 	}
 

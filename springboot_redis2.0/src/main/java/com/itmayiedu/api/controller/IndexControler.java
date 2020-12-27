@@ -29,11 +29,10 @@ import com.itmayiedu.service.UserService;
  */
 @RestController
 public class IndexControler {
-
-	@Autowired
-	private RedisService redisService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private RedisService redisService;
 
 	@RequestMapping("/setString")
 	public String setString(String key, String value) {
@@ -56,9 +55,9 @@ public class IndexControler {
 		return "success";
 	}
 
-	@RequestMapping("/getUser")
-	public Users getUser(Long id) {
-		Users user = userService.getUser(id);
-		return user;
+	@RequestMapping("/getUserId")
+	public Users getUserId(Long id) {
+		return userService.getUser(id);
 	}
+
 }

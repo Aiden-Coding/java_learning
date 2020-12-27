@@ -32,6 +32,7 @@ public class EhCacheUtils {
 	@Autowired
 	private EhCacheCacheManager ehCacheCacheManager;
 
+	// cacheName 和 key 区别 就是 redis中的db库 组
 	// 添加本地缓存 (相同的key 会直接覆盖)
 	public void put(String cacheName, String key, Object value) {
 		Cache cache = ehCacheCacheManager.getCacheManager().getCache(cacheName);
