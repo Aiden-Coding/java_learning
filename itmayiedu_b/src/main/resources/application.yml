@@ -1,0 +1,36 @@
+spring:
+  mvc:
+    view:
+      # 页面默认前缀目录
+      prefix: /WEB-INF/jsp/
+      # 响应页面默认后缀
+      suffix: .jsp
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    test-while-idle: true
+    test-on-borrow: true
+    validation-query: SELECT 1 FROM DUAL
+    time-between-eviction-runs-millis: 300000
+    min-evictable-idle-time-millis: 1800000
+  redis:
+    database: 1
+    host: 106.15.185.133
+    port: 6379
+    password: meitedu.+@
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+    timeout: 10000
+domain: 
+ name: www.itmayiedu.com
+ 
+private_key: MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEAktdLUUeNckDxmmHAWEG6Ud0Vj5qX94jII56C6eBqlC+Sz7jdUo1N5zmx9sYwXfWUtsPobTafwi9KmSesCGVOuQIDAQABAkAMbbKPR5oeQIbyhTGNhsqpYSgRBom0RtyBv0nfV8JNlnQv7dpUOe+Ta/vXiZz4hcjh/xCRx8DydThbMcHgI41xAiEA2fFwNNeaj1FMu8VZqVdhdsHpAYy2wuVgl0shm5tqs50CIQCse20m1pePIDbuABFDaHnuPxGExFUX4Ua/eDNVy6lCzQIhAIqDfEDZVo4HqbEdOGL7+iG0FBa8C9vKVJ1TTsTK/gGxAiEApuEESn91Q9U3UC5ghYef8RK0MHCEpAYiHT5+7JOPwEECIH+F3U+zRyrvLTlA4MEgdaKnuy5Oki/iMFvic4vSiqkw
+ 
