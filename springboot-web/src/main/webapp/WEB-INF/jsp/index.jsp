@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<img src="http://meitedu.s1.natapp.cc/imgs/01.png">
+	
 	<form action="postIndex" method="post">
 		输入内容: <input type="text" name="name"> <br> <input
 			type="submit">

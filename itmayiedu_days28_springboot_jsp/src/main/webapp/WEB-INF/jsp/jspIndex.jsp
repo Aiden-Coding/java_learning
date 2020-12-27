@@ -8,6 +8,7 @@
 </head>
 <body>
 
-${name}
+	<h1>我是B项目....</h1>
+	<img alt="" src="http://meitedu.s1.natapp.cc/imgs/01.png">
 </body>
 </html>

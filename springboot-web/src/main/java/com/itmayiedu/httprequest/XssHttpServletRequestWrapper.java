@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
-// 重写HttpServletRequestWrapper 防止XSS攻击
 public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 	private HttpServletRequest request;
 
@@ -26,15 +25,16 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
 	@Override
 	public String getParameter(String name) {
-		// 过滤getParameter参数 检查是否有特殊字符
-		String value = super.getParameter(name);
-		System.out.println("value:" + value);
-		if (!StringUtils.isEmpty(value)) {
-			// 将中文转换为字符编码格式，将特殊字符变为html源代码保存
-			value = StringEscapeUtils.escapeHtml(value);
-			System.out.println("newValue:" + value);
+		// 获取之前的参数
+		String olValue = super.getParameter(name);
+		System.out.print("原来参数:" + olValue);
+		if (!StringUtils.isEmpty(olValue)) {
+			// 将特殊字符转换成html展示 // 3.使用(StringEscapeUtils.escapeHtml(name)转换特殊参数
+			olValue = StringEscapeUtils.escapeHtml(olValue);
+			System.out.println("转换后" + olValue);
 		}
-		return value;
+		System.out.println();
+		return olValue;
 	}
 
 }
