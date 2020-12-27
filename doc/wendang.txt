@@ -1,0 +1,16 @@
+1、生成授权CODE链接，获取授权码  ----用户点击
+
+https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101462456&state=888&redirect_uri=http://mayikt.s1.natapp.cc/qqLoginBack
+
+2、使用用户获取的授权码，获取对应的accessToken
+
+https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&client_id=101462456&client_secret=4488033be77331e7cdcaed8ceadc10d5&code=E91DF5B0E2455A6B2AF25CD9FA1C7582&
+redirect_uri=http://mayikt.s1.natapp.cc/qqLoginBack
+
+3、使用accessToken获取用户openid
+
+https://graph.qq.com/oauth2.0/me?access_token=B2FD1997D149313F16C93D91C75AC75E
+4、使用openid获取用户信息
+
+
+https://graph.qq.com/user/get_user_info?access_token=B2FD1997D149313F16C93D91C75AC75E&oauth_consumer_key=101462456&openid=4B1717CBBFE1E900D2A1482C4A18B3BD

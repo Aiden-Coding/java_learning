@@ -1,0 +1,7 @@
+各位同学们，今天内部课 基于SpringCloud Oauth2搭建微服务开放平台  大家记得来哦！
+1.什么是Oauth2.0协议
+2.JWT与Oauth2.0区别
+3.QQ联合登陆原理
+4.基于access token调用腾讯接口
+5.Oauth2.0认证模式
+6.基于SpringCloudOauth2.0搭建微服务开放平台
