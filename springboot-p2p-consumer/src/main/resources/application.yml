@@ -1,0 +1,25 @@
+spring:
+  activemq:
+  ###MQ连接通讯地址
+    broker-url: tcp://127.0.0.1:61616
+  ###账号
+    user: admin
+  ###密码  
+    password: admin
+  mail:
+  ###163邮件服务
+    host: smtp.163.com
+  ###发送邮件账号
+    username: yushengjun6442018@163.com
+  ###pop协议授权码  
+    password: yushengjun644
+    enable:  true
+    smtp:
+      auth: true
+    starttls:
+      enable: true
+      required: true
+###自定义队列    
+my_queue: springboot2.0-queue
+server:
+  port: 8089
