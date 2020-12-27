@@ -8,21 +8,16 @@ import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/test")
 public class TestController {
 
-	public String test(String name) {
-
-		System.out.println("test...name:" + name);
-		return "success";
-	}
-
 	@ResponseBody
 	@RequestMapping("/test")
-	public String test(String name, Integer age) {
-		System.out.println("test...name:" + name + ",age:" + age);
+	public String test() {
+		System.out.println("我是springmvc框架");
 		return "success";
 	}
 
