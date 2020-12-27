@@ -1,0 +1,15 @@
+https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5c43fde3c9733d9e&redirect_uri=http://meitedu.s1.natapp.cc&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect
+
+
+https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx5c43fde3c9733d9e&secret=b8b217126c33a5fb7074927d5e72a81a&code=CODE&grant_type=061yIRgM13IOc41ZQveM1tODgM1yIRge
+
+
+
+
+
+ https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx5c43fde3c9733d9e&secret=b8b217126c33a5fb7074927d5e72a81a&code=061WfM4E0TABnc2Cv04E02Lb5E0WfM4b&grant_type=authorization_code
+
+
+
+
+ https://api.weixin.qq.com/sns/userinfo?access_token=11_ZsmU50peG5LkOxn6XiFwXl9PRmlAlrFvWZ9fgxd3OM-vbiAHt_uf7gqG9iA9MnfIqf375eI8rkxf6GyqdsAkWw&openid=okYSmtzp4wWCrDCncMfGSRECVSeM&lang=zh_CN
