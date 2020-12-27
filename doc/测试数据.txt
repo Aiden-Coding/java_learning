@@ -1,0 +1,111 @@
+
+POST /mymayikt/_mapping/disk
+{
+  "disk":{
+    "properties":{
+       "name":{
+         "type":"text",
+         "analyzer":"ik_smart",
+         "search_analyzer":"ik_smart"
+       },
+       "source":{
+         "type":"keyword"
+       },
+      "describe":{
+         "type":"text",
+         "analyzer":"ik_smart",
+         "search_analyzer":"ik_smart"
+       },
+       "shartime":{
+         "type":"date"
+       },
+       "browsetimes":{
+         "type":"long"
+       },
+      "filesize":{
+         "type":"float"
+       },
+      "sharpeople":{
+         "type":"keyword"
+       },
+       "collectiontime":{
+         "type":"date"
+       },
+        "baiduaddres":{
+         "type":"keyword"
+       }
+    }
+  }
+  
+}
+
+
+POST /clouddisk/disk
+{
+	"name": "2018史上最全SpringBoot",
+	"source": "百度云盘",
+	"describe": "该课程由蚂蚁课堂|每特教育出品",
+	"shartime": "2018-10-10",
+	"browsetimes": 100000,
+	"filesize": 4.35,
+	"sharpeople": "余胜军644",
+	"collectiontime": "2018-11-24",
+	"baiduaddres": "https://pan.baidu.com/s/1VQxFq6JnKh0KP-5aMq-WpA#list/path=%2F"
+
+}
+
+POST /clouddisk/disk
+{
+	"name": "2018史上最全SpringCloud",
+	"source": "百度云盘",
+	"describe": "该课程由蚂蚁课堂|每特教育出品",
+	"shartime": "2018-10-12",
+	"browsetimes": 100000,
+	"filesize": 6.35,
+	"sharpeople": "余胜军644",
+	"collectiontime": "2018-11-24",
+	"baiduaddres": "https://pan.baidu.com/s/1VQxFq6JnKh0KP-5aMq-WpA#list/path=%2F"
+
+}
+
+POST /clouddisk/disk
+{
+	"name": "SpringBoot整合SSM课程",
+	"source": "百度云盘",
+	"describe": "该课程由蚂蚁课堂|每特教育出品",
+	"shartime": "2018-10-10",
+	"browsetimes": 100000,
+	"filesize": 1.35,
+	"sharpeople": "余胜军644",
+	"collectiontime": "2018-11-24",
+	"baiduaddres": "https://pan.baidu.com/s/1VQxFq6JnKh0KP-5aMq-WpA#list/path=%2F"
+
+}
+
+POST /clouddisk/disk
+{
+	"name": "每特教育SpringCloud视频教程",
+	"source": "百度云盘",
+	"describe": "该课程由蚂蚁课堂|每特教育出品",
+	"shartime": "2018-10-10",
+	"browsetimes": 100000,
+	"filesize": 1.35,
+	"sharpeople": "余胜军644",
+	"collectiontime": "2018-11-24",
+	"baiduaddres": "https://pan.baidu.com/s/1VQxFq6JnKh0KP-5aMq-WpA#list/path=%2F"
+
+}
+
+POST /clouddisk/disk
+{
+	"name": "蚂蚁课堂纯手写源码视频教程",
+	"source": "百度云盘",
+	"describe": "该课程由蚂蚁课堂|每特教育出品",
+	"shartime": "2018-10-10",
+	"browsetimes": 100000,
+	"filesize": 1.35,
+	"sharpeople": "余胜军644",
+	"collectiontime": "2018-11-24",
+	"baiduaddres": "https://pan.baidu.com/s/1VQxFq6JnKh0KP-5aMq-WpA#list/path=%2F"
+
+}
