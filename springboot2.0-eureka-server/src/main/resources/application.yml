@@ -1,0 +1,18 @@
+###eureka 服务端口号
+server:
+  port: 8200
+spring: 
+ application: 
+  name: eureka-server
+####服务注册名称
+eureka:
+  instance:
+    hostname: http://127.0.0.1:8200
+###客户端调用地址
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8100/eureka/
+####因为该应用为注册中心，不会注册自己
+#    register-with-eureka: false
+####因为自己为注册中心 ,不会去在该应用中的检测服务
+#    fetch-registry: false
