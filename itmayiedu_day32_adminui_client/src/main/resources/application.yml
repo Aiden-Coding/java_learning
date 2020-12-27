@@ -1,0 +1,13 @@
+spring: ##配置client 注册到admin ui 平台
+  boot:
+    admin:
+      client:
+        url: http://localhost:8080
+server:
+  port: 8081 ### 端口号
+### 开放所有的监控接口监控权限  
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
