@@ -1,55 +1,53 @@
-package com.mayikt.controller;
-
-import java.util.List;
-import java.util.Optional;
-
-import org.apache.commons.lang.StringUtils;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.SortBuilders;
-import org.elasticsearch.search.sort.SortOrder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.google.common.collect.Lists;
-import com.mayikt.entity.CloudDiskEntity;
-import com.mayikt.repository.CloudDiskDao;
-
-@RestController
-public class CloudDiskController {
-	@Autowired
-	private CloudDiskDao cloudDiskDao;
-
-	// 根据id查询文档信息
-	@RequestMapping("/findById/{id}")
-	public Optional<CloudDiskEntity> findById(@PathVariable String id) {
-		return cloudDiskDao.findById(id);
-	}
-
-	// 模糊查询文档信息
-	@RequestMapping("/findCloudDisk")
-	public Page<CloudDiskEntity> findCloudDisk(String name, String describe,
-			@PageableDefault(page = 0, value = 2) Pageable pageable) {
-		// 模糊查询标题名称
-		BoolQueryBuilder builder = QueryBuilders.boolQuery();
-		if (!StringUtils.isEmpty(name)) {
-			MatchQueryBuilder nameMatchQuery = QueryBuilders.matchQuery("name", name);
-			builder.must(nameMatchQuery);
-		}
-		if (!StringUtils.isEmpty(describe)) {
-			// 模糊查询描述
-			MatchQueryBuilder matchQuery = QueryBuilders.matchQuery("describe", describe);
-			builder.must(matchQuery);
-		}
-
-		return cloudDiskDao.search(builder, pageable);
-	}
-
-}
+// package com.mayikt.controller;
+//
+// import java.util.Optional;
+//
+// import org.apache.commons.lang.StringUtils;
+// import org.elasticsearch.index.query.BoolQueryBuilder;
+// import org.elasticsearch.index.query.MatchQueryBuilder;
+// import org.elasticsearch.index.query.QueryBuilders;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.data.domain.Page;
+// import org.springframework.data.domain.Pageable;
+// import org.springframework.data.web.PageableDefault;
+// import org.springframework.web.bind.annotation.PathVariable;
+// import org.springframework.web.bind.annotation.RequestMapping;
+// import org.springframework.web.bind.annotation.RestController;
+//
+// import com.mayikt.entity.CloudDiskEntity;
+// import com.mayikt.repository.CloudDiskDao;
+//
+//// SpringBoot 整合ES增删改查
+// @RestController
+// public class CloudDiskController {
+//
+// @Autowired
+// private CloudDiskDao cloudDiskDao;
+//
+// // /findById/1
+// // /findById/2
+// @RequestMapping("/findById/{id}")
+// public Optional<CloudDiskEntity> findById(@PathVariable String id) {
+// return cloudDiskDao.findById(id);
+// }
+//
+// // page 表示请求的页数 从0开始
+// // value size 每一页展示多少条数据
+// // @PageableDefault 默认值
+// // 2018史上最全SpringBoot 拆分成 史上，最全，springboot
+// @RequestMapping("/search")
+// public Page<CloudDiskEntity> search(String keyWord, @PageableDefault(page =
+// 0, value = 2) Pageable pageable) {
+// // 查询所有的
+// BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+// if (!StringUtils.isEmpty(keyWord)) {
+// // 模糊查询 一定要ik中文
+// MatchQueryBuilder matchQuery = QueryBuilders.matchQuery("name", keyWord);
+// boolQuery.must(matchQuery);
+// }
+// Page<CloudDiskEntity> page = cloudDiskDao.search(boolQuery, pageable);
+// return page;
+//
+// }
+//
+// }

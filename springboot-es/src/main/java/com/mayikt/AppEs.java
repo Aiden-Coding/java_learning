@@ -6,10 +6,10 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 
 @SpringBootApplication
 @EnableElasticsearchRepositories(basePackages = "com.mayikt.repository")
-public class AppES {
+public class AppEs {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AppES.class, args);
+		SpringApplication.run(AppEs.class, args);
 	}
 
 }

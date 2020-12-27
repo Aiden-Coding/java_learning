@@ -26,8 +26,7 @@
       </div>
       <br/>
       <div align="center">
-          <span style="font-size: 18px;" ></span>
-          <span style="font-size: 18px;" ></span>
+          <span style="font-size: 18px;" >检索出${total}条数据,耗时:${time}毫秒</span>
       </div>
       <br/>
       <br/>
@@ -45,16 +44,34 @@
              	<#list page.content as p>
                  <tr >
                      <th style="text-align: left;" >
+                      <#if keyword??>
                      ${p.name?replace(keyword, '<span style="color: red">${keyword}</span>')}
+				        <#else>
+					   ${p.name}
+				    </#if>
+
                      
                      </th>
-                     <th style="text-align: left;">${p.filesize}</th>
-                     <th style="text-align: left;">${p.sharpeople}</th>
-                     <th style="text-align: left;">云盘地址 </th>
+                     <th style="text-align: center;">${p.filesize}</th>
+                     <th style="text-align: center;">${p.sharpeople}</th>
+                     <th style="text-align: center;"><a href="${p.baiduaddres}">云盘地址</a> </th>
                 </tr>
                </#list>	
              </tbody>
       </table>
+      <div style="font-size: 21px;">
+          	<#list 1..totalPage as i>    
+     	  <#if keyword??>
+     	        <a href="/search?keyword=${keyword}&page=${i-1}" >${i}</a>
+     	       <#else>
+     	          <a href="/search?page=${i-1}" >${i}</a>
+     	     </#if>     
+  
+         </#list>
+     
+              页
+      </div>
+         
       </div>
 </body>
 </html>

@@ -4,6 +4,7 @@
 	<groupId>com.mayikt</groupId>
 	<artifactId>springboot-es</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -23,7 +24,6 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.google.collections</groupId>
 			<artifactId>google-collections</artifactId>
@@ -36,4 +36,5 @@
 		</dependency>
 
 	</dependencies>
+
 </project>

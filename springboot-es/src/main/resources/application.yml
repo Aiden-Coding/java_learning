@@ -20,3 +20,6 @@ spring:
   # 设置静态文件路径，js,css等
   mvc:
     static-path-pattern: /static/**
+
+server:
+  port: 80
