@@ -9,3 +9,4 @@ target
 *.hprof
 *.log
 *.lck
+*.springBeans
