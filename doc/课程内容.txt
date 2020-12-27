@@ -1,0 +1,8 @@
+各位同学们，今天晚上20：30-22:30 腾讯课堂内部课  SpringCloud消息驱动组件 Stream  这基本上是微服务对MQ做一个总结哦
+课程内容:
+1.什么是SpringCloud消息驱动
+2.消息驱动stream实现原理
+3.消息驱动stream与传统MQ区别
+3.基于消息驱动stream整合kafka和rabbitmq
+4.基于消息驱动stream消息分组和分区模式
+5.kafka界面话管理平台

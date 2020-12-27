@@ -1,0 +1,19 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: spingcloud-stream-producer
+#  rabbitmq:
+#    host: 192.168.174.128
+#    port: 5672
+#    username: guest
+#    password: guest
+  cloud:
+    stream:
+      bindings:
+        my_msg:
+          producer:
+            #通过该参数指定了分区键的表达式规则，可以根据实际的输出消息规则配置 SpEL 来生成合适的分区键
+            partitionKeyExpression: payload
+            ###分区总数
+            partitionCount: 2
