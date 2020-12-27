@@ -7,3 +7,5 @@ target
 .settings
 .DS_Store
 *.hprof
+*.log
+*.lck
