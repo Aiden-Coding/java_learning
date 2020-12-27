@@ -1,0 +1,13 @@
+
+###会员项目的端口号
+server:
+  port: 8010
+###服务别名----服务注册到注册中心名称 
+spring:
+###会员服务项目注册到zk服务器上面
+  cloud:
+    zookeeper:
+      connect-string: localhost:2181
+  application:
+    name: app-itmayiedu-member
+

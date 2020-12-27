@@ -1,0 +1,13 @@
+
+###会员项目的端口号
+server:
+  port: 8000
+###服务别名----服务注册到注册中心名称 
+spring:
+  application:
+    name: app-itmayiedu-member
+ #####  将我们的会员服务注册盗consul注册中心平台上   
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
