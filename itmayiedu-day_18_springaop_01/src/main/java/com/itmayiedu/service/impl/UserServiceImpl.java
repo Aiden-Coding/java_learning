@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itmayeidu.service.LogService;
+import com.itmayeidu.service.UserService;
+import com.itmayiedu.aop.ExtTransaction;
+//import com.itmayiedu.aop.ExtTransaction;
+//import com.itmayiedu.aop.TransactionUtils;
 import com.itmayiedu.dao.UserDao;
-import com.itmayiedu.service.LogService;
-import com.itmayiedu.service.UserService;
 
 //user 服务层
 @Service
@@ -40,34 +43,27 @@ public class UserServiceImpl implements UserService {
 	// }
 	// }
 
-	// 声明：@Transactional 或者XML方式
-	// 方法执行开始执行前，开启提交事务
-	// @ExtTransaction
 	// public void add() {
+	// // 注意事项： 在使用spring事务的时候，service 不要try 将异常抛出给外层aop 异常通知接受回滚
 	// try {
 	// userDao.add("test001", 20);
 	// int i = 1 / 0;
-	// System.out.println("################" + i);
+	// System.out.println("################");
 	// userDao.add("test002", 21);
 	// } catch (Exception e) {
-	// // 获取当前事务，手动进行回滚
+	// e.printStackTrace();
 	// TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 	// }
-	// // begin commit/rollback
 	// }
-	//
-	// @ExtTransaction
-	@Transactional
+	// @Transactional
+	@ExtTransaction
 	public void add() {
-		// 调用接口的时候 接口失败 需要回滚，但是日志记录不需要回滚。
-		logService.addLog(); // 后面程序发生错误，不能影响到我的回滚### 正常当addLog方法执行完毕，就应该提交事务
+		logService.addLog();
 		userDao.add("test001", 20);
-		// int i = 1 / 0;
+		int i = 1 / 0;
 		System.out.println("################");
 		userDao.add("test002", 21);
-
 	}
-	// 方法执行完毕之后，才会提交事务
 
 	public void del() {
 		System.out.println("del");

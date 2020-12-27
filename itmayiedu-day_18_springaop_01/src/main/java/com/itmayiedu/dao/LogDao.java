@@ -12,7 +12,7 @@ public class LogDao {
 	public void add(String name) {
 		String sql = "INSERT INTO t_log(log_name) VALUES(?);";
 		int updateResult = jdbcTemplate.update(sql, name);
-		System.out.println("##LogDao##updateResult:" + updateResult);
+		System.out.println("updateResult:" + updateResult);
 	}
 
 }
