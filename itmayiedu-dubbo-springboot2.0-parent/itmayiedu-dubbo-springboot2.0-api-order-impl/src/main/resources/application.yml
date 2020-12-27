@@ -1,0 +1,12 @@
+###服务端口号
+server:
+  port: 8001
+###服务名称
+spring: 
+ dubbo: 
+    application: 
+      name: dubbo-order
+    registry: 
+      address: zookeeper://127.0.0.1:2181
+    scan: com.itmayiedu.api.order.controller
+      
