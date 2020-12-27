@@ -1,0 +1,16 @@
+ ##动态去consul 获取注册的真实反向代理地址
+   upstream itmayiedu{
+        server 127.0.0.1:11111;
+        upsync 192.168.212.134:8500/v1/kv/upstreams/itmayiedu upsync_timeout=6m upsync_interval=500ms upsync_type=consul strong_dependency=off;
+        upsync_dump_path /usr/local/nginx/conf/servers/servers_test.conf;
+    }
+
+    server {
+        listen       80;
+        server_name  localhost;
+
+        location / {
+            proxy_pass http://itmayiedu;
+            index  index.html index.htm;
+        }
+    }
