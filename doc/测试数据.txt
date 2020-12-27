@@ -1,0 +1,40 @@
+PUT /mymayikt/user/1
+{
+          "name": "小俊",
+          "age": 21,
+          "sex": 0,
+          "car": "奥迪a6l"
+}
+
+PUT /mymayikt/user/2
+{
+          "name": "小红",
+          "age": 21,
+          "sex": 1,
+          "car": "保时捷911"
+}
+
+
+PUT /mymayikt/user/3
+{
+          "name": "小云",
+          "age": 28,
+          "sex": 0,
+          "car": "奥迪A8L"
+}
+
+PUT /mymayikt/user/4
+{
+          "name": "小腾",
+          "age": 50,
+          "sex": 0,
+          "car": "奔驰S级"
+}
+
+PUT /mymayikt/user/5
+{
+          "name": "小名",
+          "age": 48,
+          "sex": 0,
+          "car": "宝马五系"
+}

@@ -1,0 +1,15 @@
+
+###查询所有的
+GET /mymayikt/user/_search
+###根据多个id查询
+GET /mymayikt/user/_mget
+{
+  "ids":["1","2"]
+  
+}
+####根据年龄查询
+GET /mymayikt/user/_search?q=age:21
+####查询年龄在30岁到60岁
+GET /mymayikt/user/_search?q=age[30 TO 60]
+####查询年龄在30岁到60岁,并且排序，并且分页查询
+GET /mymayikt/user/_search?q=age[30 TO 60]&sort=age:desc&from=0&size=2
