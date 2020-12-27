@@ -1,0 +1,12 @@
+###eureka 服务端口号
+server:
+  port: 8501
+spring:
+  application:
+    name: consul-client
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        hostname: 127.0.0.1
