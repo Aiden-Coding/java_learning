@@ -40,7 +40,9 @@ public class RedisDataSoureceTransaction {
 	 */
 	public TransactionStatus begin() {
 		// 手动begin数据库事务
+		// 1.开启数据库的事务 事务传播行为
 		TransactionStatus transaction = dataSourceTransactionManager.getTransaction(new DefaultTransactionAttribute());
+		// 2.开启redis事务
 		redisUtil.begin();
 		return transaction;
 	}
@@ -58,8 +60,6 @@ public class RedisDataSoureceTransaction {
 		}
 		// 支持Redis与数据库事务同时提交
 		dataSourceTransactionManager.commit(transactionStatus);
-//		redisUtil.exec();
-
 	}
 
 	/**
@@ -72,8 +72,11 @@ public class RedisDataSoureceTransaction {
 		if (transactionStatus == null) {
 			throw new Exception("transactionStatus is null");
 		}
+		// 1.回滚数据库事务 redis事务和数据库的事务同时回滚
 		dataSourceTransactionManager.rollback(transactionStatus);
-		redisUtil.discard();
+		// // 2.回滚redis事务
+		// redisUtil.discard();
 	}
+	// 如果redis的值与数据库的值保持不一致话
 
 }

@@ -3,21 +3,22 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.mayikt</groupId>
-		<artifactId>meite-shop-parent</artifactId>
+		<artifactId>meite-shop-common</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>meite-shop-portal</artifactId>
-	<packaging>pom</packaging>
-	<modules>
-		<module>meite-shop-portal-web</module>
-	</modules>
+	<artifactId>meite-shop-common-web-core</artifactId>
 	<dependencies>
-
-		<!-- springcloud feign组件 -->
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
+
+			<groupId>com.mayikt</groupId>
+			<artifactId>meite-shop-common-core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
+		<dependency>
+			<groupId>nl.bitwalker</groupId>
+			<artifactId>UserAgentUtils</artifactId>
+			<version>1.2.4</version>
+		</dependency>
 	</dependencies>
 </project>

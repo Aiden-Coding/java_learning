@@ -12,10 +12,9 @@ spring:
         template-loader-path:
         - classpath:/templates
     application:
-        name: app-mayikt-member
+        name: app-mayikt-portal-web
 ###服务注册到eureka地址
 eureka:
   client:
     service-url:
            defaultZone: http://localhost:8100/eureka
-

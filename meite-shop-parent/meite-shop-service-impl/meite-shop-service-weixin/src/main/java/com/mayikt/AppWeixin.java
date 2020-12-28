@@ -22,7 +22,7 @@ import com.spring4all.swagger.EnableSwagger2Doc;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableSwagger2Doc
-@EnableApolloConfig
+// @EnableApolloConfig
 @EnableFeignClients
 public class AppWeixin {
 

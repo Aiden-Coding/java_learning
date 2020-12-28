@@ -24,6 +24,7 @@ public class BaseResponse<T> {
 	 * 消息
 	 */
 	private String msg;
+	
 	/**
 	 * 返回
 	 */

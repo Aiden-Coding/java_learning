@@ -3,6 +3,7 @@ package com.mayikt.member.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,7 +14,6 @@ import com.mayikt.constants.Constants;
 import com.mayikt.core.token.GenerateToken;
 import com.mayikt.core.transaction.RedisDataSoureceTransaction;
 import com.mayikt.core.utils.MD5Util;
-import com.mayikt.core.utils.RedisUtil;
 import com.mayikt.member.MemberLoginService;
 import com.mayikt.member.input.dto.UserLoginInpDTO;
 import com.mayikt.member.mapper.UserMapper;
@@ -29,13 +29,9 @@ public class MemberLoginServiceImpl extends BaseApiService<JSONObject> implement
 	private GenerateToken generateToken;
 	@Autowired
 	private UserTokenMapper userTokenMapper;
-	/**
-	 * 手动事务工具类
-	 */
 	@Autowired
-	private RedisDataSoureceTransaction manualTransaction;
+	private RedisDataSoureceTransaction redisDataSoureceTransaction;
 
-	@Override
 	public BaseResponse<JSONObject> login(@RequestBody UserLoginInpDTO userLoginInpDTO) {
 		// 1.验证参数
 		String mobile = userLoginInpDTO.getMobile();
@@ -70,56 +66,64 @@ public class MemberLoginServiceImpl extends BaseApiService<JSONObject> implement
 		if (userDo == null) {
 			return setResultError("用户名称或者密码错误!");
 		}
+		// 用户登陆Token Session 区别
+		// 用户每一个端登陆成功之后，会对应生成一个token令牌（临时且唯一）存放在redis中作为rediskey value userid
 		TransactionStatus transactionStatus = null;
 		try {
-
-			// 1.获取用户UserId
+			// 4.获取userid
 			Long userId = userDo.getUserId();
-			// 2.生成用户令牌Key
-			String keyPrefix = Constants.MEMBER_TOKEN_KEYPREFIX + loginType;
 			// 5.根据userId+loginType 查询当前登陆类型账号之前是否有登陆过，如果登陆过 清除之前redistoken
 			UserTokenDo userTokenDo = userTokenMapper.selectByUserIdAndLoginType(userId, loginType);
-			transactionStatus = manualTransaction.begin();
-			// // ####开启手动事务
+			transactionStatus = redisDataSoureceTransaction.begin();
 			if (userTokenDo != null) {
 				// 如果登陆过 清除之前redistoken
-				String oriToken = userTokenDo.getToken();
-				// 移除Token
-				generateToken.removeToken(oriToken);
-				int updateTokenAvailability = userTokenMapper.updateTokenAvailability(oriToken);
-				if (updateTokenAvailability < 0) {
-					manualTransaction.rollback(transactionStatus);
-					return setResultError("系统错误");
+				String token = userTokenDo.getToken();
+				// 如果开启redis事务的话，删除的时候 方法会返回false
+				Boolean removeToken = generateToken.removeToken(token);
+				// 把该token的状态改为1
+				int updateTokenAvailability = userTokenMapper.updateTokenAvailability(token);
+				if (!toDaoResult(updateTokenAvailability)) {
+					return setResultError("系统错误!");
 				}
+
 			}
 
-			// 4.将用户生成的令牌插入到Token记录表中
+			// .生成对应用户令牌存放在redis中
+
+			// 1.插入新的token
 			UserTokenDo userToken = new UserTokenDo();
 			userToken.setUserId(userId);
 			userToken.setLoginType(userLoginInpDTO.getLoginType());
+
+			String keyPrefix = Constants.MEMBER_TOKEN_KEYPREFIX + loginType;
 			String newToken = generateToken.createToken(keyPrefix, userId + "");
+
 			userToken.setToken(newToken);
 			userToken.setDeviceInfor(deviceInfor);
-			int result = userTokenMapper.insertUserToken(userToken);
-			if (!toDaoResult(result)) {
-				manualTransaction.rollback(transactionStatus);
+			int insertUserToken = userTokenMapper.insertUserToken(userToken);
+			if (!toDaoResult(insertUserToken)) {
+				redisDataSoureceTransaction.rollback(transactionStatus);
 				return setResultError("系统错误!");
 			}
-
-			// #######提交事务
 			JSONObject data = new JSONObject();
 			data.put("token", newToken);
-			manualTransaction.commit(transactionStatus);
+			redisDataSoureceTransaction.commit(transactionStatus);
 			return setResultSuccess(data);
 		} catch (Exception e) {
 			try {
-				// 回滚事务
-				manualTransaction.rollback(transactionStatus);
-			} catch (Exception e1) {
+				redisDataSoureceTransaction.rollback(transactionStatus);
+			} catch (Exception e2) {
+				// TODO: handle exception
 			}
 			return setResultError("系统错误!");
 		}
 
 	}
+	// 查询用户信息的话如何实现？ redis 与数据库如何保证一致问题
+
+	// redis 的值如何与数据库的值保持是一致性问题
+	// @Transactional 不能控制redis的事务
+	// redis 中是否存在事务 肯定是肯定是存在事务
+	// 自定义方法 使用编程事务 begin（既需要控制数据库的事务也需要控制redis） commit
 
 }

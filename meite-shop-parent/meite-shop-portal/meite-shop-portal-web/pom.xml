@@ -8,15 +8,18 @@
 	</parent>
 	<artifactId>meite-shop-portal-web</artifactId>
 	<dependencies>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-freemarker</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.mayikt</groupId>
-			<artifactId>meite-shop-common-web</artifactId>
+			<artifactId>meite-shop-common-web-core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.mayikt</groupId>
+			<artifactId>meite-shop-service-api-member</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
