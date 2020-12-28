@@ -19,4 +19,10 @@ eureka:
     service-url:
            defaultZone: http://localhost:8100/eureka
 server:
-  port: 80
+  port: 8080
+  
+redis:
+ hostname: 188.131.155.46
+ port: 6379
+ password: 123456
+

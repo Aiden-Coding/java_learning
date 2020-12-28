@@ -207,5 +207,8 @@
   </div> 
 </div>
   <#include "base/bottom.ftl"/>
+<script type="text/javascript"
+	src="../res/static/js/index.js"></script>
+
 
 </html>

@@ -1,29 +1,13 @@
-002-每特教育&蚂蚁课堂-第四期-基于SpringCloud构建微服务电商项目-代码管理GitLab与Maven私服
+1.第一步：用户同意授权，获取code
+
+https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5c43fde3c9733d9e&redirect_uri=http://127.0.0.1:8080&response_type=code&scope=snsapi_userinfo&state=111#wechat_redirect
 
 
+第二步：通过code换取网页授权access_token
 
-curl -L https://github.com/docker/compose/releases/download/1.23.0-rc2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-
-#添加可执行权限
-chmod +x /usr/local/bin/docker-compose
-
-#查看安装版本
-docker-compose version
+ https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx5c43fde3c9733d9e&secret=b8b217126c33a5fb7074927d5e72a81a&code=021sLT461SscET15m4661FlK461sLT4u&grant_type=authorization_code
 
 
+第四步：拉取用户信息(需scope为 snsapi_userinfo)
 
-http://www.toyaml.com/index.html
-
-
-
-[{
-	"name": "app-mayikt-member",
-	"location": "/app-mayikt-member/v2/api-docs",
-	"version": "2.0"
-},
-{
-	"name": "app-mayikt-weixin",
-	"location": "/app-mayikt-weixin/v2/api-docs",
-	"version": "2.0"
-}
-]
+https://api.weixin.qq.com/sns/userinfo?access_token=18_-XTJ80lXf6x2Ds1bMi1qYSZ9_8YH9kra0piEFUJrp7nPzrMJPyUBz-7_KbMuRNV6B6y8gyZh0qreGe8DKiuk0w&openid=okYSmtzp4wWCrDCncMfGSRECVSeM&lang=zh_CN

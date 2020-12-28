@@ -1,14 +1,30 @@
 
 
 
-各位同学们，今天晚上20:30-22:30 微服务电商项目内部课《微服务接口细分安全领域DTO与DO层架构》
-课题内容:
-1.vo bo dto do区别
-2.接口细分安全领域dto与do
-3.dto细拆分输入与输出
-4.手写Dto与Do转换工具类
-5.整合全局捕获异常
-6.Token令牌登陆关系实现
-7.不同端唯一登陆实现
-腾讯课上课地址:https://ke.qq.com/course/291872
-看到消息的同学，来上课的同学，回复１哦！！
+各位同学们，今天晚上20:30-22:30  微服务电商项目之<微信联合登陆实现思路及系统动静分离架构>
+课程内容：
+
+课程内容:
+1.微信联合登陆实现思路
+2.PortalWeb动静分离架构
+3.使用七牛云CDN加速静态资源
+4.微服务电商项目解决分布式Session问题 
+腾讯课堂上课地址:https://ke.qq.com/course/291872
+
+周四 SSO单点登陆 XXL-SSO
+动静分离 Nginx
+
+
+https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5c43fde3c9733d9e&redirect_uri=http://127.0.0.1:8080&response_type=code&scope=snsapi_userinfo&state=1111#wechat_redirect
+
+测试的时候需要写外网吗？
+
+
+https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx5c43fde3c9733d9e&secret=b8b217126c33a5fb7074927d5e72a81a&code=CODE&grant_type=authorization_code
+
+
+https://api.weixin.qq.com/sns/userinfo?access_token=18_3_OtGcY9anXAM7VzDbOt-wLQUDAc8FzAO_EQEl9U5uY-_9n5VyfRGTh6CHbMriTKycPYmWLIgOF2tmDwbOufuw&openid=okYSmtzp4wWCrDCncMfGSRECVSeM&lang=zh_CN
+
+微信开放平台  微信公众号平台
+
+微盟 专门托管微信公众号
