@@ -31,5 +31,11 @@
 			<version>1.0.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.mayikt</groupId>
+			<artifactId>meite-shop-common-core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 	</dependencies>
 </project>

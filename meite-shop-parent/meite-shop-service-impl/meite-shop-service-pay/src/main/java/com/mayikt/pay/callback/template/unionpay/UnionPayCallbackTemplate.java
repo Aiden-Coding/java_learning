@@ -12,12 +12,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSONObject;
 import com.mayikt.pay.callback.template.AbstractPayCallbackTemplate;
 import com.mayikt.pay.constant.PayConstant;
 import com.mayikt.pay.mapper.PaymentTransactionMapper;
 import com.mayikt.pay.mapper.entity.PaymentTransactionEntity;
+import com.mayikt.pay.mq.producer.IntegralProducer;
 import com.unionpay.acp.sdk.AcpService;
 import com.unionpay.acp.sdk.LogUtil;
 import com.unionpay.acp.sdk.SDKConstants;
@@ -40,6 +44,8 @@ public class UnionPayCallbackTemplate extends AbstractPayCallbackTemplate {
 
 	@Autowired
 	private PaymentTransactionMapper paymentTransactionMapper;
+	@Autowired
+	private IntegralProducer integralProducer;
 
 	@Override
 	public Map<String, String> verifySignature(HttpServletRequest req, HttpServletResponse resp) {
@@ -69,6 +75,7 @@ public class UnionPayCallbackTemplate extends AbstractPayCallbackTemplate {
 	// 异步回调中网络尝试延迟，导致异步回调重复执行 可能存在幂等性问题
 	//
 	@Override
+	@Transactional
 	public String asyncService(Map<String, String> verifySignature) {
 
 		String orderId = verifySignature.get("orderId"); // 获取后台通知的数据，其他字段也可用类似方式获取
@@ -87,9 +94,23 @@ public class UnionPayCallbackTemplate extends AbstractPayCallbackTemplate {
 			return successResult();
 		}
 		// 2.将状态改为已经支付成功
-		paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS + "", orderId);
-		// 3.调用积分服务接口增加积分(处理幂等性问题)
+		paymentTransactionMapper.updatePaymentStatus(PayConstant.PAY_STATUS_SUCCESS + "", orderId, "yinlian_pay");
+		// 3.调用积分服务接口增加积分(处理幂等性问题) MQ
+		addMQIntegral(paymentTransaction); // 使用MQ
+		int i = 1 / 0; // 支付状态还是为待支付状态但是 积分缺增加
 		return successResult();
+	}
+
+	/**
+	 * 基于MQ增加积分
+	 */
+	@Async
+	private void addMQIntegral(PaymentTransactionEntity paymentTransaction) {
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("paymentId", paymentTransaction.getPaymentId());
+		jsonObject.put("userId", paymentTransaction.getUserId());
+		jsonObject.put("integral", 100);
+		integralProducer.send(jsonObject);
 	}
 
 	@Override
@@ -160,6 +181,7 @@ public class UnionPayCallbackTemplate extends AbstractPayCallbackTemplate {
 		}
 		return res;
 	}
+
 	/**
 	 * 回调机制 必须遵循规范 重试机制都是采用间隔新 错开的话 必须
 	 */

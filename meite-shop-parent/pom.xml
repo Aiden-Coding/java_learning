@@ -14,6 +14,7 @@
 		<module>meite-shop-api-entitys</module>
 		<module>meite-shop-api-dto</module>
 		<module>meite-shop-pay-plugin</module>
+		<module>meite-shop-job</module>
 	</modules>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -68,6 +69,11 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<!-- 整合zipkin -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-zipkin</artifactId>
 		</dependency>
 
 	</dependencies>

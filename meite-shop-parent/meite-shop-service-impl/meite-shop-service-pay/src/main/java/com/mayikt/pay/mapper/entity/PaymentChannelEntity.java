@@ -39,4 +39,9 @@ public class PaymentChannelEntity {
 	 * 接口实现地址
 	 */
 	private String classAddres;
+
+	/**
+	 * 重试接口beanId
+	 */
+	private String retryBeanId;
 }

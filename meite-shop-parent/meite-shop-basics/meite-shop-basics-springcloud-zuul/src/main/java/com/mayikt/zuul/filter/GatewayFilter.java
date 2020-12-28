@@ -1,0 +1,118 @@
+package com.mayikt.zuul.filter;
+
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.mayikt.sign.SignUtil;
+import com.mayikt.zuul.build.GatewayDirector;
+import com.mayikt.zuul.mapper.BlacklistMapper;
+import com.mayikt.zuul.mapper.entity.MeiteBlacklist;
+import com.netflix.zuul.ZuulFilter;
+import com.netflix.zuul.context.RequestContext;
+import com.netflix.zuul.exception.ZuulException;
+
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * 使用网关拦截客户端所有的请求
+ * 
+ * 
+ * @description:
+ * @author: 97后互联网架构师-余胜军
+ * @contact: QQ644064779、微信yushengjun644 www.mayikt.com
+ * @date: 2019年1月3日 下午3:03:17
+ * @version V1.0
+ * @Copyright 该项目“基于SpringCloud2.x构建微服务电商项目”由每特教育|蚂蚁课堂版权所有，未经过允许的情况下，
+ *            私自分享视频和源码属于违法行为。
+ */
+@Component
+@Slf4j
+public class GatewayFilter extends ZuulFilter {
+	@Autowired
+	private BlacklistMapper blacklistMapper;
+	@Autowired
+	private GatewayDirector gatewayDirector;
+
+	/**
+	 * 请求之前拦截处理业务逻辑 建议将限制黑名单存放到redis或者携程的阿波罗
+	 */
+	public Object run() throws ZuulException {
+		RequestContext ctx = RequestContext.getCurrentContext();
+		// 1.获取请求对象
+		HttpServletRequest request = ctx.getRequest();
+		// 2.获取客户端真实ip地址
+		String ipAddres = getIpAddr(request);
+		// 3.获取响应
+		HttpServletResponse response = ctx.getResponse();
+		gatewayDirector.direcot(ctx, ipAddres, response, request);
+		return null;
+	}
+	// 建造者 装饰
+
+	@Override
+	public boolean shouldFilter() {
+
+		return true;
+	}
+
+	@Override
+	public int filterOrder() {
+
+		return 0;
+	}
+
+	/**
+	 * 在请求之前实现拦截
+	 */
+	public String filterType() {
+
+		return "pre";
+	}
+
+	/**
+	 * 获取Ip地址
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public String getIpAddr(HttpServletRequest request) {
+		String ip = request.getHeader("X-Forwarded-For");
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("WL-Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("HTTP_CLIENT_IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getRemoteAddr();
+		}
+		return ip;
+	}
+
+	// ip地址存在一个问题
+	private void resultError(RequestContext ctx, String errorMsg) {
+		ctx.setResponseStatusCode(401);
+		// 网关响应为false 不会转发服务
+		ctx.setSendZuulResponse(false);
+		ctx.setResponseBody(errorMsg);
+	}
+	// MD5 单向加密 不可逆 加盐
+	// 客户端调用接口 add?userName=yushengjun&zhangsan=644 MD5
+	// userName=yushengjun&zhangsan=644 ==签名=msfgfjsjsxjss
+	// userName=yushengjun&zhangsan=644 名=msfgfjsjsxjss
+	// msfgfjsjsxjss=msfgfjsjsxjss
+
+	// 签名的目的是 为了防止数据被篡改 数据还是明文数据
+	// 加密 RSA
+}
