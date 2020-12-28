@@ -1,0 +1,14 @@
+各位同学们，今天晚上20:30-22:00，腾讯课堂公开课《基于Docker部署微服务项目》
+
+课程内容：
+
+1、Docker简介
+2、为什么要使用Docker
+3、Docker原理的架构
+4、Docker常用名词介绍
+5、Linux环境上安装Docker
+6、使用Docker安装Java8
+7、使用Docker安装Nginx
+8、基于Docker部署SpringBoot项目
+
+上课地址:https://ke.qq.com/course/291872
