@@ -9,5 +9,6 @@
   <packaging>pom</packaging>
   <modules>
   	<module>meite-shop-basics-springcloud-eureka</module>
+  	<module>meite-shop-basics-springcloud-zuul</module>
   </modules>
 </project>

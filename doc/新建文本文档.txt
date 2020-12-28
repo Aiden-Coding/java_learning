@@ -1,0 +1,29 @@
+002-每特教育&蚂蚁课堂-第四期-基于SpringCloud构建微服务电商项目-代码管理GitLab与Maven私服
+
+
+
+curl -L https://github.com/docker/compose/releases/download/1.23.0-rc2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+
+#添加可执行权限
+chmod +x /usr/local/bin/docker-compose
+
+#查看安装版本
+docker-compose version
+
+
+
+http://www.toyaml.com/index.html
+
+
+
+[{
+	"name": "app-mayikt-member",
+	"location": "/app-mayikt-member/v2/api-docs",
+	"version": "2.0"
+},
+{
+	"name": "app-mayikt-weixin",
+	"location": "/app-mayikt-weixin/v2/api-docs",
+	"version": "2.0"
+}
+]

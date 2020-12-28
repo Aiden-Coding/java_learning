@@ -11,6 +11,8 @@ import com.mayikt.weixin.entity.AppEntity;
 import com.mayikt.weixin.service.WeiXinAppService;
 import com.netflix.discovery.converters.Auto;
 
+import io.swagger.annotations.Api;
+
 /**
  * 
  * 
@@ -27,7 +29,6 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	private WeiXinAppServiceFeign weiXinAppServiceFeign;
 
-	@GetMapping("/memberInvokeWeixin")
 	public AppEntity memberInvokeWeixin() {
 		return weiXinAppServiceFeign.getApp();
 	}

@@ -3,22 +3,23 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.mayikt</groupId>
-		<artifactId>meite-shop-parent</artifactId>
+		<artifactId>meite-shop-basics</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>meite-shop-service-impl</artifactId>
-	<packaging>pom</packaging>
-	<modules>
-		<module>meite-shop-service-weixin</module>
-		<module>meite-shop-service-member</module>
-	</modules>
+	<artifactId>meite-shop-basics-springcloud-zuul</artifactId>
 	<dependencies>
-		<!-- springcloud feign组件 -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
+			<artifactId>spring-cloud-starter-netflix-zuul</artifactId>
 		</dependency>
-		<!--  阿波罗整合 SpringBoot-->
+		<!-- swagger-spring-boot -->
+		<dependency>
+			<groupId>com.spring4all</groupId>
+			<artifactId>swagger-spring-boot-starter</artifactId>
+			<version>1.7.0.RELEASE</version>
+		</dependency>
+
+		<!-- 阿波罗整合 SpringBoot -->
 		<dependency>
 			<groupId>com.ctrip.framework.apollo</groupId>
 			<artifactId>apollo-client</artifactId>
@@ -31,5 +32,4 @@
 		</dependency>
 
 	</dependencies>
-
 </project>
