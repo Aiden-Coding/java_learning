@@ -1,0 +1,29 @@
+1.创建支付令牌
+http://127.0.0.1:8600/cratePayToken?payAmount=10020&orderId=2019010203501501&userId=644064
+2.基于支付令牌获取支付信息
+http://127.0.0.1:8600/tokenByPayMentTransac?token=pay_4c23420572914b8a8344f8517ad986e2
+3.支付Web系统访问
+
+http://127.0.0.1:8050/pay?payToken=pay_4c23420572914b8a8344f8517ad986e2
+
+
+if(channel.eques("yinlian")){
+ 调用银联接口
+ return ;
+ }
+
+if(channel.eques("zhifubao")){
+ 调用支付宝接口
+ return ;
+
+}
+if(channel.eques("pingan")){
+ 调用平安接口
+ return ;
+}
+if(channel.eques("pingan")){
+ 调用平安接口
+ return ;
+}
+
+设计模式 策略+工厂  回调中模版方法

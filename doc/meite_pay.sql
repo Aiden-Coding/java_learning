@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50556
 File Encoding         : 65001
 
-Date: 2019-03-21 20:01:58
+Date: 2019-03-23 22:12:41
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -34,13 +34,15 @@ CREATE TABLE `payment_channel` (
   `CREATED_TIME` datetime DEFAULT NULL COMMENT '创建时间',
   `UPDATED_BY` varchar(32) DEFAULT NULL COMMENT '更新人',
   `UPDATED_TIME` datetime DEFAULT NULL COMMENT '更新时间',
+  `CLASS_ADDRES` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`,`CHANNEL_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='支付渠道 ';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='支付渠道 ';
 
 -- ----------------------------
 -- Records of payment_channel
 -- ----------------------------
-INSERT INTO `payment_channel` VALUES ('1', '银联支付', 'yinlian_pay', '777290058110048', 'http://localhost:8080/ACPSample_B2C/frontRcvResponse', 'http://222.222.222.222:8080/ACPSample_B2C/backRcvResponse', null, null, '0', null, null, null, null, null);
+INSERT INTO `payment_channel` VALUES ('1', '银联支付', 'yinlian_pay', '777290058110048', 'http://localhost:8080/ACPSample_B2C/frontRcvResponse', 'http://222.222.222.222:8080/ACPSample_B2C/backRcvResponse', null, null, '0', null, null, null, null, null, null);
+INSERT INTO `payment_channel` VALUES ('2', '支付宝', 'ali_pay', '777666655522521', 'test', 'test', null, null, '0', null, null, null, null, null, null);
 
 -- ----------------------------
 -- Table structure for payment_transaction
@@ -57,15 +59,33 @@ CREATE TABLE `payment_transaction` (
   `CREATED_TIME` datetime DEFAULT NULL COMMENT '创建时间',
   `UPDATED_BY` varchar(32) DEFAULT NULL COMMENT '更新人',
   `UPDATED_TIME` datetime DEFAULT NULL COMMENT '更新时间',
+  `PARTYPAY_ID` varchar(32) DEFAULT NULL,
+  `PAYMENT_ID` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='支付交易 ';
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='支付交易 ';
 
 -- ----------------------------
 -- Records of payment_transaction
 -- ----------------------------
-INSERT INTO `payment_transaction` VALUES ('1', '1000', '0', '1', '20180302101452', null, null, null, null, null);
-INSERT INTO `payment_transaction` VALUES ('2', '1000', '0', '1', '20180302101452', null, null, '2019-03-21 19:06:15', null, '2019-03-21 19:06:15');
-INSERT INTO `payment_transaction` VALUES ('3', '1000', '0', '1', '1', null, null, '2019-03-21 19:31:42', null, '2019-03-21 19:31:42');
+INSERT INTO `payment_transaction` VALUES ('1', '1000', '0', '1', '20180302101452', null, null, null, null, null, null, null);
+INSERT INTO `payment_transaction` VALUES ('2', '1000', '0', '1', '20180302101452', null, null, '2019-03-21 19:06:15', null, '2019-03-21 19:06:15', null, null);
+INSERT INTO `payment_transaction` VALUES ('3', '1000', '0', '1', '20180302101452', null, null, '2019-03-21 19:31:42', null, '2019-03-21 19:31:42', null, null);
+INSERT INTO `payment_transaction` VALUES ('4', '1', '0', '644064', '20180302101452', null, null, '2019-03-23 15:09:05', null, '2019-03-23 15:09:05', null, null);
+INSERT INTO `payment_transaction` VALUES ('5', '1', '0', '644064', '20180302101452', null, null, '2019-03-23 15:13:08', null, '2019-03-23 15:13:08', null, null);
+INSERT INTO `payment_transaction` VALUES ('6', '1', '0', '644064', '20180302101452', null, null, '2019-03-23 15:17:23', null, '2019-03-23 15:17:23', null, null);
+INSERT INTO `payment_transaction` VALUES ('7', '1', '0', '644064', '20180302101452', null, null, '2019-03-23 15:59:37', null, '2019-03-23 15:59:37', '269342963258232832', null);
+INSERT INTO `payment_transaction` VALUES ('8', '1', '0', '644064', '20180302101452', null, null, '2019-03-23 16:06:34', null, '2019-03-23 16:06:34', null, '269344715239985152');
+INSERT INTO `payment_transaction` VALUES ('9', '1', '0', '644064', '20180302101452', null, null, '2019-03-23 16:12:41', null, '2019-03-23 16:12:41', null, '269346254797017088');
+INSERT INTO `payment_transaction` VALUES ('10', '10020', '0', '644064', '2019010203501501', null, null, '2019-03-23 16:15:22', null, '2019-03-23 16:15:22', null, '269346928683257856');
+INSERT INTO `payment_transaction` VALUES ('11', '10020', '0', '644064', '2019010203501501', null, null, '2019-03-23 17:40:15', null, '2019-03-23 17:40:15', null, '269368292148383744');
+INSERT INTO `payment_transaction` VALUES ('12', '10020', '0', '644064', '2019010203501501', null, null, '2019-03-23 17:40:25', null, '2019-03-23 17:40:25', null, '269368331461595136');
+INSERT INTO `payment_transaction` VALUES ('13', '10020', '0', '644064', '2019010203501501', null, null, '2019-03-23 20:14:45', null, '2019-03-23 20:14:45', null, '269407170557251584');
+INSERT INTO `payment_transaction` VALUES ('14', '10020', '0', '644064', '2019010203501501', null, null, '2019-03-23 20:28:30', null, '2019-03-23 20:28:30', null, '269410634171551744');
+INSERT INTO `payment_transaction` VALUES ('15', '20020', '0', '644064', '2019010203501501', null, null, '2019-03-23 20:28:43', null, '2019-03-23 20:28:43', null, '269410688940773376');
+INSERT INTO `payment_transaction` VALUES ('16', '20020', '0', '644064', '2019010203501501', null, null, '2019-03-23 20:35:52', null, '2019-03-23 20:35:52', null, '269412486262951936');
+INSERT INTO `payment_transaction` VALUES ('17', '30020', '0', '644064', '2019010203501501', null, null, '2019-03-23 20:36:39', null, '2019-03-23 20:36:39', null, '269412683504291840');
+INSERT INTO `payment_transaction` VALUES ('18', '30020', '0', '644064', '2019010203501501', null, null, '2019-03-23 20:58:41', null, '2019-03-23 20:58:41', null, '269418222355353600');
+INSERT INTO `payment_transaction` VALUES ('19', '30020', '0', '644064', '2019010203501501', null, null, '2019-03-23 21:13:19', null, '2019-03-23 21:13:19', null, '269421909492502528');
 
 -- ----------------------------
 -- Table structure for payment_transaction_log

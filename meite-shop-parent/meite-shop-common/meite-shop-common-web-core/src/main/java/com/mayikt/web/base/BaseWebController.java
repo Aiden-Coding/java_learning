@@ -44,6 +44,7 @@ public class BaseWebController {
 
 	public void setErrorMsg(Model model, String errorMsg) {
 		model.addAttribute("error", errorMsg);
+
 	}
 
 }
