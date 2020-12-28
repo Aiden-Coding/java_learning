@@ -1,0 +1,12 @@
+各位同学们，今天晚上20:30-22:30 腾讯课堂公开课《MySQL索引底层实现原理》
+课题内容:
+1.MySQL中的索引用到了那些数据结构
+2.Hash、平衡二叉树、b+树区别
+3.机械硬盘、固态硬盘区别
+4.如何高效的创建的索引
+
+
+
+可视化工具:https://www.cs.usfca.edu/~galles/visualization/AVLtree.html
+
+https://www.cs.usfca.edu/~galles/visualization/Algorithms.html
