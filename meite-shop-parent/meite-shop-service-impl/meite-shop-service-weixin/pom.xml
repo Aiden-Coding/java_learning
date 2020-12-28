@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.mayikt</groupId>
 		<artifactId>meite-shop-service-impl</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.1-RELEASE</version>
 	</parent>
 	<artifactId>meite-shop-service-weixin</artifactId>
 	<dependencies>
@@ -13,5 +13,12 @@
 			<artifactId>meite-shop-service-api-weixin</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.github.binarywang</groupId>
+			<artifactId>weixin-java-mp</artifactId>
+			<version>3.3.0</version>
+		</dependency>
+
 	</dependencies>
 </project>
