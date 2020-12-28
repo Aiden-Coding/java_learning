@@ -8,18 +8,6 @@ import org.springframework.stereotype.Component;
 
 import com.mayikt.core.utils.RedisUtil;
 
-/**
- * 
- * 
- * 
- * @description: 令牌生成工具类
- * @author: 97后互联网架构师-余胜军
- * @contact: QQ644064779、微信yushengjun644 www.mayikt.com
- * @date: 2019年1月3日 下午3:03:17
- * @version V1.0
- * @Copyright 该项目“基于SpringCloud2.x构建微服务电商项目”由每特教育|蚂蚁课堂版权所有，未经过允许的情况下，
- *            私自分享视频和源码属于违法行为。
- */
 @Component
 public class GenerateToken {
 	@Autowired
@@ -35,11 +23,26 @@ public class GenerateToken {
 	 * @return 返回token
 	 */
 	public String createToken(String keyPrefix, String redisValue) {
+		return createToken(keyPrefix, redisValue, null);
+	}
+
+	/**
+	 * 生成令牌
+	 * 
+	 * @param prefix
+	 *            令牌key前缀
+	 * @param redisValue
+	 *            redis存放的值
+	 * @param time
+	 *            有效期
+	 * @return 返回token
+	 */
+	public String createToken(String keyPrefix, String redisValue, Long time) {
 		if (StringUtils.isEmpty(redisValue)) {
 			new Exception("redisValue Not nul");
 		}
 		String token = keyPrefix + UUID.randomUUID().toString().replace("-", "");
-		redisUtil.setString(token, redisValue);
+		redisUtil.setString(token, redisValue, time);
 		return token;
 	}
 

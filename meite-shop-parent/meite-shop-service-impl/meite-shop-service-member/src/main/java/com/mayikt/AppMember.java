@@ -24,7 +24,7 @@ import com.spring4all.swagger.EnableSwagger2Doc;
 @EnableEurekaClient
 @EnableFeignClients
 @EnableSwagger2Doc
-@EnableApolloConfig
+// @EnableApolloConfig
 @MapperScan(basePackages = "com.mayikt.member.mapper")
 public class AppMember {
 
