@@ -9,15 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mayikt.base.BaseApiService;
 import com.mayikt.base.BaseResponse;
 import com.mayikt.constants.Constants;
+import com.mayikt.core.bean.MeiteBeanUtils;
 import com.mayikt.member.MemberService;
-import com.mayikt.member.entity.UserEntity;
-import com.mayikt.member.feign.WeiXinAppServiceFeign;
 import com.mayikt.member.mapper.UserMapper;
-import com.mayikt.weixin.entity.AppEntity;
-import com.mayikt.weixin.service.WeiXinAppService;
-import com.netflix.discovery.converters.Auto;
-
-import io.swagger.annotations.Api;
+import com.mayikt.member.mapper.entity.UserDo;
+import com.mayikt.member.output.dto.UserOutDTO;
 
 /**
  * 
@@ -31,24 +27,24 @@ import io.swagger.annotations.Api;
  *            私自分享视频和源码属于违法行为。
  */
 @RestController
-public class MemberServiceImpl extends BaseApiService<UserEntity> implements MemberService {
+public class MemberServiceImpl extends BaseApiService<UserOutDTO> implements MemberService {
 	@Autowired
 	private UserMapper userMapper;
 
 	@Override
-	public BaseResponse<UserEntity> existMobile(String mobile) {
+	public BaseResponse<UserOutDTO> existMobile(String mobile) {
 		// 1.验证参数
 		if (StringUtils.isEmpty(mobile)) {
 			return setResultError("手机号码不能为空!");
 		}
+
 		// 2.根据手机号码查询用户信息 单独定义code 表示是用户信息不存在把
-		UserEntity userEntity = userMapper.existMobile(mobile);
+		UserDo userEntity = userMapper.existMobile(mobile);
 		if (userEntity == null) {
 			return setResultError(Constants.HTTP_RES_CODE_EXISTMOBILE_203, "用户信息不存在!");
 		}
-		// 对特殊铭感字段需要做脱敏
-		userEntity.setPassword(null);
-		return setResultSuccess(userEntity);
+		// 3.将do转换成dto
+		return setResultSuccess(MeiteBeanUtils.doToDto(userEntity, UserOutDTO.class));
 	}
 
 }

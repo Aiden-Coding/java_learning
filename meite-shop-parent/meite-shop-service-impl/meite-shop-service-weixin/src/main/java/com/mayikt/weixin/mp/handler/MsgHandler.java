@@ -15,7 +15,7 @@ import com.mayikt.base.BaseResponse;
 import com.mayikt.constants.Constants;
 import com.mayikt.core.utils.RedisUtil;
 import com.mayikt.core.utils.RegexUtils;
-import com.mayikt.member.entity.UserEntity;
+import com.mayikt.member.output.dto.UserOutDTO;
 import com.mayikt.weixin.feign.MemberServiceFeign;
 import com.mayikt.weixin.mp.builder.TextBuilder;
 import com.netflix.discovery.converters.Auto;
@@ -64,7 +64,7 @@ public class MsgHandler extends AbstractHandler {
 		// 2.使用正则表达式验证消息是否为手机号码格式
 		if (RegexUtils.checkMobile(fromContent)) {
 			// 1.根据手机号码调用会员服务接口查询用户信息是否存在
-			BaseResponse<UserEntity> reusltUserInfo = memberServiceFeign.existMobile(fromContent);
+			BaseResponse<UserOutDTO> reusltUserInfo = memberServiceFeign.existMobile(fromContent);
 			if (reusltUserInfo.getCode().equals(Constants.HTTP_RES_CODE_200)) {
 				return new TextBuilder().build("该手机号码" + fromContent + "已经存在!", wxMessage, weixinService);
 			}
