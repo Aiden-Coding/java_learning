@@ -1,0 +1,11 @@
+各位同学们，今天晚上20:30-22:30 腾讯课堂内部课  MyCat执行原理分析与初始Sharding-Jdbc
+课程内容如下：
+1、MyCat执行原理分析
+2、MyCat与Sharding-Jdbc区别
+3、基于Sharding-Jdbc实现读写分离
+4、基于Sharding-Jdbc实现分表分库
+4、Sharding-Jdbc源码分析
+
+希望大家都来听听哦！！！
+
+上课地址:https://ke.qq.com/course/291872
