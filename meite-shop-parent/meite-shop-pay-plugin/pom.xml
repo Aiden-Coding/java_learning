@@ -9,5 +9,6 @@
   <packaging>pom</packaging>
   <modules>
   	<module>meite-shop-unionpay-plugin</module>
+  	<module>meite-shop-alipay-plugin</module>
   </modules>
 </project>

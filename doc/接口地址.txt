@@ -1,0 +1,4 @@
+http://127.0.0.1:8050/pay?payToken=pay_ad566ee2c5214024804e69709e6efe63   主站Web访问
+
+http://127.0.0.1:8600/cratePayToken?payAmount=300222&orderId=2019010203501502&userId=644064  创建支付令牌
+
