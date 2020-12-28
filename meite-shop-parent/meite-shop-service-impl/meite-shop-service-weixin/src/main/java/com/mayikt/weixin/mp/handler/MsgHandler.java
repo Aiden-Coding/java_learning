@@ -11,10 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.mayikt.base.BaseResponse;
 import com.mayikt.constants.Constants;
 import com.mayikt.core.utils.RedisUtil;
 import com.mayikt.core.utils.RegexUtils;
+import com.mayikt.member.entity.UserEntity;
+import com.mayikt.weixin.feign.MemberServiceFeign;
 import com.mayikt.weixin.mp.builder.TextBuilder;
+import com.netflix.discovery.converters.Auto;
 
 import java.util.Map;
 
@@ -33,6 +37,9 @@ public class MsgHandler extends AbstractHandler {
 
 	@Autowired
 	private RedisUtil redisUtil;
+
+	@Autowired
+	private MemberServiceFeign memberServiceFeign;
 
 	@Override
 	public WxMpXmlOutMessage handle(WxMpXmlMessage wxMessage, Map<String, Object> context, WxMpService weixinService,
@@ -56,6 +63,14 @@ public class MsgHandler extends AbstractHandler {
 		String fromContent = wxMessage.getContent();
 		// 2.使用正则表达式验证消息是否为手机号码格式
 		if (RegexUtils.checkMobile(fromContent)) {
+			// 1.根据手机号码调用会员服务接口查询用户信息是否存在
+			BaseResponse<UserEntity> reusltUserInfo = memberServiceFeign.existMobile(fromContent);
+			if (reusltUserInfo.getCode().equals(Constants.HTTP_RES_CODE_200)) {
+				return new TextBuilder().build("该手机号码" + fromContent + "已经存在!", wxMessage, weixinService);
+			}
+			if (!reusltUserInfo.getCode().equals(Constants.HTTP_RES_CODE_EXISTMOBILE_203)) {
+				return new TextBuilder().build(reusltUserInfo.getMsg(), wxMessage, weixinService);
+			}
 			// 3.如果是手机号码格式的话,随机生产4位数字注册码
 			int registCode = registCode();
 			String content = registrationCodeMessage.format(registrationCodeMessage, registCode);
