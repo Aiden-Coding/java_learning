@@ -67,5 +67,31 @@ public class MeiteBeanUtils<Dto, Do> {
 			return null;
 		}
 	}
+
+	/**
+	 * do 转换为Dto 工具类 支持集合类型
+	 * 
+	 * @param dtoEntity
+	 * @param doEntity
+	 * @return
+	 */
+	public static <Dto> Dto listDoToDto(Object doEntity, Class<Dto> dtoClass) {
+		// 判断dto是否为空!
+		if (doEntity == null) {
+			return null;
+		}
+		// 判断DoClass 是否为空
+		if (dtoClass == null) {
+			return null;
+		}
+		try {
+			Dto newInstance = dtoClass.newInstance();
+			BeanUtils.copyProperties(doEntity, newInstance);
+			// Dto转换Do
+			return newInstance;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 	// 后面集合类型带封装
 }

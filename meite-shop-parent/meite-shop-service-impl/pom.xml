@@ -11,6 +11,7 @@
 	<modules>
 		<module>meite-shop-service-weixin</module>
 		<module>meite-shop-service-member</module>
+		<module>meite-shop-service-goods</module>
 	</modules>
 	<dependencies>
 		<!-- springcloud feign组件 -->

@@ -1,0 +1,9 @@
+ mkdir -p es/config
+ cd es
+ mkdir data1
+ mkdir data2
+ mkdir data3
+firewall-cmd --add-port=9300/tcp
+firewall-cmd --add-port=9301/tcp
+
+注：如果ELK选的6.X版本的，那么需将data1 data2 data3 开启777权限=> chmod 777 data1 data2 data3
