@@ -11,6 +11,7 @@
 	<modules>
 		<module>meite-shop-portal-web</module>
 		<module>meite-shop-portal-pay-web</module>
+		<module>meite-shop-portal-spike-web</module>
 	</modules>
 	<dependencies>
 

@@ -13,12 +13,15 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.mayikt.zuul.build.GatewayDirector;
+import com.mayikt.sign.SignUtil;
+import com.mayikt.zuul.handler.ResponsibilityClient;
 import com.mayikt.zuul.mapper.BlacklistMapper;
+import com.mayikt.zuul.mapper.entity.MeiteBlacklist;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 
+import io.reactivex.netty.protocol.http.server.HttpServerRequest;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -39,7 +42,7 @@ public class GatewayFilter extends ZuulFilter {
 	@Autowired
 	private BlacklistMapper blacklistMapper;
 	@Autowired
-	private GatewayDirector gatewayDirector;
+	private ResponsibilityClient responsibilityClient;
 
 	/**
 	 * 请求之前拦截处理业务逻辑 建议将限制黑名单存放到redis或者携程的阿波罗
@@ -48,13 +51,33 @@ public class GatewayFilter extends ZuulFilter {
 		RequestContext ctx = RequestContext.getCurrentContext();
 		// 1.获取请求对象
 		HttpServletRequest request = ctx.getRequest();
+		HttpServletResponse response = ctx.getResponse();
 		// 2.获取客户端真实ip地址
 		String ipAddres = getIpAddr(request);
-		HttpServletResponse response = ctx.getResponse();
-		gatewayDirector.direcot(ctx, ipAddres, response, request);
-		// 3. 过滤请求参数、防止XSS攻击
-		Map<String, List<String>> filterParameters = filterParameters(request, ctx);
-		ctx.setRequestQueryParams(filterParameters);
+		// 3.黑名单限制
+		// MeiteBlacklist meiteBlacklist =
+		// blacklistMapper.findBlacklist(ipAddres);
+		// if (meiteBlacklist != null) {
+		// resultError(ctx, "ip:" + ipAddres + ",Insufficient access rights");
+		// }
+		// // 4.验证签名拦截
+		// Map<String, String> verifyMap =
+		// SignUtil.toVerifyMap(request.getParameterMap(), false);
+		// if (!SignUtil.verify(verifyMap)) {
+		// resultError(ctx, "ip:" + ipAddres + ",Sign fail");
+		// }
+		// // 5.防止xss攻击
+		// ctx.setRequestQueryParams(filterParameters(request, ctx));
+		// // 6.区分外部调用接口方式
+		// String servletPath = request.getServletPath();
+		// log.info(">>>>>servletPath:" + servletPath +
+		// ",servletPath.substring(0, 5):" + servletPath.substring(0, 5));
+		// if (servletPath.substring(0, 7).equals("/public")) {
+		// log.info(">>>>>accessToken验证:");
+		// request.getParameter("accessToken");
+		// }
+		responsibilityClient.responsibility(ctx, ipAddres, request, response);
+
 		return null;
 	}
 	// public/api/api-pay/cratePayToken?payAmount=300222&orderId=2019010203501502&userId=644064
@@ -72,7 +95,7 @@ public class GatewayFilter extends ZuulFilter {
 			String name = (String) em.nextElement();
 			String value = request.getParameter(name);
 			ArrayList<String> arrayList = new ArrayList<>();
-			// 将参数转化为html参数 防止xss攻击 < 转为&lt;
+			// 将参数转化为html参数 防止xss攻击
 			arrayList.add(StringEscapeUtils.escapeHtml(value));
 			requestQueryParams.put(name, arrayList);
 		}
@@ -126,21 +149,12 @@ public class GatewayFilter extends ZuulFilter {
 	}
 
 	// ip地址存在一个问题
-	private void resultInsufficientAuthority(RequestContext ctx, String errorMsg) {
-		baseResultErrorBase(ctx, 401, errorMsg);
-	}
-
 	private void resultError(RequestContext ctx, String errorMsg) {
-		baseResultErrorBase(ctx, 500, errorMsg);
-	}
-
-	private void baseResultErrorBase(RequestContext ctx, int code, String errorMsg) {
-		ctx.setResponseStatusCode(500);
+		ctx.setResponseStatusCode(401);
 		// 网关响应为false 不会转发服务
 		ctx.setSendZuulResponse(false);
 		ctx.setResponseBody(errorMsg);
 	}
-
 	// MD5 单向加密 不可逆 加盐
 	// 客户端调用接口 add?userName=yushengjun&zhangsan=644 MD5
 	// userName=yushengjun&zhangsan=644 ==签名=msfgfjsjsxjss
