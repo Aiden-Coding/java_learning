@@ -1,0 +1,7 @@
+1、MySQL主从复制与数据备份
+2、MySQL读写分离MyCat使用
+3、分表分库插件ShardingJdbc
+4、MySQL数据库索引底层原理（重点）
+5、MySQLSQL语句性能优化
+
+
