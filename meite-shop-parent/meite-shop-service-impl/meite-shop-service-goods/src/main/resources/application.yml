@@ -32,4 +32,8 @@ spring:
     ####集群名称
      cluster-name: elasticsearch-cluster
     ####地址 
-     cluster-nodes: 192.168.212.249:9300
+     cluster-nodes: 192.168.212.252:9300
+  kafka:
+    # kafka服务器地址(可以多个)
+    bootstrap-servers: 192.168.212.252:9092
+  

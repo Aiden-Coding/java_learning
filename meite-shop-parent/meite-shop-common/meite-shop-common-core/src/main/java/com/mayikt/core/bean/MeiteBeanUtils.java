@@ -93,5 +93,5 @@ public class MeiteBeanUtils<Dto, Do> {
 			return null;
 		}
 	}
-	// 后面集合类型带封装
+
 }

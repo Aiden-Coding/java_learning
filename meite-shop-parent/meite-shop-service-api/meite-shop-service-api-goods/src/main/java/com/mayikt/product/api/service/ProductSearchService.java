@@ -2,6 +2,8 @@ package com.mayikt.product.api.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.mayikt.base.BaseResponse;
@@ -22,6 +24,6 @@ import com.mayikt.member.output.dto.ProductDto;
 public interface ProductSearchService {
 
 	@GetMapping("/search")
-	public BaseResponse<List<ProductDto>> search(String name);
+	public BaseResponse<List<ProductDto>> search(String name, @PageableDefault(page = 0, value = 10) Pageable pageable);
 
 }

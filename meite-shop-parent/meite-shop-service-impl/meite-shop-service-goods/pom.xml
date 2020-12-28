@@ -26,12 +26,12 @@
 			<groupId>com.querydsl</groupId>
 			<artifactId>querydsl-jpa</artifactId>
 		</dependency>
+		<!-- elk+kafka -->
 		<dependency>
-			<groupId>ma.glasnost.orika</groupId>
-			<artifactId>orika-core</artifactId>
-			<version>1.5.2</version>
+			<groupId>com.mayikt</groupId>
+			<artifactId>meite-shop-basics-elk-kafka</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-
 
 	</dependencies>
 </project>
