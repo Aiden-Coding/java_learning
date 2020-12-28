@@ -14,7 +14,10 @@ import com.mayikt.pay.service.PayMentTransacTokenService;
 import com.mayikt.twitter.SnowflakeIdUtils;
 import com.mayikt.weixin.input.dto.PayCratePayTokenDto;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
+@Slf4j
 public class PayMentTransacTokenServiceImpl extends BaseApiService<JSONObject> implements PayMentTransacTokenService {
 	@Autowired
 	private PaymentTransactionMapper paymentTransactionMapper;
@@ -36,6 +39,7 @@ public class PayMentTransacTokenServiceImpl extends BaseApiService<JSONObject> i
 		if (userId == null) {
 			return setResultError("userId不能为空!");
 		}
+		log.info(">>>>>orderDes:{}", payCratePayTokenDto.getOrderDes());
 		// 2.将输入插入数据库中 待支付记录
 		PaymentTransactionEntity paymentTransactionEntity = new PaymentTransactionEntity();
 		paymentTransactionEntity.setOrderId(orderId);

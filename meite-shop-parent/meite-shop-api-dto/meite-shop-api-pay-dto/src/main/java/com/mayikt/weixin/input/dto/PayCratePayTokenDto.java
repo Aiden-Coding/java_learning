@@ -22,4 +22,9 @@ public class PayCratePayTokenDto {
 	 */
 	@NotNull(message = "userId不能空")
 	private Long userId;
+	/**
+	 * 订单描述
+	 */
+	@NotNull(message = "订单描述")
+	private String orderDes;
 }

@@ -1,4 +1,4 @@
-package com.mayikt.pay.callback.template;
+ package com.mayikt.pay.callback.template;
 
 import java.util.Map;
 

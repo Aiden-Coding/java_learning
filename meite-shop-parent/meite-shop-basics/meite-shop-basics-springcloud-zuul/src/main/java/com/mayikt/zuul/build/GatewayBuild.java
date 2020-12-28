@@ -28,4 +28,10 @@ public interface GatewayBuild {
 	 */
 	Boolean toVerifyMap(RequestContext ctx, String ipAddres, HttpServletRequest request);
 
+	/**
+	 * api权限控制
+	 * 
+	 * @return
+	 */
+	Boolean apiAuthority(RequestContext ctx, HttpServletRequest request);
 }

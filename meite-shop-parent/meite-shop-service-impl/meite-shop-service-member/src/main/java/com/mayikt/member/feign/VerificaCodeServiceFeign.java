@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 
 import com.mayikt.weixin.service.VerificaCodeService;
 
-@FeignClient("app-mayikt-weixin")
+@FeignClient("app-mayikt-auth")
 public interface VerificaCodeServiceFeign extends VerificaCodeService {
 
 }
