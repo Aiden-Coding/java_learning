@@ -1,30 +1,6 @@
-
-
-
-各位同学们，今天晚上20:30-22:30  微服务电商项目之<微信联合登陆实现思路及系统动静分离架构>
-课程内容：
-
-课程内容:
-1.微信联合登陆实现思路
-2.PortalWeb动静分离架构
-3.使用七牛云CDN加速静态资源
-4.微服务电商项目解决分布式Session问题 
-腾讯课堂上课地址:https://ke.qq.com/course/291872
-
-周四 SSO单点登陆 XXL-SSO
-动静分离 Nginx
-
-
-https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5c43fde3c9733d9e&redirect_uri=http://127.0.0.1:8080&response_type=code&scope=snsapi_userinfo&state=1111#wechat_redirect
-
-测试的时候需要写外网吗？
-
-
-https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx5c43fde3c9733d9e&secret=b8b217126c33a5fb7074927d5e72a81a&code=CODE&grant_type=authorization_code
-
-
-https://api.weixin.qq.com/sns/userinfo?access_token=18_3_OtGcY9anXAM7VzDbOt-wLQUDAc8FzAO_EQEl9U5uY-_9n5VyfRGTh6CHbMriTKycPYmWLIgOF2tmDwbOufuw&openid=okYSmtzp4wWCrDCncMfGSRECVSeM&lang=zh_CN
-
-微信开放平台  微信公众号平台
-
-微盟 专门托管微信公众号
+1、传统部署与自动化部署有啥区别？
+2、使用Jenkins与Git自动化部署原理
+3、使用码云搭建Git代码存储仓库
+4、基于Docker安装Jenkins环境
+5、Jenkins配置Maven、JDK、Git地址
+6、使用Jenkins+Docker和Git实现自动化部署
