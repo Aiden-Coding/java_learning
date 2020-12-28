@@ -3,16 +3,17 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.mayikt</groupId>
-		<artifactId>meite-shop-service-api</artifactId>
+		<artifactId>meite-shop-common</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>meite-shop-service-api-member</artifactId>
+	<artifactId>meite-shop-common-core</artifactId>
+
 	<dependencies>
-		<!-- 改为会员引入微信实体类层 -->
+		<!-- 集成redis -->
 		<dependency>
-			<groupId>com.mayikt</groupId>
-			<artifactId>meite-shop-api-weixin-entity</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
+
 	</dependencies>
 </project>

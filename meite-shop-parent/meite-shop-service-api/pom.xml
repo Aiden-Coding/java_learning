@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.mayikt</groupId>
 		<artifactId>meite-shop-parent</artifactId>
-		<version>0.0.1-RELEASE</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>meite-shop-service-api</artifactId>
 	<packaging>pom</packaging>
@@ -19,7 +19,11 @@
 			<artifactId>swagger-spring-boot-starter</artifactId>
 			<version>1.7.0.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>com.mayikt</groupId>
+			<artifactId>meite-shop-common-core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
 	</dependencies>
-	
 </project>

@@ -1,9 +1,10 @@
 package com.mayikt.weixin.service.impl;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mayikt.base.BaseApiService;
+import com.mayikt.base.BaseResponse;
 import com.mayikt.weixin.entity.AppEntity;
 import com.mayikt.weixin.service.WeiXinAppService;
 
@@ -19,12 +20,14 @@ import com.mayikt.weixin.service.WeiXinAppService;
  *            私自分享视频和源码属于违法行为。
  */
 @RestController
-public class WeiXinAppServiceImpl implements WeiXinAppService {
+public class WeiXinAppServiceImpl extends BaseApiService<AppEntity> implements WeiXinAppService {
 	@Value("${mayikt.weixin.name}")
 	private String name;
 
-	public AppEntity getApp() {
-		return new AppEntity("644064779", name);
+	public BaseResponse<AppEntity> getApp() {
+		// return setResultSuccess(new AppEntity("1111", "22222"));
+		return setResultError("系统错误");
 	}
+	// 定义泛型T的有一定缺点：该接口统一返回一种类型
 
 }

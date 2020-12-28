@@ -18,7 +18,7 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
-		<!--  阿波罗整合 SpringBoot-->
+		<!-- 阿波罗整合 SpringBoot -->
 		<dependency>
 			<groupId>com.ctrip.framework.apollo</groupId>
 			<artifactId>apollo-client</artifactId>
@@ -29,6 +29,7 @@
 			<artifactId>apollo-core</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		
 
 	</dependencies>
 

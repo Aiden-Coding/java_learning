@@ -5,9 +5,9 @@
     <artifactId>meite-shop-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>meite-shop-common</artifactId>
+  <artifactId>meite-shop-api-entitys</artifactId>
   <packaging>pom</packaging>
   <modules>
-  	<module>meite-shop-common-core</module>
+  	<module>meite-shop-api-weixin-entity</module>
   </modules>
 </project>

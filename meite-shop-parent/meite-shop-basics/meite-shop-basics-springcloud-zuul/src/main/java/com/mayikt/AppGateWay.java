@@ -14,10 +14,13 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ctrip.framework.apollo.Config;
+import com.ctrip.framework.apollo.ConfigChangeListener;
+import com.ctrip.framework.apollo.model.ConfigChangeEvent;
 import com.ctrip.framework.apollo.spring.annotation.ApolloConfig;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import com.spring4all.swagger.EnableSwagger2Doc;
 
+import lombok.extern.slf4j.Slf4j;
 import springfox.documentation.swagger.web.SwaggerResource;
 import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 
@@ -38,13 +41,11 @@ import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 @EnableSwagger2Doc
 @EnableApolloConfig
 public class AppGateWay {
-
-	// 获取config
-	@ApolloConfig
-	private Config config;
-
+	//
+	// @ApolloConfig
+	// private Config config;
 	@Value("${mayikt.zuul.swagger.document}")
-	private String swaggerDocument;
+	private String document;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AppGateWay.class, args);
@@ -54,30 +55,19 @@ public class AppGateWay {
 	@Component
 	@Primary
 	class DocumentationConfig implements SwaggerResourcesProvider {
-
-		// 访问swagger-ui页面的每次都会范围访问一下get方法
-		// 定义value 注解获取和手动获取区别是什么？
-		@SuppressWarnings("rawtypes")
 		@Override
 		public List<SwaggerResource> get() {
-			// app-itmayiedu-order
-			// 网关使用服务别名获取远程服务的SwaggerApi
 			return resources();
 		}
 
-		/**
-		 * 从阿波罗服务器中获取resources
-		 * 
-		 * @return
-		 */
 		private List<SwaggerResource> resources() {
-
+			// 从阿波罗平台获取配置文件
+			// String swaDocJson =
+			// config.getProperty("mayikt.zuul.swagger.document", null);
+			JSONArray docJsonArray = JSONArray.parseArray(document);
 			List resources = new ArrayList<>();
-			// app-itmayiedu-order
-			// 网关使用服务别名获取远程服务的SwaggerApi
-			// String swaggerDocJson = swaggerDocument();
-			JSONArray jsonArray = JSONArray.parseArray(swaggerDocument);
-			for (Object object : jsonArray) {
+			// 遍历集合数组
+			for (Object object : docJsonArray) {
 				JSONObject jsonObject = (JSONObject) object;
 				String name = jsonObject.getString("name");
 				String location = jsonObject.getString("location");
@@ -86,17 +76,6 @@ public class AppGateWay {
 			}
 			return resources;
 		}
-
-		// /**
-		// * 获取swaggerDocument配置
-		// *
-		// * @return
-		// */
-		// private String swaggerDocument() {
-		// String property = config.getProperty("mayikt.zuul.swagger.document",
-		// "");
-		// return property;
-		// }
 
 		private SwaggerResource swaggerResource(String name, String location, String version) {
 			SwaggerResource swaggerResource = new SwaggerResource();
@@ -107,5 +86,14 @@ public class AppGateWay {
 		}
 
 	}
+	// 微服务网关Swagger 如何集成阿波罗 实现动态添加微服务Swagger文档
+
+	/**
+	 * 大体思路分析：<br>
+	 * 1.将swaggerResource封装程json数组格式、<br>
+	 * 2.使用原生代码方式获取配置文件 3.写一个监听，监听文件是否发生变化，发生变化重新加载值 递归算法
+	 * 4.mayikt.zuul.swagger.document=
+	 * 
+	 */
 
 }

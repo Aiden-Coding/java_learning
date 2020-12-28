@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.mayikt</groupId>
 		<artifactId>meite-shop-service-impl</artifactId>
-		<version>0.0.1-RELEASE</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>meite-shop-service-weixin</artifactId>
 	<dependencies>
@@ -18,6 +18,29 @@
 			<groupId>com.github.binarywang</groupId>
 			<artifactId>weixin-java-mp</artifactId>
 			<version>3.3.0</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>xstream</artifactId>
+					<groupId>com.thoughtworks.xstream</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>
+				spring-cloud-starter-netflix-eureka-client
+			</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>xstream</artifactId>
+					<groupId>com.thoughtworks.xstream</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<artifactId>xstream</artifactId>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<version>1.4.10</version>
 		</dependency>
 
 	</dependencies>
