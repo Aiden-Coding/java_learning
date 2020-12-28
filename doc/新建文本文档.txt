@@ -1,0 +1,14 @@
+各位同学们，今天晚上20:30-22:30 实战<使用Docker安装软件并进行配置>
+
+课程内容:
+
+1.使用Docker安装Nginx
+2.修改Nginx配置文件信息
+3.使用Docker安装MySQL服务
+4.使用Docker安装Redis
+5.进入到Docker容器中
+6.Docker文件目录信息介绍
+
+
+
+docker run --name mynginx -d -p 82:80  -v /data/nginx/conf/nginx.conf:/etc/nginx/nginx.conf  -v /data/nginx/logs:/var/log/nginx -d docker.io/nginx
