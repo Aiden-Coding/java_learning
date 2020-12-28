@@ -6,7 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.mayikt.base.BaseResponse;
 
 /**
- * 秒杀商品服务接口
+ * 查询秒杀记录
  * 
  * 
  * @description:
@@ -17,24 +17,9 @@ import com.mayikt.base.BaseResponse;
  * @Copyright 该项目“基于SpringCloud2.x构建微服务电商项目”由每特教育|蚂蚁课堂版权所有，未经过允许的情况下，
  *            私自分享视频和源码属于违法行为。
  */
-public interface SpikeCommodityService {
+public interface OrderSeckillService {
 
-	/**
-	 * 用户秒杀接口 phone和userid都可以的
-	 * 
-	 * @phone 手机号码<br>
-	 * @seckillId 库存id
-	 * @return
-	 */
-	@RequestMapping("/spike")
-	public BaseResponse<JSONObject> spike(String phone, Long seckillId);
-
-	/**
-	 * 新增对应商品库存令牌桶
-	 * 
-	 * @seckillId 商品库存id
-	 */
-	@RequestMapping("/addSpikeToken")
-	public BaseResponse<JSONObject> addSpikeToken(Long seckillId, Long tokenQuantity);
+	@RequestMapping("/getOrder")
+	public BaseResponse<JSONObject> getOrder(String phone, Long seckillId);
 
 }

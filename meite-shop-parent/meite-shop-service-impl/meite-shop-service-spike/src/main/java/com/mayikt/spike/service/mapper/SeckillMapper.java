@@ -21,6 +21,9 @@ public interface SeckillMapper {
 	@Update("update meite_seckill set inventory=inventory-1, version=version+1 where  seckill_id=#{seckillId} and inventory>0  and version=#{version} ;")
 	int inventoryDeduction(@Param("seckillId") Long seckillId, @Param("version") Long version);
 
+	@Update("update meite_seckill set inventory=inventory-1, version=version+1 where  seckill_id=#{seckillId}  ")
+	int modifyInventory(@Param("seckillId") Long seckillId, @Param("version") Long version);
+
 	// update meite_seckill set inventory=inventory-1 where
 	// seckill_id=#{seckillId} and 1>0;
 	// update meite_seckill set inventory=inventory-1 where
