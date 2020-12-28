@@ -3,7 +3,6 @@ package com.mayikt;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -40,8 +39,7 @@ import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 @EnableEurekaClient
 @EnableZuulProxy
 @EnableSwagger2Doc
-@MapperScan(basePackages = "com.mayikt.zuul")
-// @EnableApolloConfig
+@EnableApolloConfig
 public class AppGateWay {
 	//
 	// @ApolloConfig

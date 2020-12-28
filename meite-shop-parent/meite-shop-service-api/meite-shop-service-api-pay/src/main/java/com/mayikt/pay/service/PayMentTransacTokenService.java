@@ -2,8 +2,6 @@ package com.mayikt.pay.service;
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mayikt.base.BaseResponse;
@@ -28,9 +26,7 @@ public interface PayMentTransacTokenService {
 	 * 
 	 * @return
 	 */
-	// @GetMapping("/cratePayToken")
-	// @PostMapping("/cratePayToken")
-	@RequestMapping("/cratePayToken")
+	@GetMapping("/cratePayToken")
 	public BaseResponse<JSONObject> cratePayToken(@Validated PayCratePayTokenDto payCratePayTokenDto);
 
 }
