@@ -22,5 +22,10 @@
 			<artifactId>meite-shop-service-api-member</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>com.tengxun</groupId>
+			<artifactId>sdk4j</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 </project>

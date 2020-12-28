@@ -22,7 +22,7 @@ public class BaseWebController {
 		if (baseResp == null) {
 			return false;
 		}
-		if (!baseResp.getCode().equals(Constants.HTTP_RES_CODE_200)) {
+		if (baseResp.getCode().equals(Constants.HTTP_RES_CODE_500_VALUE)) {
 			return false;
 		}
 		return true;

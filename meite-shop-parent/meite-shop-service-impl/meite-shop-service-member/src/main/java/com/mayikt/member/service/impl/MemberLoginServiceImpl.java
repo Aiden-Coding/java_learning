@@ -3,7 +3,6 @@ package com.mayikt.member.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -86,6 +85,11 @@ public class MemberLoginServiceImpl extends BaseApiService<JSONObject> implement
 					return setResultError("系统错误!");
 				}
 
+			}
+			// 如果有传递openid参数，修改到数据中
+			String qqOpenId = userLoginInpDTO.getQqOpenId();
+			if (!StringUtils.isEmpty(qqOpenId)) {
+				userMapper.updateUserOpenId(qqOpenId, userId);
 			}
 
 			// .生成对应用户令牌存放在redis中

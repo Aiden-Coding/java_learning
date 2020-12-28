@@ -1,0 +1,28 @@
+
+APP ID：101462456
+APP Key：4488033be77331e7cdcaed8ceadc10d5
+网站地址 : http://daijiangcheng.com
+网站回调域 :
+http://shop.mayikt.com/qqLoginBack
+主办单位名称 : daijiangcheng.com
+网站备案号 : 苏ICP备18005535号
+
+https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101462456&redirect_uri=http://shop.mayikt.com/qqLoginBack&state=1
+&
+
+mvn install:install-file -Dfile=jar包的位置(参数一) -DgroupId=groupId(参数二) -DartifactId=artifactId(参数三) -Dversion=version(参数四) -Dpackaging=jar
+
+
+mvn install:install-file -Dfile="E:\Sdk4J.jar" -DgroupId=com.tengxun -DartifactId=sdk4j  -Dversion=1.0 -Dpackaging=jar
+
+https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&client_id=101462456&client_secret=4488033be77331e7cdcaed8ceadc10d5&
+code=B51B72DBA72A4F4D2EEA994BABFA283C&redirect_uri=http://shop.mayikt.com/qqLoginBack
+
+
+https://graph.qq.com/oauth2.0/me?access_token=469C321ABA9BC7A2629D4484BA0C52E8
+
+
+https://graph.qq.com/user/get_user_info?
+access_token=469C321ABA9BC7A2629D4484BA0C52E8&
+oauth_consumer_key=101462456&
+openid=4130A96EDE4187C8FD6BB055CC542B40
