@@ -1,13 +1,21 @@
-1.第一步：用户同意授权，获取code
-
-https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx5c43fde3c9733d9e&redirect_uri=http://127.0.0.1:8080&response_type=code&scope=snsapi_userinfo&state=111#wechat_redirect
-
-
-第二步：通过code换取网页授权access_token
-
- https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx5c43fde3c9733d9e&secret=b8b217126c33a5fb7074927d5e72a81a&code=021sLT461SscET15m4661FlK461sLT4u&grant_type=authorization_code
+meite-shop-pay-plugin
+--meite-shop-unionpay-plugin
 
 
-第四步：拉取用户信息(需scope为 snsapi_userinfo)
+https://docs.open.alipay.com/270/106291/  
 
-https://api.weixin.qq.com/sns/userinfo?access_token=18_-XTJ80lXf6x2Ds1bMi1qYSZ9_8YH9kra0piEFUJrp7nPzrMJPyUBz-7_KbMuRNV6B6y8gyZh0qreGe8DKiuk0w&openid=okYSmtzp4wWCrDCncMfGSRECVSeM&lang=zh_CN
+https://openhome.alipay.com/platform/appDaily.htm 支付宝沙箱环境
+
+各位同学们，今天晚上20:30-22:30 腾讯课堂内部课聚合支付平台-对接支付宝支付接口
+
+课程内容：
+
+1.编写银联支付接口插件
+2.聚合支付平台整合银联支付接口
+3.支付宝接口沙箱环境搭建
+4.基于RSA非对称加密生成密钥
+5.聚合支付平台整合支付宝支付接口
+
+腾讯课堂内部课地址:https://ke.qq.com/course/291872?tuin=2663a60b
+注意：长期不上课的同学，可能会失去腾讯课堂上课权限资格
+
