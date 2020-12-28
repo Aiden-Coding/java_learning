@@ -4,7 +4,7 @@ import com.mayikt.zuul.handler.GatewayHandler;
 import com.netflix.zuul.context.RequestContext;
 
 /**
- * 相同的Handler业务逻辑实现重构
+ * BaseHandler
  * 
  * 
  * @description:
@@ -19,14 +19,16 @@ public class BaseHandler {
 	public GatewayHandler nextGatewayHandler;
 
 	public void setNextHandler(GatewayHandler nextGatewayHandler) {
-		if (nextGatewayHandler != null)
-			this.nextGatewayHandler = nextGatewayHandler;
+		this.nextGatewayHandler = nextGatewayHandler;
 	}
 
-	public void resultError(RequestContext ctx, String errorMsg) {
-		ctx.setResponseStatusCode(401);
+	public void resultError(Integer code, RequestContext ctx, String errorMsg) {
+		ctx.setResponseStatusCode(code);
 		// 网关响应为false 不会转发服务
 		ctx.setSendZuulResponse(false);
 		ctx.setResponseBody(errorMsg);
+		ctx.getResponse().setContentType("text/html;charset=UTF-8");
+
 	}
+
 }

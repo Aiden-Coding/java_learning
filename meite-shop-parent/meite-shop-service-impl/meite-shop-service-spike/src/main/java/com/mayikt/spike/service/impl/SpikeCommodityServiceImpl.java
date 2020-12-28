@@ -1,5 +1,7 @@
 package com.mayikt.spike.service.impl;
 
+import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -7,16 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.util.concurrent.RateLimiter;
 import com.mayikt.api.spike.service.SpikeCommodityService;
 import com.mayikt.base.BaseApiService;
 import com.mayikt.base.BaseResponse;
 import com.mayikt.core.token.GenerateToken;
-import com.mayikt.core.utils.RedisUtil;
 import com.mayikt.spike.producer.SpikeCommodityProducer;
-import com.mayikt.spike.service.mapper.OrderMapper;
 import com.mayikt.spike.service.mapper.SeckillMapper;
-import com.mayikt.spike.service.mapper.entity.OrderEntity;
 import com.mayikt.spike.service.mapper.entity.SeckillEntity;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,7 +33,15 @@ public class SpikeCommodityServiceImpl extends BaseApiService<JSONObject> implem
 
 	@Override
 	@Transactional
+	@HystrixCommand(fallbackMethod = "spikeFallback")
 	public BaseResponse<JSONObject> spike(String phone, Long seckillId) {
+		log.info(">>>>>>秒杀服务接口:spike()线程名称:" + Thread.currentThread().getName());
+		// 1.秒杀服务实现限流
+
+		// boolean tryAcquire = rateLimiter.tryAcquire(0, TimeUnit.SECONDS);
+		// if (!tryAcquire) {
+		// return setResultError("服务忙，请稍后重试!");
+		// }
 		// 1.参数验证
 		if (StringUtils.isEmpty(phone)) {
 			return setResultError("手机号码不能为空!");
@@ -40,16 +49,14 @@ public class SpikeCommodityServiceImpl extends BaseApiService<JSONObject> implem
 		if (seckillId == null) {
 			return setResultError("商品库存id不能为空!");
 		}
-		// 2.从redis从获取对应的秒杀token
-		String seckillToken = generateToken.getListKeyToken(seckillId + "");
-		if (StringUtils.isEmpty(seckillToken)) {
-			log.info(">>>seckillId:{}, 亲，该秒杀已经售空，请下次再来!", seckillId);
-			return setResultError("亲，该秒杀已经售空，请下次再来!");
-		}
 
 		// 3.获取到秒杀token之后，异步放入mq中实现修改商品的库存
 		sendSeckillMsg(seckillId, phone);
 		return setResultSuccess("正在排队中.......");
+	}
+
+	private BaseResponse<JSONObject> spikeFallback(String phone, Long seckillId) {
+		return setResultError("服务器忙,请稍后重试!");
 	}
 
 	/**

@@ -6,7 +6,7 @@ spring:
   application:
     name:  app-mayikt-zuul
   redis:
-    host: 111.231.55.110
+    host: 127.0.0.1
     port: 6379
 #    password: 123456
     pool:
@@ -44,8 +44,8 @@ zuul:
       serviceId: app-mayikt-pay     
     api-d:
         ### 以 /api-pay/访问转发到订单服务
-      path: /public/api-pay/**
-      serviceId: app-mayikt-pay     
+      path: /api-spike/**
+      serviceId: app-mayikt-spike     
 mayikt: 
   zuul: 
     swagger: 

@@ -5,23 +5,17 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.mayikt.sign.SignUtil;
+import com.mayikt.zuul.handler.GatewayHandler;
 import com.mayikt.zuul.handler.ResponsibilityClient;
 import com.mayikt.zuul.mapper.BlacklistMapper;
-import com.mayikt.zuul.mapper.entity.MeiteBlacklist;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
-
-import io.reactivex.netty.protocol.http.server.HttpServerRequest;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -52,32 +46,8 @@ public class GatewayFilter extends ZuulFilter {
 		// 1.获取请求对象
 		HttpServletRequest request = ctx.getRequest();
 		HttpServletResponse response = ctx.getResponse();
-		// 2.获取客户端真实ip地址
-		String ipAddres = getIpAddr(request);
-		// 3.黑名单限制
-		// MeiteBlacklist meiteBlacklist =
-		// blacklistMapper.findBlacklist(ipAddres);
-		// if (meiteBlacklist != null) {
-		// resultError(ctx, "ip:" + ipAddres + ",Insufficient access rights");
-		// }
-		// // 4.验证签名拦截
-		// Map<String, String> verifyMap =
-		// SignUtil.toVerifyMap(request.getParameterMap(), false);
-		// if (!SignUtil.verify(verifyMap)) {
-		// resultError(ctx, "ip:" + ipAddres + ",Sign fail");
-		// }
-		// // 5.防止xss攻击
-		// ctx.setRequestQueryParams(filterParameters(request, ctx));
-		// // 6.区分外部调用接口方式
-		// String servletPath = request.getServletPath();
-		// log.info(">>>>>servletPath:" + servletPath +
-		// ",servletPath.substring(0, 5):" + servletPath.substring(0, 5));
-		// if (servletPath.substring(0, 7).equals("/public")) {
-		// log.info(">>>>>accessToken验证:");
-		// request.getParameter("accessToken");
-		// }
-		responsibilityClient.responsibility(ctx, ipAddres, request, response);
-
+		GatewayHandler handler = responsibilityClient.getHandler();
+		handler.service(ctx, request, response);
 		return null;
 	}
 	// public/api/api-pay/cratePayToken?payAmount=300222&orderId=2019010203501502&userId=644064
